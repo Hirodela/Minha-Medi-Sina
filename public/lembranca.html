@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalhes do Post · Minha Medi Sina ♡</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="cabecalho-site">
+    <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre a Giovana</a>
+      <a href="nossa-historia.html">Nossa História</a>
+      <a href="publicacoes.html" class="ativo">Feed de Posts</a>
+    </nav>
+    <div class="acoes-navegacao" id="acoes-navegacao">
+      <a class="botao botao-discreto" href="login.html">Entrar</a>
+      <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
+    </div>
+  </header>
+  <main class="conteudo-pagina">
+    <article class="artigo" id="artigo">
+      <p class="texto-suave">Carregando detalhes do post...</p>
+    </article>
+  </main>
+  <footer class="rodape" id="rodape">
+    <div class="conteudo-pagina">
+      <div class="rodape-marca">
+        <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
+      </div>
+      <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+        <ul class="rodape-links">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="sobre.html">Sobre a Giovana</a></li>
+          <li><a href="nossa-historia.html">Nossa História</a></li>
+          <li><a href="publicacoes.html" aria-current="page">Feed de Posts</a></li>
+        </ul>
+      </nav>
+      <div class="rodape-acao">
+        <a class="rodape-voltar-topo" href="#">
+          <span>Voltar ao topo</span>
+          <span class="rodape-voltar-topo-icone" aria-hidden="true">↑</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+    <div class="visualizador-foto" id="foto-ampliada" onclick="fecharFoto()">
+      <div class="visualizador-polaroid">
+        <button type="button" class="visualizador-fechar" title="Fechar foto">&times;</button>
+        <img id="foto-ampliada-imagem" src="" alt="" />
+        <div class="visualizador-legenda" id="foto-ampliada-legenda"></div>
+      </div>
+    </div>
+
+    <script src="js/geral.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/lembranca.js"></script>
+</body>
+</html>

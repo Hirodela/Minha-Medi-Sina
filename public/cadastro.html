@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar conta · Minha Medi Sina ♡</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="autenticacao">
+    <div class="autenticacao-imagem">
+      <div class="autenticacao-fotos">
+        <figure class="mini-polaroid mini-polaroid-1">
+          <div class="foto-ilustrativa foto-ilustrativa-5"></div>
+          <figcaption>cada momento</figcaption>
+        </figure>
+        <figure class="mini-polaroid mini-polaroid-2">
+          <div class="foto-ilustrativa foto-ilustrativa-4"></div>
+          <figcaption>guardado aqui ♡</figcaption>
+        </figure>
+      </div>
+      <div class="autenticacao-citacao">
+        <h2>“Algumas histórias merecem um lugar só delas.”</h2>
+        <p>Crie a sua conta para publicar posts, curtir momentos e deixar comentários especiais para a Giovana ♡</p>
+      </div>
+    </div>
+    <div class="autenticacao-formulario">
+      <div class="autenticacao-topo">
+        <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
+        <a href="index.html">← Voltar ao início</a>
+      </div>
+      <form id="formulario-cadastro" onsubmit="cadastrar(event)">
+        <nav class="autenticacao-abas" aria-label="Entrar ou criar conta">
+          <a href="login.html">Entrar</a>
+          <a class="ativo" href="cadastro.html" aria-current="page">Criar conta</a>
+        </nav>
+        <div class="formulario-cabecalho">
+          <p class="sobretitulo">O início de um novo capítulo</p>
+          <h1>Vamos criar nosso cantinho?</h1>
+          <p class="subtitulo">Cadastre-se rapidamente para interagir nos posts.</p>
+        </div>
+        <div class="campo">
+          <label for="input-nome">Nome completo</label>
+          <input id="input-nome" type="text" autocomplete="name" required maxlength="80" placeholder="Como você gostaria de ser chamado(a)?">
+        </div>
+        <div class="campo">
+          <label for="input-email">E-mail</label>
+          <input id="input-email" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com">
+        </div>
+        <div class="campo">
+          <label for="input-senha">Senha</label>
+          <input id="input-senha" type="password" autocomplete="new-password" minlength="8" required placeholder="Crie uma senha">
+        </div>  
+        <div class="linha-opcoes">
+          <span class="texto-suave">Mínimo: 8 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 símbolo</span>
+        </div>
+        <button class="botao botao-principal botao-largo" type="submit">Criar minha conta</button>
+        <p id="mensagem-formulario" class="mensagem-formulario" aria-live="polite"></p>
+      </form>
+    </div>
+  </main>
+    <script src="js/geral.js"></script>
+    <script src="js/cadastro.js"></script>
+</body>
+</html>

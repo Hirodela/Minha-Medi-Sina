@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nossa História · Minha Medi Sina ♡</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="cabecalho-site">
+      <a class="logo" href="index.html">
+        Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
+      </a>
+      <nav>
+        <a href="index.html">Início</a>
+        <a href="sobre.html">Sobre a Giovana</a>
+        <a href="nossa-historia.html" class="ativo">Nossa História</a>
+        <a href="publicacoes.html">Feed de Posts</a>
+      </nav>
+      <div class="acoes-navegacao" id="acoes-navegacao">
+        <a class="botao botao-discreto" href="login.html">Entrar</a>
+        <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
+      </div>
+    </header>
+
+    <main class="conteudo-pagina">
+      <div class="texto-centralizado cabecalho-historia">
+        <p class="sobretitulo">Capítulo por capítulo</p>
+        <h1>A Linha do Tempo de Nós Dois</h1>
+        <p class="margem-topo-12">
+          As grandes histórias não nascem prontas: elas são construídas em cada
+          conversa, em cada encontro e em cada memória que escolhemos guardar.
+        </p>
+      </div>
+
+      <section id="secao-formulario-historia" class="publicacao-rapida bloco-central margem-base-36" hidden>
+        <h3>Adicionar um novo card na Linha do Tempo ♡</h3>
+        <form id="formulario-historia" onsubmit="adicionarCapitulo(event)">
+          <div class="duas-colunas">
+            <div class="campo">
+              <label for="input-historia-etiqueta">Etiqueta do Capítulo</label>
+              <input
+                id="input-historia-etiqueta"
+                type="text"
+                placeholder="Ex: Nosso Primeiro Aniversário, Viagem Especial..."
+                required
+                maxlength="50"
+              />
+            </div>
+            <div class="campo">
+              <label for="input-historia-titulo">Título do Card</label>
+              <input
+                id="input-historia-titulo"
+                type="text"
+                placeholder="Ex: O dia em que conhecemos o nosso lugar favorito"
+                required
+                maxlength="120"
+              />
+            </div>
+          </div>
+          <div class="campo">
+            <label for="input-historia-descricao">História desse momento</label>
+            <textarea class="textarea-media"
+              id="input-historia-descricao"
+              placeholder="Conte com carinho como foi esse capítulo especial ao lado da Giovana..."
+              required
+            ></textarea>
+          </div>
+          <div class="linha-entre">
+            <p id="mensagem-historia" class="mensagem-formulario sem-margem-topo" aria-live="polite"></p>
+            <button type="submit" class="botao botao-principal">+ Adicionar à Nossa História ♡</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="linha-do-tempo" id="lista-capitulos">
+        <article class="linha-do-tempo-item">
+          <span class="etiqueta">O Começo de Tudo</span>
+          <h3>Onde nossos caminhos se cruzaram</h3>
+          <p>
+            Desde as primeiras conversas e trocas de olhares, já dava para sentir
+            que a Giovana tinha algo diferente. O que parecia apenas um encontro
+            casual logo se transformou na melhor parte dos meus dias.
+          </p>
+        </article>
+
+        <article class="linha-do-tempo-item">
+          <span class="etiqueta">Primeiros Encontros</span>
+          <h3>Risadas, cafés e horas que voavam</h3>
+          <p>
+            A certeza de que estávamos no lugar certo veio quando percebemos que
+            qualquer lugar simples ficava incrível quando estávamos juntos. As
+            horas passavam rápido demais e a saudade já batia na despedida.
+          </p>
+        </article>
+
+        <article class="linha-do-tempo-item">
+          <span class="etiqueta">Nosso Compromisso</span>
+          <h3>O “Sim” que mudou tudo para melhor</h3>
+          <p>
+            Oficializar o nosso namoro foi dar nome ao sentimento mais bonito que
+            já vivi. Ao lado da Giovana, cada plano ganhou cor, parceria e
+            propósito.
+          </p>
+        </article>
+
+        <div class="conteudo-transparente" id="capitulos-personalizados"></div>
+
+        <article class="linha-do-tempo-item">
+          <span class="etiqueta">Hoje e Sempre</span>
+          <h3>Construindo novas memórias todos os dias</h3>
+          <p>
+            E a nossa história continua sendo escrita a cada novo post publicado
+            neste mural! Acesse a aba de publicações para curtir, comentar e
+            registrar o próximo momento inesquecível.
+          </p>
+          <div class="margem-topo-16">
+            <a class="botao botao-principal" href="publicacoes.html">Ir para o Feed de Posts ♡</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="secao-sonhos">
+        <div class="texto-centralizado">
+          <p class="sobretitulo">Nosso futuro juntos</p>
+          <h2>Nossos Próximos Sonhos &amp; Metas ♡</h2>
+          <p class="texto-suave margem-topo-8">
+            Lugares para conhecer, momentos para viver e planos que vamos realizar lado a lado.
+          </p>
+        </div>
+
+        <div class="sonhos-progresso">
+          <div class="linha-entre">
+            <b class="titulo-progresso">Progresso dos nossos sonhos</b>
+            <span class="etiqueta" id="texto-progresso-sonhos">0 de 0 realizados</span>
+          </div>
+          <div class="barra-progresso">
+            <div class="barra-progresso-preenchida" id="barra-progresso-sonhos"></div>
+          </div>
+        </div>
+
+        <form class="formulario-sonho" id="formulario-sonho" onsubmit="adicionarSonho(event)" hidden>
+          <input type="text" id="input-sonho-titulo" placeholder="Adicionar um novo sonho ou meta para nós dois..." maxlength="120" required />
+          <button type="submit" class="botao botao-principal">+ Adicionar Sonho ♡</button>
+        </form>
+
+        <div class="sonhos-grade" id="lista-sonhos"></div>
+      </section>
+
+      <section class="secao-lugares" id="secao-lugares">
+        <div class="texto-centralizado bloco-central-estreito margem-base-26">
+          <p class="sobretitulo">Roteiro do nosso amor</p>
+          <h2>Lugares que Queremos Ir Juntos ✈️</h2>
+          <p class="texto-suave margem-topo-8">
+            Viagens, restaurantes, passeios e cantinhos especiais que queremos conhecer de mãos dadas.
+          </p>
+        </div>
+
+        <div id="secao-formulario-lugar" class="publicacao-rapida bloco-central margem-base-28" hidden>
+          <h3>Adicionar um lugar que queremos ir ♡</h3>
+          <form id="formulario-lugar" onsubmit="adicionarLugar(event)">
+            <div class="duas-colunas">
+              <div class="campo">
+                <label for="input-lugar-nome">Destino</label>
+                <input type="text" id="input-lugar-nome" placeholder="Ex: Campos do Jordão, Café especial, Praia..." required maxlength="80" />
+              </div>
+              <div class="campo">
+                <label for="select-lugar-tipo">Tipo de Passeio</label>
+                <select id="select-lugar-tipo">
+                  <option value="✈️ Viagem">✈️ Viagem</option>
+                  <option value="🍝 Restaurante / Café">🍝 Restaurante / Café</option>
+                  <option value="🌅 Passeio Romântico">🌅 Passeio Romântico</option>
+                  <option value="🏖️ Praia / Natureza">🏖️ Praia / Natureza</option>
+                  <option value="🎡 Experiência a Dois">🎡 Experiência a Dois</option>
+                </select>
+              </div>
+            </div>
+            <div class="campo">
+              <label for="input-lugar-nota">O que queremos fazer lá</label>
+              <input type="text" id="input-lugar-nota" placeholder="Ex: Aproveitar o friozinho, jantar à luz de velas e tirar muitas fotos juntos..." required maxlength="180" />
+            </div>
+            <div class="linha-fim">
+              <button type="submit" class="botao botao-principal">+ Adicionar Lugar ♡</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="lugares-grade" id="lista-lugares"></div>
+      </section>
+    </main>
+
+    <footer class="rodape" id="rodape">
+      <div class="conteudo-pagina">
+        <div class="rodape-marca">
+          <a class="logo" href="index.html">
+            Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
+          </a>
+        </div>
+        <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+          <ul class="rodape-links">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html">Sobre a Giovana</a></li>
+            <li><a href="nossa-historia.html" aria-current="page">Nossa História</a></li>
+            <li><a href="publicacoes.html">Feed de Posts</a></li>
+          </ul>
+        </nav>
+        <div class="rodape-acao">
+          <a class="rodape-voltar-topo" href="#">
+            <span>Voltar ao topo</span>
+            <span class="rodape-voltar-topo-icone" aria-hidden="true">↑</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="player-musica" id="player-musica">
+      <button type="button" class="player-botao-tocar" id="botao-tocar-musica" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
+      <div class="player-info">
+        <span class="player-titulo" id="player-titulo-texto">🎶 Nossa Música ♡</span>
+        <span class="player-status" id="player-status-texto">Clique em 🎵 para escolher um .mp3</span>
+      </div>
+      <button type="button" class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
+      <input type="file" id="input-arquivo-musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+    </div>
+
+    <script src="js/geral.js"></script>
+    <script src="js/musica.js"></script>
+    <script src="js/nossa-historia.js"></script>
+  </body>
+</html>

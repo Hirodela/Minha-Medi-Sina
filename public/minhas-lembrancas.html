@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meus Posts · Minha Medi Sina ♡</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="painel">
+    <aside class="menu-lateral">
+      <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
+      <a class="menu-item" href="dashboard.html">Visão geral & Métricas</a>
+      <a class="menu-item ativo" href="minhas-lembrancas.html">Meus Posts</a>
+      <a class="menu-item" href="nova-lembranca.html">Criar publicação</a>
+      <a class="menu-item" href="perfil.html">Meu perfil</a>
+      <a class="menu-item menu-item-sair" href="index.html" onclick="sair()">Sair</a>
+    </aside>
+    <main class="painel-conteudo">
+      <div class="painel-topo">
+        <div>
+          <h6 class="texto-suave">Gerencie os seus posts, curtidas e comentários</h6>
+        </div>
+        <div><span class="nome-usuario-logado">Giovana ♡</span> <span class="avatar">♡</span></div>
+      </div>
+      <div class="titulo-pagina">
+        <div>
+          <h1>Meus Posts & Lembranças</h1>
+          <p>Suas histórias publicadas, organizadas do seu jeito.</p>
+        </div>
+        <a class="botao botao-principal" href="nova-lembranca.html">+ Criar Novo Post</a>
+      </div>
+      <div class="filtros">
+        <span class="texto-suave" id="total-posts"></span>
+      </div>
+      <h2>Suas Publicações</h2>
+      <div id="lista-posts" class="grade-posts lista-meus-posts"></div>
+    </main>
+  </div>
+    <div class="visualizador-foto" id="foto-ampliada" onclick="fecharFoto()">
+      <div class="visualizador-polaroid">
+        <button type="button" class="visualizador-fechar" title="Fechar foto">&times;</button>
+        <img id="foto-ampliada-imagem" src="" alt="" />
+        <div class="visualizador-legenda" id="foto-ampliada-legenda"></div>
+      </div>
+    </div>
+
+    <script src="js/geral.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/minhas-lembrancas.js"></script>
+</body>
+</html>

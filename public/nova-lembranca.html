@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar Publicação · Minha Medi Sina ♡</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="painel">
+    <aside class="menu-lateral">
+      <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
+      <a class="menu-item" href="dashboard.html">Visão geral & Métricas</a>
+      <a class="menu-item" href="minhas-lembrancas.html">Meus Posts</a>
+      <a class="menu-item ativo" href="nova-lembranca.html">Criar publicação</a>
+      <a class="menu-item" href="perfil.html">Meu perfil</a>
+      <a class="menu-item menu-item-sair" href="index.html" onclick="sair()">Sair</a>
+    </aside>
+    <main class="painel-conteudo">
+      <div class="painel-topo">
+        <div>
+          <h6 class="texto-suave">Publique um novo post para a Giovana</h6>
+        </div>
+        <div><span class="nome-usuario-logado">Giovana ♡</span> <span class="avatar">♡</span></div>
+      </div>
+      <div class="titulo-pagina">
+        <div>
+          <h1 id="titulo-pagina">Criar Novo Post</h1>
+          <p>Guarde uma fotografia, declaração ou momento que merece ficar para sempre.</p>
+        </div>
+      </div>
+      <form class="caixa" id="formulario-post" onsubmit="salvarPost(event)">
+        <p class="sobretitulo margem-base-16">Detalhes do Post</p>
+        <div class="campo">
+          <label for="input-titulo">Título do Post</label>
+          <input id="input-titulo" type="text" required maxlength="120" placeholder="Dê um título especial a esse momento">
+        </div>
+        <div class="campo">
+          <label for="input-descricao">Mensagem / Descrição</label>
+          <textarea id="input-descricao" required placeholder="Escreva aqui a história desse dia ou uma mensagem carinhosa para a Giovana..."></textarea>
+        </div>
+        <div class="duas-colunas">
+          <div class="campo">
+            <label for="input-data">Data do Momento</label>
+            <input id="input-data" type="date" required>
+          </div>
+          <div class="campo">
+            <label for="select-categoria">Categoria</label>
+            <select id="select-categoria">
+              <option value="Fotografias">Fotografias</option>
+              <option value="Mensagens">Mensagens</option>
+              <option value="Datas especiais">Datas especiais</option>
+              <option value="Momentos engraçados">Momentos engraçados</option>
+            </select>
+          </div>
+        </div>
+        <div class="campo">
+          <label>Fotografia do Post (opcional)</label>
+          <div class="area-upload">
+            <p>Escolha uma foto especial do computador ou telefone</p>
+            <button class="botao margem-vertical-12" type="button" id="botao-escolher-foto" onclick="escolherFoto()">Adicionar fotografia</button>
+            <input type="file" id="input-foto" accept="image/jpeg,image/png,image/webp" onchange="fotoEscolhida()" hidden>
+            <div class="previa-upload" id="previa-foto" hidden></div>
+          </div>
+        </div>
+        <p id="mensagem-formulario" class="mensagem-formulario" aria-live="polite"></p>
+        <div class="linha-botoes">
+          <button class="botao botao-principal" type="submit" id="botao-salvar">+ Publicar Post</button>
+          <a class="botao" href="publicacoes.html">Cancelar</a>
+        </div>
+      </form>
+    </main>
+  </div>
+    <script src="js/geral.js"></script>
+    <script src="js/nova-lembranca.js"></script>
+</body>
+</html>

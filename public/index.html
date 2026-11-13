@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Início · Minha Medi Sina ♡ Para Giovana</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="cabecalho-site">
+      <a class="logo" href="index.html">
+        Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
+      </a>
+      <nav>
+        <a href="index.html" class="ativo">Início</a>
+        <a href="sobre.html">Sobre a Giovana</a>
+        <a href="nossa-historia.html">Nossa História</a>
+        <a href="publicacoes.html">Feed de Posts</a>
+      </nav>
+      <div class="acoes-navegacao" id="acoes-navegacao">
+        <a class="botao botao-discreto" href="login.html">Entrar</a>
+        <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
+      </div>
+    </header>
+
+    <main class="conteudo-pagina">
+      <section class="apresentacao">
+        <div>
+          <p class="sobretitulo">Para Giovana, minha melhor escolha</p>
+          <h1>Meu lugar favorito sempre será ao seu lado!</h1>
+          <p>
+            Bem-vinda ao <b>Minha Medi Sina</b>: a nossa rede social particular
+            para criar posts, curtir nossos melhores momentos, deixar
+            comentários carinhosos e eternizar cada capítulo da nossa história.
+          </p>
+        </div>
+        <figure class="foto-polaroid">
+          <div
+            class="foto-ilustrativa foto-ilustrativa-1"
+            role="img"
+            aria-label="Retrato especial para a Giovana"
+          ></div>
+          <figcaption>Giovana: a dose diária de amor que faz o coração sorrir ♡</figcaption>
+        </figure>
+      </section>
+
+      <section class="contador-amor" id="secao-contador-amor">
+        <p class="sobretitulo">Cada segundo ao seu lado conta</p>
+        <h2>Nosso Tempo de Amor &amp; Parceria ♡</h2>
+        <p class="texto-suave margem-topo-6">
+          Contando em tempo real cada dia, hora, minuto e segundo dessa história linda.
+        </p>
+        <div class="contador-grade">
+          <div class="contador-item">
+            <b id="contador-dias">0</b>
+            <span>Dias</span>
+          </div>
+          <div class="contador-item">
+            <b id="contador-horas">00</b>
+            <span>Horas</span>
+          </div>
+          <div class="contador-item">
+            <b id="contador-minutos">00</b>
+            <span>Minutos</span>
+          </div>
+          <div class="contador-item">
+            <b id="contador-segundos">00</b>
+            <span>Segundos</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="secao-sobre" id="secao-sobre">
+        <div
+          class="foto-ilustrativa foto-ilustrativa-6"
+          role="img"
+          aria-label="Retrato especial sobre ela"
+        ></div>
+        <div>
+          <p class="sobretitulo">A inspiração deste projeto</p>
+          <h2>
+            A Giovana tem um jeito <em class="destaque-manuscrito">só dela</em> de deixar tudo
+            mais bonito.
+          </h2>
+          <p class="margem-vertical-16">
+            Este projeto nasceu para celebrar quem ela é e guardar em um banco
+            de dados real cada fotografia, mensagem, curtida e comentário que
+            trocamos ao longo da caminhada.
+          </p>
+          <a class="botao" href="sobre.html">Conhecer mais sobre ela →</a>
+        </div>
+      </section>
+
+      <section>
+        <div class="cabecalho-secao">
+          <div>
+            <p class="sobretitulo">Interaja nos nossos momentos</p>
+            <h2>Últimos Posts do Nosso Mural</h2>
+          </div>
+          <a class="botao" href="publicacoes.html">Ver todos os posts e comentar</a>
+        </div>
+        <div class="grade-posts" id="lista-posts">
+          <div class="caixa estado-vazio">
+            <p>Carregando os posts da nossa história…</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="faixa-citacao">
+      <div class="conteudo-pagina texto-centralizado">
+        <h2>“Que os drones nunca parem de brilhar!”</h2>
+      </div>
+    </section>
+
+    <footer class="rodape" id="rodape">
+      <div class="conteudo-pagina">
+        <div class="rodape-marca">
+          <a class="logo" href="index.html">
+            Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
+          </a>
+        </div>
+        <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+          <ul class="rodape-links">
+            <li><a href="index.html" aria-current="page">Início</a></li>
+            <li><a href="sobre.html">Sobre a Giovana</a></li>
+            <li><a href="nossa-historia.html">Nossa História</a></li>
+            <li><a href="publicacoes.html">Feed de Posts</a></li>
+          </ul>
+        </nav>
+        <div class="rodape-acao">
+          <a class="rodape-voltar-topo" href="#">
+            <span>Voltar ao topo</span>
+            <span class="rodape-voltar-topo-icone" aria-hidden="true">↑</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="player-musica" id="player-musica">
+      <button type="button" class="player-botao-tocar" id="botao-tocar-musica" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
+      <div class="player-info">
+        <span class="player-titulo" id="player-titulo-texto">🎶 Nossa Música ♡</span>
+        <span class="player-status" id="player-status-texto">Clique para tocar ♡</span>
+      </div>
+      <button type="button" class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
+      <input type="file" id="input-arquivo-musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+    </div>
+
+    <script src="js/geral.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/musica.js"></script>
+    <script src="js/inicio.js"></script>
+  </body>
+</html>

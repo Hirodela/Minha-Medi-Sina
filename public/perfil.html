@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meu perfil · Minha Medi Sina ♡</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="painel">
+    <aside class="menu-lateral">
+      <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
+      <a class="menu-item" href="dashboard.html">Visão geral & Métricas</a>
+      <a class="menu-item" href="minhas-lembrancas.html">Meus Posts</a>
+      <a class="menu-item" href="nova-lembranca.html">Criar publicação</a>
+      <a class="menu-item ativo" href="perfil.html">Meu perfil</a>
+      <a class="menu-item menu-item-sair" href="index.html" onclick="sair()">Sair</a>
+    </aside>
+    <main class="painel-conteudo">
+      <div class="painel-topo">
+        <div>
+          <h6 class="texto-suave">Atualize os seus dados de perfil</h6>
+        </div>
+        <div><span class="nome-usuario-logado">Giovana ♡</span> <span class="avatar">♡</span></div>
+      </div>
+      <div class="titulo-pagina">
+        <div>
+          <h1>Meu Perfil</h1>
+          <p>Como o seu nome e a sua foto aparecem no nosso cantinho.</p>
+        </div>
+      </div>
+      <form class="caixa caixa-estreita" id="formulario-perfil" onsubmit="salvarPerfil(event)">
+        <div class="perfil-cabecalho">
+          <span class="avatar avatar-usuario avatar-grande" id="previa-avatar-perfil" onclick="escolherFotoPerfil()" title="Clique para trocar sua foto">♡</span>
+          <div>
+            <h3 class="nome-usuario-logado">Giovana ♡</h3>
+            <p id="perfil-detalhes" class="margem-base-10"></p>
+            <div class="linha-botoes linha-quebra">
+              <button type="button" class="botao botao-pequeno" id="botao-trocar-foto-perfil" onclick="escolherFotoPerfil()">Trocar foto de perfil</button>
+              <button type="button" class="botao botao-pequeno" id="botao-remover-foto-perfil" onclick="removerFotoPerfil()" hidden>✕ Remover foto</button>
+            </div>
+            <input type="file" id="input-foto-perfil" accept="image/jpeg,image/png,image/webp" onchange="enviarFotoPerfil()" hidden>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="input-nome">Nome de exibição</label>
+          <input id="input-nome" type="text" required>
+        </div>
+        <p id="mensagem-formulario" class="mensagem-formulario" aria-live="polite"></p>
+        <div class="linha-botoes">
+          <button class="botao botao-principal" type="submit">Salvar alterações</button>
+          <a class="botao" href="dashboard.html">Voltar</a>
+        </div>
+      </form>
+    </main>
+  </div>
+    <script src="js/geral.js"></script>
+    <script src="js/perfil.js"></script>
+</body>
+</html>

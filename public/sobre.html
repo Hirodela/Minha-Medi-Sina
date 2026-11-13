@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre a Giovana · Minha Medi Sina ♡</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="cabecalho-site">
+      <a class="logo" href="index.html">
+        Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
+      </a>
+      <nav>
+        <a href="index.html">Início</a>
+        <a href="sobre.html" class="ativo">Sobre a Giovana</a>
+        <a href="nossa-historia.html">Nossa História</a>
+        <a href="publicacoes.html">Feed de Posts</a>
+      </nav>
+      <div class="acoes-navegacao" id="acoes-navegacao">
+        <a class="botao botao-discreto" href="login.html">Entrar</a>
+        <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
+      </div>
+    </header>
+
+    <main class="conteudo-pagina">
+      <section class="apresentacao">
+        <div>
+          <h1>Giovana: minha paz, meu abrigo e minha <em class="destaque-manuscrito">Medi Sina</em>.</h1>
+          <p>
+            O nome deste projeto brinca com as palavras porque estar perto da
+            Giovana é exatamente isso: o melhor remédio para qualquer dia
+            difícil e a melhor sina que o destino poderia colocar no meu caminho.
+          </p>
+          <div class="margem-topo-24">
+            <a class="botao botao-principal" href="publicacoes.html">Deixar um post para ela ♡</a>
+          </div>
+        </div>
+        <figure class="foto-polaroid">
+          <div class="foto-ilustrativa foto-ilustrativa-6" role="img" aria-label="Homenagem para Giovana"></div>
+          <figcaption>Cada detalhe seu faz o mundo inteiro valer a pena ♡</figcaption>
+        </figure>
+      </section>
+
+      <section class="secao-carta" id="secao-carta">
+        <div class="carta-cabecalho">
+          <div>
+            <p class="sobretitulo">Com as minhas próprias palavras</p>
+            <h2 id="carta-titulo">Quem é a Giovana pelos meus olhos ♡</h2>
+          </div>
+          <button type="button" class="botao" id="botao-editar-carta" onclick="editarCarta()" hidden>
+            ✎ Escrever / Editar sobre ela
+          </button>
+        </div>
+
+        <div id="carta-visualizacao">
+          <div class="carta-texto">
+            <div id="carta-paragrafos" class="carta-paragrafos">
+              <p>
+                Falar sobre a Giovana é falar sobre a pessoa que deu um novo norte à minha vida. É aquela pessoa de quem eu sinto falta 24 horas por dia, e que, só por estar ao meu lado, consegue fazer qualquer dia ficar mil vezes melhor. Ela é o tipo de pessoa que consegue ser linda por fora, mas que é ainda mais extraordinária por dentro. O jeito que ela trata as pessoas, a forma como se importa com quem está ao seu redor e a pessoa incrível que ela é fariam qualquer um se apaixonar. Para mim, o melhor lugar do mundo sempre vai ser ao lado dela. Não importa se estamos aqui na pracinha, em algum lugar qualquer ou do outro lado do mundo. Se eu estiver com ela, já é o lugar certo. Que a gente continue colecionando momentos, risadas e histórias juntos. E, acima de tudo, que os drones nunca parem de brilhar!
+              </p>
+            </div>
+            <div class="carta-assinatura" id="carta-assinatura">
+              Com todo o meu amor e admiração, sempre seu ♡
+            </div>
+          </div>
+        </div>
+
+        <form id="formulario-carta" class="carta-formulario-edicao" onsubmit="salvarCarta(event)" hidden>
+          <div class="campo">
+            <label for="input-carta-titulo">Título da seção</label>
+            <input type="text" id="input-carta-titulo" required maxlength="100" />
+          </div>
+          <div class="campo">
+            <label for="input-carta-texto">O que você quer falar sobre ela</label>
+            <textarea id="input-carta-texto" rows="6" required placeholder="Escreva com carinho tudo o que a Giovana representa para você..."></textarea>
+          </div>
+          <div class="campo">
+            <label for="input-carta-assinatura">Assinatura final</label>
+            <input type="text" id="input-carta-assinatura" required maxlength="90" />
+          </div>
+          <div class="linha-fim margem-topo-12">
+            <button type="button" class="botao" onclick="fecharEdicaoCarta()">Cancelar</button>
+            <button type="submit" class="botao botao-principal">Salvar declaração ♡</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="secao-qualidades">
+        <div class="texto-centralizado bloco-central-estreito margem-base-28">
+          <p class="sobretitulo">O que faz dela única</p>
+          <h2>Pequenos detalhes que eu amo na Giovana</h2>
+          <p class="texto-suave margem-topo-8">
+            Algumas das infinitas razões pelas quais ela inspirou cada linha de código deste projeto.
+          </p>
+        </div>
+
+        <div id="secao-formulario-qualidade" class="publicacao-rapida bloco-central margem-base-32" hidden>
+          <h3>Adicionar um novo card sobre a Giovana ♡</h3>
+          <form id="formulario-qualidade" onsubmit="adicionarQualidade(event)">
+            <div class="duas-colunas">
+              <div class="campo">
+                <label for="select-qualidade-icone">Ícone</label>
+                <select id="select-qualidade-icone">
+                  <option value="💖">💖 Coração brilhante</option>
+                  <option value="✨">✨ Estrelinhas</option>
+                  <option value="🌷">🌷 Flor delicada</option>
+                  <option value="🎶">🎶 Nossa sintonia</option>
+                  <option value="☀️">☀️ Sol que ilumina</option>
+                  <option value="🦋">🦋 Borboletas</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="input-qualidade-titulo">Título da Qualidade</label>
+                <input id="input-qualidade-titulo" type="text" placeholder="Ex: O abraço que acalma tudo" required maxlength="60" />
+              </div>
+            </div>
+            <div class="campo">
+              <label for="input-qualidade-descricao">Por que eu amo esse detalhe</label>
+              <textarea class="textarea-curta" id="input-qualidade-descricao" placeholder="Descreva com carinho esse detalhe especial da Giovana..." required maxlength="300"></textarea>
+            </div>
+            <div class="linha-entre">
+              <p id="mensagem-qualidade" class="mensagem-formulario sem-margem-topo" aria-live="polite"></p>
+              <button type="submit" class="botao botao-principal">+ Adicionar Card ♡</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="qualidades-grade" id="lista-qualidades">
+          <div class="qualidade-card">
+            <div class="qualidade-icone">✨</div>
+            <h3>O seu Abraço</h3>
+            <p class="texto-suave margem-topo-8">
+              Estar em seus braços é como estar em um porto seguro, não há um lugar melhor.
+            </p>
+          </div>
+          <div class="qualidade-card">
+            <div class="qualidade-icone">💖</div>
+            <h3>Coração Gigante</h3>
+            <p class="texto-suave margem-topo-8">
+              O cuidado, o carinho nos pequenos gestos e a forma doce como ela acolhe quem está ao seu redor.
+            </p>
+          </div>
+          <div class="qualidade-card">
+            <div class="qualidade-icone">🎶</div>
+            <h3>Seu Lado Artístico</h3>
+            <p class="texto-suave margem-topo-8">
+              A Giovana consegue ser arte em forma viva, um ser humano com o dom das artes.
+            </p>
+          </div>
+          <div class="conteudo-transparente" id="qualidades-personalizadas"></div>
+        </div>
+      </section>
+
+      <section class="caixa caixa-carta-aberta">
+        <div class="secao-sobre secao-sobre-compacta">
+          <div>
+            <p class="sobretitulo">Uma carta aberta</p>
+            <h2>Por que criar um site inteiro para você?</h2>
+            <p class="margem-vertical-14">
+              Porque mensagens em aplicativos se perdem no meio da correria, mas
+              um cantinho pensado do zero para nós dois guarda a nossa essência.
+              Aqui podemos criar posts sobre os nossos passeios, adicionar nossas metas, sonhos e lugares  aonde querermos ir, curtir cada lembrança e comentar o que sentimos em cada fase.
+            </p>
+            <a class="botao botao-principal" href="nossa-historia.html">Ver nossa linha do tempo →</a>
+          </div>
+          <div class="caixa texto-centralizado caixa-branca">
+            <span class="coracao-destaque">♡</span>
+            <h3 class="margem-vertical-12">“Com você, todos os dias viram datas especiais.”</h3>
+            <p class="texto-suave">Dedicado com todo amor à Giovana.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape" id="rodape">
+      <div class="conteudo-pagina">
+        <div class="rodape-marca">
+          <a class="logo" href="index.html">
+            Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
+          </a>
+        </div>
+        <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+          <ul class="rodape-links">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html" aria-current="page">Sobre a Giovana</a></li>
+            <li><a href="nossa-historia.html">Nossa História</a></li>
+            <li><a href="publicacoes.html">Feed de Posts</a></li>
+          </ul>
+        </nav>
+        <div class="rodape-acao">
+          <a class="rodape-voltar-topo" href="#">
+            <span>Voltar ao topo</span>
+            <span class="rodape-voltar-topo-icone" aria-hidden="true">↑</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="player-musica" id="player-musica">
+      <button type="button" class="player-botao-tocar" id="botao-tocar-musica" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
+      <div class="player-info">
+        <span class="player-titulo" id="player-titulo-texto">🎶 Nossa Música ♡</span>
+        <span class="player-status" id="player-status-texto">Clique em 🎵 para escolher um .mp3</span>
+      </div>
+      <button type="button" class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
+      <input type="file" id="input-arquivo-musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+    </div>
+
+    <script src="js/geral.js"></script>
+    <script src="js/musica.js"></script>
+    <script src="js/sobre.js"></script>
+  </body>
+</html>

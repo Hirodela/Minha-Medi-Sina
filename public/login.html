@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · Minha Medi Sina ♡</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="autenticacao">
+    <div class="autenticacao-imagem">
+      <div class="autenticacao-fotos" aria-hidden="true">
+        <figure class="mini-polaroid mini-polaroid-1">
+          <div class="foto-ilustrativa foto-ilustrativa-1"></div>
+          <figcaption>nosso começo</figcaption>
+        </figure>
+        <figure class="mini-polaroid mini-polaroid-2">
+          <div class="foto-ilustrativa foto-ilustrativa-6"></div>
+          <figcaption>para sempre ♡</figcaption>
+        </figure>
+      </div>
+      <div class="autenticacao-citacao">
+        <h2>“Algumas histórias merecem um lugar só delas.”</h2>
+        <p>E esta é a nossa maneira de guardar cada pedacinho de carinho para a Giovana ♡</p>
+      </div>
+    </div>
+    <div class="autenticacao-formulario">
+      <div class="autenticacao-topo">
+        <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
+        <a href="index.html">← Voltar ao início</a>
+      </div>
+      <form id="formulario-login" onsubmit="entrar(event)">
+        <nav class="autenticacao-abas" aria-label="Entrar ou criar conta">
+          <a class="ativo" href="login.html" aria-current="page">Entrar</a>
+          <a href="cadastro.html">Criar conta</a>
+        </nav>
+        <div class="formulario-cabecalho">
+          <p class="sobretitulo">Seu espaço de carinho</p>
+          <h1>Que bom ter você aqui!</h1>
+          <p class="subtitulo">Entre para curtir, comentar e publicar no nosso mural.</p>
+        </div>
+        <div class="campo">
+          <label for="input-email">E-mail</label>
+          <input id="input-email" type="email" autocomplete="email" required placeholder="giovana@amor.com">
+        </div>
+        <div class="campo">
+          <label for="input-senha">Senha</label>
+          <input id="input-senha" type="password" autocomplete="current-password" required placeholder="Digite sua senha">
+        </div>
+        <button class="botao botao-principal botao-largo" type="submit">Entrar</button>
+        <p id="mensagem-formulario" class="mensagem-formulario" aria-live="polite"></p>
+      </form>
+    </div>
+  </main>
+    <script src="js/geral.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
