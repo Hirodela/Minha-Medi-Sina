@@ -21,7 +21,7 @@
         <div>
           <h6 class="texto-suave">Publique um novo post para a Giovana</h6>
         </div>
-        <div><span class="nome-usuario-logado">Giovana ♡</span> <span class="avatar">♡</span></div>
+        <div><span class="nome-usuario-logado"></span> <span class="avatar"></span></div>
       </div>
       <div class="titulo-pagina">
         <div>
@@ -29,8 +29,7 @@
           <p>Guarde uma fotografia, declaração ou momento que merece ficar para sempre.</p>
         </div>
       </div>
-      <form class="caixa" id="formulario-post" onsubmit="salvarPost(event)">
-        <p class="sobretitulo margem-base-16">Detalhes do Post</p>
+      <form class="caixa" onsubmit="salvarPost(event)">
         <div class="campo">
           <label for="input-titulo">Título do Post</label>
           <input id="input-titulo" type="text" required maxlength="120" placeholder="Dê um título especial a esse momento">
@@ -63,10 +62,9 @@
             <div class="previa-upload" id="previa-foto" hidden></div>
           </div>
         </div>
-        <p id="mensagem-formulario" class="mensagem-formulario" aria-live="polite"></p>
+        <p id="mensagem-formulario" class="mensagem-formulario"></p>
         <div class="linha-botoes">
           <button class="botao botao-principal" type="submit" id="botao-salvar">+ Publicar Post</button>
-          <a class="botao" href="publicacoes.html">Cancelar</a>
         </div>
       </form>
     </main>

@@ -16,9 +16,7 @@ function autenticar(req, res) {
                     res.json({
                         id: resultadoAutenticar[0].id,
                         nome: resultadoAutenticar[0].nome,
-                        email: resultadoAutenticar[0].email,
-                        fotoPerfil: resultadoAutenticar[0].fotoPerfil || null,
-                        dtCadastro: resultadoAutenticar[0].dtCadastro
+                        fotoPerfil: resultadoAutenticar[0].fotoPerfil || null
                     });
                 } else if (resultadoAutenticar.length == 0) {
                     res.status(403).json({ erro: "E-mail e/ou senha inválidos!" });
@@ -41,7 +39,7 @@ function cadastrar(req, res) {
 
     if (!nome || nome.trim().length < 2) {
         res.status(400).json({ erro: "Informe seu nome (mínimo 2 caracteres)!" });
-    } else if (!email || !email.includes("@") || !email.includes(".com")) {
+    } else if (!email || !email.includes("@") || !email.includes(".")) {
         res.status(400).json({ erro: "Informe um e-mail válido!" });
     } else if (!senha || senha.length < 8 || !/[A-Z]/.test(senha) || !/[a-z]/.test(senha) || !/[0-9]/.test(senha) || !/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
         res.status(400).json({ erro: "A senha deve ter no mínimo 8 caracteres, incluindo letra maiúscula, minúscula, número e caractere especial!"});

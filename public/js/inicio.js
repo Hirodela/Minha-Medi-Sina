@@ -1,44 +1,21 @@
-var dataInicioAmor = null;
+// 08/05/2026 (ano, mês - 1, dia)
+var dataInicioAmor = new Date(2026, 4, 8);
+
+function doisDigitos(n) {
+    return String(n).padStart(2, "0");
+}
 
 function atualizarContador() {
-    if (!dataInicioAmor) {
-        return;
-    }
+    var s = Math.max(0, Math.floor((new Date() - dataInicioAmor) / 1000));
 
-    var segundosTotais = Math.floor((new Date() - dataInicioAmor) / 1000);
-
-    if (segundosTotais < 0) {
-        segundosTotais = 0;
-    }
-
-    var dias = Math.floor(segundosTotais / 86400);
-    var horas = Math.floor((segundosTotais % 86400) / 3600);
-    var minutos = Math.floor((segundosTotais % 3600) / 60);
-    var segundos = segundosTotais % 60;
-
-    document.getElementById("contador-dias").textContent = dias;
-    document.getElementById("contador-horas").textContent = String(horas).padStart(2, "0");
-    document.getElementById("contador-minutos").textContent = String(minutos).padStart(2, "0");
-    document.getElementById("contador-segundos").textContent = String(segundos).padStart(2, "0");
-}
-
-function definirDataInicio(dataIso) {
-    dataInicioAmor = new Date(dataIso + "T00:00:00");
-    atualizarContador();
-}
-
-function carregarContador() {
-    requisicao("/posts/config/casal")
-        .then(function (config) {
-            definirDataInicio(config.dataInicioAmor);
-        })
-        .catch(function (erro) {
-            console.log(erro.message);
-        });
+    document.getElementById("contador-dias").textContent = Math.floor(s / 86400);
+    document.getElementById("contador-horas").textContent = doisDigitos(Math.floor(s / 3600) % 24);
+    document.getElementById("contador-minutos").textContent = doisDigitos(Math.floor(s / 60) % 60);
+    document.getElementById("contador-segundos").textContent = doisDigitos(s % 60);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    carregarContador();
+    atualizarContador();
     setInterval(atualizarContador, 1000);
 
     carregarPosts(urlFeed(), 3, false);

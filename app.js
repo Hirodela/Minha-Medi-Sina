@@ -26,6 +26,20 @@ app.use("/usuarios", usuarioRouter);
 app.use("/posts", postsRouter);
 app.use("/dashboard", dashboardRouter);
 
+// Erros de upload (tipo de arquivo inválido, arquivo grande demais) e outros erros inesperados
+app.use(function (erro, req, res, next) {
+    if (erro.arquivoInvalido) {
+        res.status(400).json({ erro: erro.message });
+    } else if (erro.code == "LIMIT_FILE_SIZE") {
+        res.status(400).json({ erro: "O arquivo enviado é grande demais!" });
+    } else if (erro.name == "MulterError") {
+        res.status(400).json({ erro: "Não foi possível enviar o arquivo." });
+    } else {
+        console.log(erro);
+        res.status(500).json({ erro: "Houve um erro inesperado no servidor." });
+    }
+});
+
 app.listen(PORTA_APP, function () {
     console.log(`
     Minha Medi Sina ♡

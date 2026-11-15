@@ -4,7 +4,7 @@ function autenticar(email, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function autenticar(): ", email);
 
     var instrucaoSql = `
-        SELECT id, nome, email, foto_perfil AS fotoPerfil, DATE_FORMAT(dt_cadastro, '%d/%m/%Y') AS dtCadastro
+        SELECT id, nome, foto_perfil AS fotoPerfil
         FROM usuario
         WHERE email = ? AND senha = ?;
     `;
@@ -24,7 +24,7 @@ function cadastrar(nome, email, senha) {
 
 function buscarPorId(idUsuario) {
     var instrucaoSql = `
-        SELECT id, nome, email, foto_perfil AS fotoPerfil, DATE_FORMAT(dt_cadastro, '%d/%m/%Y') AS dtCadastro
+        SELECT id, nome, foto_perfil AS fotoPerfil
         FROM usuario
         WHERE id = ?;
     `;

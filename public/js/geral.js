@@ -6,18 +6,14 @@ function usuarioLogado() {
     return {
         id: Number(sessionStorage.ID_USUARIO),
         nome: sessionStorage.NOME_USUARIO,
-        email: sessionStorage.EMAIL_USUARIO,
-        fotoPerfil: sessionStorage.FOTO_USUARIO || null,
-        dtCadastro: sessionStorage.DATA_CADASTRO || ""
+        fotoPerfil: sessionStorage.FOTO_USUARIO || null
     };
 }
 
 function guardarUsuario(usuario) {
     sessionStorage.ID_USUARIO = usuario.id;
     sessionStorage.NOME_USUARIO = usuario.nome;
-    sessionStorage.EMAIL_USUARIO = usuario.email;
     sessionStorage.FOTO_USUARIO = usuario.fotoPerfil || "";
-    sessionStorage.DATA_CADASTRO = usuario.dtCadastro || "";
 }
 
 function sair() {

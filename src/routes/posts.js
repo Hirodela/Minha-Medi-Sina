@@ -4,6 +4,7 @@ var router = express.Router();
 var postsController = require("../controllers/postsController");
 var upload = require("../config/upload");
 
+
 router.get("/config/casal", function (req, res) {
     postsController.buscarConfigCasal(req, res);
 });

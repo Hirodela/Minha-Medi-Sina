@@ -69,7 +69,7 @@ function deletar(idPost) {
 
 function verificarCurtida(idUsuario, idPost) {
     var instrucaoSql = `
-        SELECT id FROM curtida WHERE fk_usuario = ? AND fk_post = ?;
+        SELECT fk_usuario FROM curtida WHERE fk_usuario = ? AND fk_post = ?;
     `;
     return database.executar(instrucaoSql, [idUsuario, idPost]);
 }
@@ -128,7 +128,6 @@ function removerComentario(idComentario, idUsuario) {
 function buscarConfigCasal() {
     var instrucaoSql = `
         SELECT
-            DATE_FORMAT(data_inicio_amor, '%Y-%m-%d') AS dataInicioAmor,
             sobre_titulo AS sobreTitulo,
             sobre_texto AS sobreTexto,
             sobre_assinatura AS sobreAssinatura,

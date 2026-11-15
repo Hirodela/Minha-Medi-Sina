@@ -4,15 +4,9 @@ function cadastrar(evento) {
     var nome = document.getElementById("input-nome").value.trim();
     var email = document.getElementById("input-email").value.trim();
     var senha = document.getElementById("input-senha").value;
-    var confirmacao = document.getElementById("input-confirmar-senha").value;
 
     if (nome.length < 2) {
         mostrarMensagem("mensagem-formulario", "Informe seu nome (mínimo 2 caracteres)!", "erro");
-        return;
-    }
-
-    if (senha != confirmacao) {
-        mostrarMensagem("mensagem-formulario", "As senhas não são iguais!", "erro");
         return;
     }
 

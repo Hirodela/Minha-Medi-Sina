@@ -21,7 +21,7 @@
         <div>
           <h6 class="texto-suave">Atualize os seus dados de perfil</h6>
         </div>
-        <div><span class="nome-usuario-logado">Giovana ♡</span> <span class="avatar">♡</span></div>
+        <div><span class="nome-usuario-logado"></span> <span class="avatar"></span></div>
       </div>
       <div class="titulo-pagina">
         <div>
@@ -29,14 +29,14 @@
           <p>Como o seu nome e a sua foto aparecem no nosso cantinho.</p>
         </div>
       </div>
-      <form class="caixa caixa-estreita" id="formulario-perfil" onsubmit="salvarPerfil(event)">
+      <form class="caixa caixa-estreita" onsubmit="salvarPerfil(event)">
         <div class="perfil-cabecalho">
-          <span class="avatar avatar-usuario avatar-grande" id="previa-avatar-perfil" onclick="escolherFotoPerfil()" title="Clique para trocar sua foto">♡</span>
+          <span class="avatar avatar-grande" onclick="escolherFotoPerfil()" title="Clique para trocar sua foto">♡</span>
           <div>
-            <h3 class="nome-usuario-logado">Giovana ♡</h3>
-            <p id="perfil-detalhes" class="margem-base-10"></p>
+            <h3 class="nome-usuario-logado"></h3>
+            <br>
             <div class="linha-botoes linha-quebra">
-              <button type="button" class="botao botao-pequeno" id="botao-trocar-foto-perfil" onclick="escolherFotoPerfil()">Trocar foto de perfil</button>
+              <button type="button" class="botao botao-pequeno" onclick="escolherFotoPerfil()">Trocar foto de perfil</button>
               <button type="button" class="botao botao-pequeno" id="botao-remover-foto-perfil" onclick="removerFotoPerfil()" hidden>✕ Remover foto</button>
             </div>
             <input type="file" id="input-foto-perfil" accept="image/jpeg,image/png,image/webp" onchange="enviarFotoPerfil()" hidden>
@@ -46,7 +46,7 @@
           <label for="input-nome">Nome de exibição</label>
           <input id="input-nome" type="text" required>
         </div>
-        <p id="mensagem-formulario" class="mensagem-formulario" aria-live="polite"></p>
+        <p id="mensagem-formulario" class="mensagem-formulario"></p>
         <div class="linha-botoes">
           <button class="botao botao-principal" type="submit">Salvar alterações</button>
           <a class="botao" href="dashboard.html">Voltar</a>

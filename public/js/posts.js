@@ -236,37 +236,6 @@ function excluirComentario(idComentario, idPost) {
         });
 }
 
-function abrirFoto(endereco, legenda) {
-    var visualizador = document.getElementById("foto-ampliada");
-
-    if (!visualizador) {
-        return;
-    }
-
-    document.getElementById("foto-ampliada-imagem").src = endereco;
-    document.getElementById("foto-ampliada-imagem").alt = legenda;
-    document.getElementById("foto-ampliada-legenda").textContent = legenda;
-    visualizador.classList.add("aberto");
-}
-
-function fecharFoto() {
-    document.getElementById("foto-ampliada").classList.remove("aberto");
-}
-
-document.addEventListener("click", function (evento) {
-    var alvo = evento.target;
-
-    if (alvo.tagName == "IMG" && (alvo.classList.contains("post-foto") || alvo.classList.contains("detalhe-foto"))) {
-        abrirFoto(alvo.src, alvo.alt);
-    }
-});
-
-document.addEventListener("keydown", function (evento) {
-    if (evento.key == "Escape" && document.getElementById("foto-ampliada")) {
-        fecharFoto();
-    }
-});
-
 document.addEventListener("error", function (evento) {
     var alvo = evento.target;
 

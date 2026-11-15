@@ -2,8 +2,6 @@ function mostrarPerfil() {
     var usuario = usuarioLogado();
 
     document.getElementById("input-nome").value = usuario.nome;
-    document.getElementById("perfil-detalhes").textContent =
-        usuario.email + (usuario.dtCadastro ? " · por aqui desde " + usuario.dtCadastro : "");
     document.getElementById("botao-remover-foto-perfil").hidden = !usuario.fotoPerfil;
 
     atualizarCabecalho();
