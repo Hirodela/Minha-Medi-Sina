@@ -1,77 +1,115 @@
-function mostrarPerfil() {
-    var usuario = usuarioLogado();
+function mostrarPerfil(){
+    let nome = sessionStorage.NOME_USUARIO;
+    let foto = sessionStorage.FOTO_USUARIO;
 
-    document.getElementById("input-nome").value = usuario.nome;
-    document.getElementById("botao-remover-foto-perfil").hidden = !usuario.fotoPerfil;
+    validarSessao();
 
-    atualizarCabecalho();
-}
+    input_nome.value = nome;
+    h3_nome.innerHTML = nome;
 
-function salvarPerfil(evento) {
-    evento.preventDefault();
-
-    var usuario = usuarioLogado();
-    var nome = document.getElementById("input-nome").value.trim();
-
-    enviarJson("/usuarios/" + usuario.id, "PUT", { nomeServer: nome })
-        .then(function (resultado) {
-            sessionStorage.NOME_USUARIO = resultado.nome;
-            mostrarPerfil();
-            mostrarMensagem("mensagem-formulario", "Perfil atualizado com sucesso!", "sucesso");
-        })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
-        });
-}
-
-function escolherFotoPerfil() {
-    document.getElementById("input-foto-perfil").click();
-}
-
-function enviarFotoPerfil() {
-    var usuario = usuarioLogado();
-    var campo = document.getElementById("input-foto-perfil");
-
-    if (campo.files.length == 0) {
-        return;
+    if(foto == ''){
+        botao_remover_foto.hidden = true;
+        span_avatar_grande.style.backgroundImage = '';
+        span_avatar_grande.innerHTML = `${nome[0].toUpperCase()}♡`;
     }
-
-    var dados = new FormData();
-    dados.append("foto", campo.files[0]);
-
-    requisicao("/usuarios/" + usuario.id + "/foto", { method: "POST", body: dados })
-        .then(function (resultado) {
-            sessionStorage.FOTO_USUARIO = resultado.fotoPerfil;
-            mostrarPerfil();
-            mostrarMensagem("mensagem-formulario", "Foto de perfil atualizada!", "sucesso");
-        })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
-        });
-
-    campo.value = "";
+    else{
+        botao_remover_foto.hidden = false;
+        span_avatar_grande.style.backgroundImage = `url('${foto}')`;
+        span_avatar_grande.innerHTML = '';
+    }
 }
 
-function removerFotoPerfil() {
-    var usuario = usuarioLogado();
+function salvarPerfil(){
+    let nome = input_nome.value;
 
-    if (!confirm("Remover a sua foto de perfil?")) {
-        return;
+    if(nome == ''){
+        mostrarMensagem('Informe seu nome!', 'erro');
     }
-
-    enviarJson("/usuarios/" + usuario.id + "/foto", "DELETE")
-        .then(function () {
-            sessionStorage.FOTO_USUARIO = "";
-            mostrarPerfil();
-            mostrarMensagem("mensagem-formulario", "Foto de perfil removida.", "sucesso");
+    else{
+        fetch(`/usuarios/${sessionStorage.ID_USUARIO}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nomeServer: nome
+            })
         })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
+        .then(function(resposta){
+            if(resposta.ok){
+                resposta.json().then(function(resultado){
+                    sessionStorage.NOME_USUARIO = resultado.nome;
+                    mostrarPerfil();
+                    mostrarMensagem('Perfil atualizado com sucesso!', 'sucesso');
+                });
+            }
+            else{
+                resposta.json().then(function(dados){
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
         });
+    }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (usuarioLogado()) {
-        mostrarPerfil();
+function escolherFotoPerfil(){
+    input_foto.click();
+}
+
+function enviarFotoPerfil(){
+    if(input_foto.files.length > 0){
+        let dados = new FormData();
+        dados.append('foto', input_foto.files[0]);
+
+        fetch(`/usuarios/${sessionStorage.ID_USUARIO}/foto`, {
+            method: 'POST',
+            body: dados
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                resposta.json().then(function(resultado){
+                    sessionStorage.FOTO_USUARIO = resultado.fotoPerfil;
+                    mostrarPerfil();
+                    mostrarMensagem('Foto de perfil atualizada!', 'sucesso');
+                });
+            }
+            else{
+                resposta.json().then(function(dados){
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+
+        input_foto.value = '';
     }
-});
+}
+
+function removerFotoPerfil(){
+    if(confirm('Remover a sua foto de perfil?') == true){
+        fetch(`/usuarios/${sessionStorage.ID_USUARIO}/foto`, {
+            method: 'DELETE'
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                sessionStorage.FOTO_USUARIO = '';
+                mostrarPerfil();
+                mostrarMensagem('Foto de perfil removida.', 'sucesso');
+            }
+            else{
+                resposta.json().then(function(dados){
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            mostrarMensagem(erro.message, 'erro');
+        });
+    }
+}

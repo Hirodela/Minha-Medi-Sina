@@ -6,7 +6,7 @@
   <title>Meu perfil · Minha Medi Sina ♡</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body onload="mostrarPerfil()">
   <div class="painel">
     <aside class="menu-lateral">
       <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
@@ -21,7 +21,7 @@
         <div>
           <h6 class="texto-suave">Atualize os seus dados de perfil</h6>
         </div>
-        <div><span class="nome-usuario-logado"></span> <span class="avatar"></span></div>
+        <div><span id="span_nome_usuario"></span> <span class="avatar" id="span_avatar"></span></div>
       </div>
       <div class="titulo-pagina">
         <div>
@@ -29,29 +29,29 @@
           <p>Como o seu nome e a sua foto aparecem no nosso cantinho.</p>
         </div>
       </div>
-      <form class="caixa caixa-estreita" onsubmit="salvarPerfil(event)">
+      <div class="caixa caixa-estreita">
         <div class="perfil-cabecalho">
-          <span class="avatar avatar-grande" onclick="escolherFotoPerfil()" title="Clique para trocar sua foto">♡</span>
+          <span class="avatar avatar-grande" id="span_avatar_grande" onclick="escolherFotoPerfil()" title="Clique para trocar sua foto">♡</span>
           <div>
-            <h3 class="nome-usuario-logado"></h3>
+            <h3 id="h3_nome"></h3>
             <br>
             <div class="linha-botoes linha-quebra">
-              <button type="button" class="botao botao-pequeno" onclick="escolherFotoPerfil()">Trocar foto de perfil</button>
-              <button type="button" class="botao botao-pequeno" id="botao-remover-foto-perfil" onclick="removerFotoPerfil()" hidden>✕ Remover foto</button>
+              <button class="botao botao-pequeno" onclick="escolherFotoPerfil()">Trocar foto de perfil</button>
+              <button class="botao botao-pequeno" id="botao_remover_foto" onclick="removerFotoPerfil()" hidden>✕ Remover foto</button>
             </div>
-            <input type="file" id="input-foto-perfil" accept="image/jpeg,image/png,image/webp" onchange="enviarFotoPerfil()" hidden>
+            <input type="file" id="input_foto" accept="image/jpeg,image/png,image/webp" onchange="enviarFotoPerfil()" hidden>
           </div>
         </div>
         <div class="campo">
-          <label for="input-nome">Nome de exibição</label>
-          <input id="input-nome" type="text" required>
+          <label for="input_nome">Nome de exibição</label>
+          <input id="input_nome" type="text">
         </div>
-        <p id="mensagem-formulario" class="mensagem-formulario"></p>
+        <p id="p_mensagem" class="mensagem-formulario"></p>
         <div class="linha-botoes">
-          <button class="botao botao-principal" type="submit">Salvar alterações</button>
+          <button class="botao botao-principal" onclick="salvarPerfil()">Salvar alterações</button>
           <a class="botao" href="dashboard.html">Voltar</a>
         </div>
-      </form>
+      </div>
     </main>
   </div>
     <script src="js/geral.js"></script>

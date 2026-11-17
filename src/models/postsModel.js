@@ -1,32 +1,42 @@
 var database = require("../database/config");
 
-var selecaoPosts = `
-    SELECT
-        p.id,
-        p.fk_usuario AS idUsuario,
-        u.nome AS autor,
-        u.foto_perfil AS fotoAutor,
-        p.titulo,
-        p.descricao,
-        DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
-        p.categoria,
-        p.foto,
-        (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
-        (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
-        (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
-    FROM post AS p
-    JOIN usuario AS u ON u.id = p.fk_usuario
-`;
-
 function listarTodos(idUsuarioLogado) {
-    var instrucaoSql = selecaoPosts + `
+    var instrucaoSql = `
+        SELECT
+            p.id,
+            p.fk_usuario AS idUsuario,
+            u.nome AS autor,
+            p.titulo,
+            p.descricao,
+            DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
+            p.categoria,
+            p.foto,
+            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
+            (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
+            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
+        FROM post AS p
+        JOIN usuario AS u ON u.id = p.fk_usuario
         ORDER BY p.data_lembranca DESC, p.id DESC;
     `;
     return database.executar(instrucaoSql, [idUsuarioLogado]);
 }
 
 function listarPorUsuario(idUsuario) {
-    var instrucaoSql = selecaoPosts + `
+    var instrucaoSql = `
+        SELECT
+            p.id,
+            p.fk_usuario AS idUsuario,
+            u.nome AS autor,
+            p.titulo,
+            p.descricao,
+            DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
+            p.categoria,
+            p.foto,
+            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
+            (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
+            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
+        FROM post AS p
+        JOIN usuario AS u ON u.id = p.fk_usuario
         WHERE p.fk_usuario = ?
         ORDER BY p.data_lembranca DESC, p.id DESC;
     `;
@@ -34,7 +44,21 @@ function listarPorUsuario(idUsuario) {
 }
 
 function buscarPorId(idPost, idUsuarioLogado) {
-    var instrucaoSql = selecaoPosts + `
+    var instrucaoSql = `
+        SELECT
+            p.id,
+            p.fk_usuario AS idUsuario,
+            u.nome AS autor,
+            p.titulo,
+            p.descricao,
+            DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
+            p.categoria,
+            p.foto,
+            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
+            (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
+            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
+        FROM post AS p
+        JOIN usuario AS u ON u.id = p.fk_usuario
         WHERE p.id = ?;
     `;
     return database.executar(instrucaoSql, [idUsuarioLogado, idPost]);
@@ -155,32 +179,9 @@ function atualizarSobreEla(titulo, texto, assinatura) {
     return database.executar(instrucaoSql, [titulo, texto, assinatura]);
 }
 
-function listarQualidades() {
-    var instrucaoSql = `
-        SELECT id, fk_usuario AS idUsuario, icone, titulo, descricao
-        FROM qualidade_giovana
-        ORDER BY id;
-    `;
-    return database.executar(instrucaoSql);
-}
-
-function adicionarQualidade(idUsuario, icone, titulo, descricao) {
-    var instrucaoSql = `
-        INSERT INTO qualidade_giovana (fk_usuario, icone, titulo, descricao) VALUES (?, ?, ?, ?);
-    `;
-    return database.executar(instrucaoSql, [idUsuario, icone, titulo, descricao]);
-}
-
-function removerQualidade(idQualidade) {
-    var instrucaoSql = `
-        DELETE FROM qualidade_giovana WHERE id = ?;
-    `;
-    return database.executar(instrucaoSql, [idQualidade]);
-}
-
 function listarSonhos() {
     var instrucaoSql = `
-        SELECT id, fk_usuario AS idUsuario, titulo, realizado
+        SELECT id, titulo, realizado
         FROM sonho_casal
         ORDER BY id;
     `;
@@ -210,7 +211,7 @@ function removerSonho(idSonho) {
 
 function listarLugares() {
     var instrucaoSql = `
-        SELECT id, fk_usuario AS idUsuario, nome, tipo, nota, visitado
+        SELECT id, nome, tipo, nota, visitado
         FROM lugar_casal
         ORDER BY id;
     `;
@@ -240,7 +241,7 @@ function removerLugar(idLugar) {
 
 function listarCapitulos() {
     var instrucaoSql = `
-        SELECT id, fk_usuario AS idUsuario, etiqueta, titulo, descricao
+        SELECT id, etiqueta, titulo, descricao
         FROM capitulo_historia
         ORDER BY id;
     `;
@@ -262,9 +263,6 @@ function removerCapitulo(idCapitulo) {
 }
 
 module.exports = {
-    listarCapitulos,
-    adicionarCapitulo,
-    removerCapitulo,
     listarTodos,
     listarPorUsuario,
     buscarPorId,
@@ -281,9 +279,6 @@ module.exports = {
     buscarConfigCasal,
     atualizarMusicaCasal,
     atualizarSobreEla,
-    listarQualidades,
-    adicionarQualidade,
-    removerQualidade,
     listarSonhos,
     adicionarSonho,
     alternarSonho,
@@ -291,5 +286,8 @@ module.exports = {
     listarLugares,
     adicionarLugar,
     alternarLugar,
-    removerLugar
+    removerLugar,
+    listarCapitulos,
+    adicionarCapitulo,
+    removerCapitulo
 };

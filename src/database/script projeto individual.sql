@@ -6,8 +6,7 @@ CREATE TABLE usuario (
     nome VARCHAR(80) NOT NULL,
     email VARCHAR(120) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL,
-    foto_perfil VARCHAR(255) NULL,
-    dt_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
+    foto_perfil VARCHAR(255) NULL
 );
 
 CREATE TABLE post (
@@ -17,7 +16,6 @@ CREATE TABLE post (
     data_lembranca DATE NOT NULL,
     categoria VARCHAR(50) NOT NULL,
     foto VARCHAR(255) NULL,
-    dt_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     fk_usuario INT NOT NULL,
     CONSTRAINT fk_post_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id) 
 );
@@ -25,7 +23,6 @@ CREATE TABLE post (
 CREATE TABLE curtida (
     fk_usuario INT NOT NULL,
     fk_post INT NOT NULL,
-    dt_curtida DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_curtida PRIMARY KEY (fk_usuario, fk_post),
     CONSTRAINT fk_curtida_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id),
     CONSTRAINT fk_curtida_post FOREIGN KEY (fk_post) REFERENCES post(id)
@@ -50,21 +47,10 @@ CREATE TABLE config_casal (
     musica_nome VARCHAR(120) NULL
 );
 
-CREATE TABLE qualidade_giovana (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    icone VARCHAR(20) NOT NULL,
-    titulo VARCHAR(120) NOT NULL,
-    descricao VARCHAR(300) NOT NULL,
-    dt_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fk_usuario INT NULL,
-    CONSTRAINT fk_qualidade_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
-);
-
 CREATE TABLE sonho_casal (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(180) NOT NULL,
     realizado TINYINT(1) DEFAULT 0,
-    dt_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     fk_usuario INT NULL,
     CONSTRAINT fk_sonho_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
 );
@@ -75,7 +61,6 @@ CREATE TABLE lugar_casal (
     tipo VARCHAR(60) NOT NULL,
     nota VARCHAR(255) NOT NULL,
     visitado TINYINT(1) DEFAULT 0,
-    dt_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     fk_usuario INT NULL,
     CONSTRAINT fk_lugar_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
 );
@@ -85,7 +70,6 @@ CREATE TABLE capitulo_historia (
     etiqueta VARCHAR(50) NOT NULL,
     titulo VARCHAR(120) NOT NULL,
     descricao TEXT NOT NULL,
-    dt_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     fk_usuario INT NULL,
     CONSTRAINT fk_capitulo_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
 );

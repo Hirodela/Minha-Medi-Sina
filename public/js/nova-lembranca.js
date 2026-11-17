@@ -1,128 +1,133 @@
-var idPostEmEdicao = Number(new URLSearchParams(window.location.search).get("id")) || 0;
-var removerFotoAtual = false;
+let idPostEmEdicao = Number(window.location.search.replace('?id=', ''));
+let removerFotoAtual = false;
 
-function escolherFoto() {
-    document.getElementById("input-foto").click();
-}
-
-function mostrarPrevia(endereco) {
-    var previa = document.getElementById("previa-foto");
-
-    previa.innerHTML =
-        '<img class="previa-upload-imagem" src="' + escaparHtml(endereco) + '" alt="Prévia da fotografia" />' +
-        '<button type="button" class="botao botao-pequeno" onclick="removerFoto()">✕ Remover fotografia</button>';
-    previa.hidden = false;
-
-    document.getElementById("botao-escolher-foto").textContent = "Trocar fotografia";
-}
-
-function fotoEscolhida() {
-    var campo = document.getElementById("input-foto");
-
-    if (campo.files.length == 0) {
-        return;
-    }
-
-    if (campo.files[0].size > 5 * 1024 * 1024) {
-        campo.value = "";
-        mostrarMensagem("mensagem-formulario", "A fotografia pode ter no máximo 5 MB!", "erro");
-        return;
-    }
-
-    removerFotoAtual = false;
-    mostrarMensagem("mensagem-formulario", "", "");
-    mostrarPrevia(URL.createObjectURL(campo.files[0]));
-}
-
-function removerFoto() {
-    var previa = document.getElementById("previa-foto");
-
-    document.getElementById("input-foto").value = "";
-    previa.innerHTML = "";
-    previa.hidden = true;
-    removerFotoAtual = true;
-
-    document.getElementById("botao-escolher-foto").textContent = "Adicionar fotografia";
-}
-
-function salvarPost(evento) {
-    evento.preventDefault();
-
-    var usuario = usuarioLogado();
-    var campoFoto = document.getElementById("input-foto");
-    var botao = document.getElementById("botao-salvar");
-
-    if (!usuario) {
-        return;
-    }
-
-    var dados = new FormData();
-    dados.append("idUsuarioServer", usuario.id);
-    dados.append("tituloServer", document.getElementById("input-titulo").value.trim());
-    dados.append("descricaoServer", document.getElementById("input-descricao").value.trim());
-    dados.append("dataLembrancaServer", document.getElementById("input-data").value);
-    dados.append("categoriaServer", document.getElementById("select-categoria").value);
-    dados.append("removerFotoServer", removerFotoAtual);
-
-    if (campoFoto.files.length > 0) {
-        dados.append("foto", campoFoto.files[0]);
-    }
-
-    var url = idPostEmEdicao ? "/posts/" + idPostEmEdicao : "/posts";
-    var metodo = idPostEmEdicao ? "PUT" : "POST";
-
-    botao.disabled = true;
-
-    requisicao(url, { method: metodo, body: dados })
-        .then(function (resultado) {
-            mostrarMensagem("mensagem-formulario", "Post salvo com sucesso!", "sucesso");
-
-            setTimeout(function () {
-                window.location = "lembranca.html?id=" + resultado.id;
-            }, 800);
-        })
-        .catch(function (erro) {
-            botao.disabled = false;
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
-        });
-}
-
-function carregarPostParaEdicao() {
-    var usuario = usuarioLogado();
-
-    requisicao("/posts/" + idPostEmEdicao)
-        .then(function (post) {
-            if (post.idUsuario != usuario.id) {
-                throw new Error("Você só pode editar os seus próprios posts!");
-            }
-
-            document.title = "Editar Post · Minha Medi Sina ♡";
-            document.getElementById("titulo-pagina").textContent = "Editar Post";
-            document.getElementById("botao-salvar").textContent = "Salvar alterações";
-
-            document.getElementById("input-titulo").value = post.titulo;
-            document.getElementById("input-descricao").value = post.descricao;
-            document.getElementById("input-data").value = post.dataLembranca;
-            document.getElementById("select-categoria").value = post.categoria;
-
-            if (post.foto) {
-                mostrarPrevia(post.foto);
-            }
-        })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
-            document.getElementById("botao-salvar").disabled = true;
-        });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    if (!usuarioLogado()) {
-        return;
-    }
-
-    if (idPostEmEdicao) {
+function carregarPagina(){
+    if(idPostEmEdicao > 0){
         carregarPostParaEdicao();
-    } else {
-        document.getElementById("input-data").value = dataDeHoje();
     }
-});
+    else{
+        colocarDataDeHoje();
+    }
+}
+
+function carregarPostParaEdicao(){
+    fetch(`/posts/${idPostEmEdicao}`)
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(post){
+                document.title = 'Editar Post · Minha Medi Sina ♡';
+                h1_titulo.innerHTML = `Editar Post`;
+                botao_salvar.innerHTML = `Salvar alterações`;
+
+                input_titulo.value = post.titulo;
+                input_descricao.value = post.descricao;
+                input_data.value = post.dataLembranca;
+                select_categoria.value = post.categoria;
+
+                if(post.foto != null && post.foto != ''){
+                    mostrarPrevia(post.foto);
+                }
+            });
+        }
+        else{
+            resposta.json().then(function(dados){
+                mostrarMensagem(dados.erro, 'erro');
+                botao_salvar.disabled = true;
+            });
+        }
+    })
+    .catch(function(erro){
+        console.log(erro);
+    });
+}
+
+function escolherFoto(){
+    input_foto.click();
+}
+
+function mostrarPrevia(endereco){
+    div_previa.innerHTML = `
+        <img class="previa-upload-imagem" src="${endereco}" alt="Prévia da fotografia">
+        <button class="botao botao-pequeno" onclick="removerFoto()">✕ Remover fotografia</button>
+    `;
+    div_previa.hidden = false;
+    botao_foto.innerHTML = `Trocar fotografia`;
+}
+
+function fotoEscolhida(){
+    let tamanhoMaximo = 5 * 1024 * 1024;
+
+    if(input_foto.files.length > 0){
+        if(input_foto.files[0].size > tamanhoMaximo){
+            input_foto.value = '';
+            mostrarMensagem('A fotografia pode ter no máximo 5 MB!', 'erro');
+        }
+    }
+}
+
+function removerFoto(){
+    input_foto.value = '';
+    div_previa.innerHTML = ``;
+    div_previa.hidden = true;
+    removerFotoAtual = true;
+    botao_foto.innerHTML = `Adicionar fotografia`;
+}
+
+function salvarPost(){
+    let titulo = input_titulo.value;
+    let descricao = input_descricao.value;
+    let data = input_data.value;
+    let categoria = select_categoria.value;
+
+    if(titulo == '' || descricao == '' || data == ''){
+        mostrarMensagem('Preencha todos os campos!', 'erro');
+    }
+    else{
+        let dados = new FormData();
+        dados.append('idUsuarioServer', sessionStorage.ID_USUARIO);
+        dados.append('tituloServer', titulo);
+        dados.append('descricaoServer', descricao);
+        dados.append('dataLembrancaServer', data);
+        dados.append('categoriaServer', categoria);
+        dados.append('removerFotoServer', removerFotoAtual);
+
+        if(input_foto.files.length > 0){
+            dados.append('foto', input_foto.files[0]);
+        }
+
+        let url = '/posts';
+        let metodo = 'POST';
+
+        if(idPostEmEdicao > 0){
+            url = `/posts/${idPostEmEdicao}`;
+            metodo = 'PUT';
+        }
+
+        botao_salvar.disabled = true;
+
+        fetch(url, {
+            method: metodo,
+            body: dados
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                resposta.json().then(function(resultado){
+                    mostrarMensagem('Post salvo com sucesso!', 'sucesso');
+
+                    setTimeout(function(){
+                        window.location = `lembranca.html?id=${resultado.id}`;
+                    }, 800);
+                });
+            }
+            else{
+                resposta.json().then(function(dados){
+                    botao_salvar.disabled = false;
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+    }
+}

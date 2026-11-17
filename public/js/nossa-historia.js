@@ -1,296 +1,453 @@
-function carregarCapitulos() {
-    var logado = usuarioLogado() != null;
-
-    return requisicao("/posts/capitulos")
-        .then(function (capitulos) {
-            var html = "";
-
-            for (var i = 0; i < capitulos.length; i++) {
-                var capitulo = capitulos[i];
-                var botaoExcluir = logado
-                    ? '<button type="button" class="botao-excluir-capitulo" onclick="excluirCapitulo(' + capitulo.id + ')">✕ Excluir</button>'
-                    : "";
-
-                html +=
-                    '<article class="linha-do-tempo-item">' +
-                        '<div class="linha-do-tempo-cabecalho">' +
-                            '<span class="etiqueta">' + escaparHtml(capitulo.etiqueta) + "</span>" +
-                            botaoExcluir +
-                        "</div>" +
-                        "<h3>" + escaparHtml(capitulo.titulo) + "</h3>" +
-                        "<p>" + escaparHtml(capitulo.descricao) + "</p>" +
-                    "</article>";
-            }
-
-            document.getElementById("capitulos-personalizados").innerHTML = html;
-        })
-        .catch(function (erro) {
-            console.log(erro.message);
-        });
+function mostrarFormularios(){
+    if(sessionStorage.ID_USUARIO != undefined){
+        section_capitulo.hidden = false;
+        div_adicionar_sonho.hidden = false;
+        div_adicionar_lugar.hidden = false;
+    }
 }
 
-function adicionarCapitulo(evento) {
-    evento.preventDefault();
+function carregarCapitulos(){
+    fetch('/posts/capitulos')
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(capitulos){
+                div_capitulos.innerHTML = ``;
 
-    var usuario = exigirLogin();
+                for(let i = 0; i < capitulos.length; i++){
+                    let botaoExcluir = ``;
 
-    if (!usuario) {
-        return;
-    }
+                    if(sessionStorage.ID_USUARIO != undefined){
+                        botaoExcluir = `<button class="botao-excluir-capitulo" onclick="excluirCapitulo(${capitulos[i].id})">✕ Excluir</button>`;
+                    }
 
-    enviarJson("/posts/capitulos", "POST", {
-        idUsuarioServer: usuario.id,
-        etiquetaServer: document.getElementById("input-historia-etiqueta").value.trim(),
-        tituloServer: document.getElementById("input-historia-titulo").value.trim(),
-        descricaoServer: document.getElementById("input-historia-descricao").value.trim()
+                    div_capitulos.innerHTML += `
+                        <article class="linha-do-tempo-item">
+                            <div class="linha-do-tempo-cabecalho">
+                                <span class="etiqueta">${capitulos[i].etiqueta}</span>
+                                ${botaoExcluir}
+                            </div>
+                            <h3>${capitulos[i].titulo}</h3>
+                            <p>${capitulos[i].descricao}</p>
+                        </article>
+                    `;
+                }
+            });
+        }
+        else{
+            resposta.json().then(function(dados){
+                console.log(dados.erro);
+            });
+        }
     })
-        .then(function () {
-            document.getElementById("formulario-historia").reset();
-            mostrarMensagem("mensagem-historia", "Capítulo adicionado à nossa história!", "sucesso");
-            return carregarCapitulos();
+    .catch(function(erro){
+        console.log(erro);
+    });
+}
+
+function adicionarCapitulo(){
+    let etiqueta = input_etiqueta.value;
+    let titulo = input_titulo.value;
+    let descricao = input_descricao.value;
+
+    if(etiqueta == '' || titulo == '' || descricao == ''){
+        mostrarMensagem('Preencha todos os campos!', 'erro');
+    }
+    else{
+        fetch('/posts/capitulos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                etiquetaServer: etiqueta,
+                tituloServer: titulo,
+                descricaoServer: descricao
+            })
         })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-historia", erro.message, "erro");
+        .then(function(resposta){
+            if(resposta.ok){
+                input_etiqueta.value = '';
+                input_titulo.value = '';
+                input_descricao.value = '';
+                mostrarMensagem('Capítulo adicionado à nossa história!', 'sucesso');
+                carregarCapitulos();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
         });
-}
-
-function excluirCapitulo(idCapitulo) {
-    var usuario = usuarioLogado();
-
-    if (!usuario || !confirm("Excluir este capítulo da linha do tempo?")) {
-        return;
-    }
-
-    enviarJson("/posts/capitulos/" + idCapitulo, "DELETE", { idUsuarioServer: usuario.id })
-        .then(carregarCapitulos)
-        .catch(function (erro) {
-            alert(erro.message);
-        });
-}
-
-function soltarCoracoes() {
-    var coracoes = ["💖", "💕", "♥", "💗", "✨"];
-
-    for (var i = 0; i < 14; i++) {
-        var particula = document.createElement("span");
-
-        particula.className = "coracao-particula";
-        particula.textContent = coracoes[i % coracoes.length];
-        particula.style.left = Math.random() * 100 + "vw";
-        particula.style.animationDelay = Math.random() * 0.6 + "s";
-
-        document.body.appendChild(particula);
-        setTimeout(particula.remove.bind(particula), 3200);
     }
 }
 
-function carregarSonhos() {
-    var logado = usuarioLogado() != null;
+function excluirCapitulo(idCapitulo){
+    if(confirm('Excluir este capítulo da linha do tempo?') == true){
+        fetch(`/posts/capitulos/${idCapitulo}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                carregarCapitulos();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+    }
+}
 
-    return requisicao("/posts/sonhos")
-        .then(function (sonhos) {
-            var html = "";
-            var realizados = 0;
+function carregarSonhos(){
+    fetch('/posts/sonhos')
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(sonhos){
+                let realizados = 0;
+                let porcentagem = 0;
 
-            for (var i = 0; i < sonhos.length; i++) {
-                var sonho = sonhos[i];
+                div_sonhos.innerHTML = ``;
 
-                if (sonho.realizado) {
-                    realizados++;
+                for(let i = 0; i < sonhos.length; i++){
+                    let botaoRemover = ``;
+
+                    if(sessionStorage.ID_USUARIO != undefined){
+                        botaoRemover = `<button class="comentario-excluir" onclick="removerSonho(${sonhos[i].id})" title="Remover sonho">&times;</button>`;
+                    }
+
+                    if(sonhos[i].realizado == 1){
+                        realizados++;
+
+                        div_sonhos.innerHTML += `
+                            <div class="sonho-card realizado">
+                                <label class="sonho-marcador">
+                                    <input type="checkbox" onchange="alternarSonho(${sonhos[i].id}, 1)" checked>
+                                    <span class="sonho-texto">${sonhos[i].titulo}</span>
+                                </label>
+                                <span class="sonho-situacao">Realizado ♡</span>
+                                ${botaoRemover}
+                            </div>
+                        `;
+                    }
+                    else{
+                        div_sonhos.innerHTML += `
+                            <div class="sonho-card">
+                                <label class="sonho-marcador">
+                                    <input type="checkbox" onchange="alternarSonho(${sonhos[i].id}, 0)">
+                                    <span class="sonho-texto">${sonhos[i].titulo}</span>
+                                </label>
+                                <span class="sonho-situacao">Em breve</span>
+                                ${botaoRemover}
+                            </div>
+                        `;
+                    }
                 }
 
-                html +=
-                    '<div class="sonho-card' + (sonho.realizado ? " realizado" : "") + '">' +
-                        '<label class="sonho-marcador">' +
-                            '<input type="checkbox" onchange="alternarSonho(' + sonho.id + ', this)"' + (sonho.realizado ? " checked" : "") + " />" +
-                            '<span class="sonho-texto">' + escaparHtml(sonho.titulo) + "</span>" +
-                        "</label>" +
-                        '<span class="sonho-situacao">' + (sonho.realizado ? "Realizado ♡" : "Em breve") + "</span>" +
-                        (logado ? '<button type="button" class="comentario-excluir" onclick="removerSonho(' + sonho.id + ')" title="Remover sonho">&times;</button>' : "") +
-                    "</div>";
-            }
+                if(sonhos.length > 0){
+                    porcentagem = (realizados / sonhos.length) * 100;
+                }
 
-            if (sonhos.length == 0) {
-                html = '<p class="texto-suave">Nenhum sonho cadastrado ainda. Adicione o primeiro ♡</p>';
-            }
-
-            var percentual = sonhos.length > 0 ? (realizados / sonhos.length) * 100 : 0;
-
-            document.getElementById("lista-sonhos").innerHTML = html;
-            document.getElementById("texto-progresso-sonhos").textContent = realizados + " de " + sonhos.length + " realizados";
-            document.getElementById("barra-progresso-sonhos").style.width = percentual + "%";
-        })
-        .catch(function (erro) {
-            console.log(erro.message);
-        });
-}
-
-function adicionarSonho(evento) {
-    evento.preventDefault();
-
-    var usuario = exigirLogin();
-    var campo = document.getElementById("input-sonho-titulo");
-
-    if (!usuario) {
-        return;
-    }
-
-    enviarJson("/posts/sonhos", "POST", {
-        idUsuarioServer: usuario.id,
-        tituloServer: campo.value.trim()
+                span_progresso_sonhos.innerHTML = `${realizados} de ${sonhos.length} realizados`;
+                div_barra_sonhos.style.width = `${porcentagem}%`;
+            });
+        }
+        else{
+            resposta.json().then(function(dados){
+                console.log(dados.erro);
+            });
+        }
     })
-        .then(function () {
-            campo.value = "";
-            return carregarSonhos();
-        })
-        .catch(function (erro) {
-            alert(erro.message);
-        });
+    .catch(function(erro){
+        console.log(erro);
+    });
 }
 
-function alternarSonho(idSonho, caixa) {
-    var usuario = usuarioLogado();
+function adicionarSonho(){
+    let titulo = input_sonho.value;
 
-    if (!usuario) {
-        caixa.checked = !caixa.checked;
-        exigirLogin("Entre na sua conta para marcar um sonho ♡");
-        return;
+    if(titulo == ''){
+        alert('Escreva um sonho!');
     }
-
-    var realizou = caixa.checked;
-
-    enviarJson("/posts/sonhos/" + idSonho + "/alternar", "PUT", { idUsuarioServer: usuario.id })
-        .then(function () {
-            if (realizou) {
-                soltarCoracoes();
-            }
-            return carregarSonhos();
+    else{
+        fetch('/posts/sonhos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                tituloServer: titulo
+            })
         })
-        .catch(function (erro) {
-            alert(erro.message);
+        .then(function(resposta){
+            if(resposta.ok){
+                input_sonho.value = '';
+                carregarSonhos();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+    }
+}
+
+function alternarSonho(idSonho, realizado){
+    if(sessionStorage.ID_USUARIO == undefined){
+        alert('Entre na sua conta para marcar um sonho ♡');
+        window.location = 'login.html';
+    }
+    else{
+        fetch(`/posts/sonhos/${idSonho}/alternar`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                if(realizado == 0){
+                    soltarCoracoes();
+                }
+                carregarSonhos();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                    carregarSonhos();
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
             carregarSonhos();
         });
-}
-
-function removerSonho(idSonho) {
-    var usuario = usuarioLogado();
-
-    if (!usuario || !confirm("Remover este sonho da lista?")) {
-        return;
     }
-
-    enviarJson("/posts/sonhos/" + idSonho, "DELETE", { idUsuarioServer: usuario.id })
-        .then(carregarSonhos)
-        .catch(function (erro) {
-            alert(erro.message);
-        });
 }
 
-function carregarLugares() {
-    var logado = usuarioLogado() != null;
-
-    return requisicao("/posts/lugares")
-        .then(function (lugares) {
-            var html = "";
-
-            for (var i = 0; i < lugares.length; i++) {
-                var lugar = lugares[i];
-
-                html +=
-                    '<div class="lugar-card' + (lugar.visitado ? " visitado" : "") + '">' +
-                        "<div>" +
-                            '<div class="lugar-card-topo">' +
-                                '<span class="etiqueta">' + escaparHtml(lugar.tipo) + "</span>" +
-                                (logado ? '<button type="button" class="comentario-excluir" onclick="removerLugar(' + lugar.id + ')" title="Remover lugar">&times;</button>' : "") +
-                            "</div>" +
-                            "<h3>" + escaparHtml(lugar.nome) + "</h3>" +
-                            "<p>" + escaparHtml(lugar.nota) + "</p>" +
-                        "</div>" +
-                        '<div class="lugar-card-rodape">' +
-                            '<span class="texto-suave">' + (lugar.visitado ? "Já fomos juntos ♡" : "Ainda vamos conhecer") + "</span>" +
-                            '<button type="button" class="lugar-botao-situacao" onclick="alternarLugar(' + lugar.id + ')">' +
-                                (lugar.visitado ? "✓ Visitado" : "Marcar como visitado") +
-                            "</button>" +
-                        "</div>" +
-                    "</div>";
-            }
-
-            if (lugares.length == 0) {
-                html = '<p class="texto-suave">Nenhum lugar cadastrado ainda. Adicione o primeiro ♡</p>';
-            }
-
-            document.getElementById("lista-lugares").innerHTML = html;
+function removerSonho(idSonho){
+    if(confirm('Remover este sonho da lista?') == true){
+        fetch(`/posts/sonhos/${idSonho}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
         })
-        .catch(function (erro) {
-            console.log(erro.message);
-        });
-}
-
-function adicionarLugar(evento) {
-    evento.preventDefault();
-
-    var usuario = exigirLogin();
-
-    if (!usuario) {
-        return;
-    }
-
-    enviarJson("/posts/lugares", "POST", {
-        idUsuarioServer: usuario.id,
-        nomeServer: document.getElementById("input-lugar-nome").value.trim(),
-        tipoServer: document.getElementById("select-lugar-tipo").value,
-        notaServer: document.getElementById("input-lugar-nota").value.trim()
-    })
-        .then(function () {
-            document.getElementById("formulario-lugar").reset();
-            return carregarLugares();
+        .then(function(resposta){
+            if(resposta.ok){
+                carregarSonhos();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
         })
-        .catch(function (erro) {
-            alert(erro.message);
+        .catch(function(erro){
+            console.log(erro);
         });
+    }
 }
 
-function alternarLugar(idLugar) {
-    var usuario = exigirLogin("Entre na sua conta para marcar um lugar ♡");
+function soltarCoracoes(){
+    let emojis = ['💖', '💕', '♥', '💗', '✨'];
 
-    if (!usuario) {
-        return;
+    div_coracoes.innerHTML = ``;
+
+    for(let i = 0; i < 14; i++){
+        let posicao = Math.random() * 100;
+        let atraso = Math.random() * 0.6;
+
+        div_coracoes.innerHTML += `<span class="coracao-particula" style="left: ${posicao}vw; animation-delay: ${atraso}s">${emojis[i % 5]}</span>`;
     }
 
-    enviarJson("/posts/lugares/" + idLugar + "/alternar", "PUT", { idUsuarioServer: usuario.id })
-        .then(carregarLugares)
-        .catch(function (erro) {
-            alert(erro.message);
-        });
+    setTimeout(function(){
+        div_coracoes.innerHTML = ``;
+    }, 3200);
 }
 
-function removerLugar(idLugar) {
-    var usuario = usuarioLogado();
+function carregarLugares(){
+    fetch('/posts/lugares')
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(lugares){
+                div_lugares.innerHTML = ``;
 
-    if (!usuario || !confirm("Remover este lugar da lista?")) {
-        return;
-    }
+                for(let i = 0; i < lugares.length; i++){
+                    let botaoRemover = ``;
 
-    enviarJson("/posts/lugares/" + idLugar, "DELETE", { idUsuarioServer: usuario.id })
-        .then(carregarLugares)
-        .catch(function (erro) {
-            alert(erro.message);
-        });
-}
+                    if(sessionStorage.ID_USUARIO != undefined){
+                        botaoRemover = `<button class="comentario-excluir" onclick="removerLugar(${lugares[i].id})" title="Remover lugar">&times;</button>`;
+                    }
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (usuarioLogado()) {
-        document.getElementById("secao-formulario-historia").hidden = false;
-        document.getElementById("formulario-sonho").hidden = false;
-        document.getElementById("secao-formulario-lugar").hidden = false;
-    }
-
-    carregarCapitulos();
-    carregarSonhos();
-
-    carregarLugares().then(function () {
-        if (window.location.hash == "#secao-lugares") {
-            document.getElementById("secao-lugares").scrollIntoView();
+                    if(lugares[i].visitado == 1){
+                        div_lugares.innerHTML += `
+                            <div class="lugar-card visitado">
+                                <div>
+                                    <div class="lugar-card-topo">
+                                        <span class="etiqueta">${lugares[i].tipo}</span>
+                                        ${botaoRemover}
+                                    </div>
+                                    <h3>${lugares[i].nome}</h3>
+                                    <p>${lugares[i].nota}</p>
+                                </div>
+                                <div class="lugar-card-rodape">
+                                    <span class="texto-suave">Já fomos juntos ♡</span>
+                                    <button class="lugar-botao-situacao" onclick="alternarLugar(${lugares[i].id})">✓ Visitado</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    else{
+                        div_lugares.innerHTML += `
+                            <div class="lugar-card">
+                                <div>
+                                    <div class="lugar-card-topo">
+                                        <span class="etiqueta">${lugares[i].tipo}</span>
+                                        ${botaoRemover}
+                                    </div>
+                                    <h3>${lugares[i].nome}</h3>
+                                    <p>${lugares[i].nota}</p>
+                                </div>
+                                <div class="lugar-card-rodape">
+                                    <span class="texto-suave">Ainda vamos conhecer</span>
+                                    <button class="lugar-botao-situacao" onclick="alternarLugar(${lugares[i].id})">Marcar como visitado</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            });
         }
+        else{
+            resposta.json().then(function(dados){
+                console.log(dados.erro);
+            });
+        }
+    })
+    .catch(function(erro){
+        console.log(erro);
     });
-});
+}
+
+function adicionarLugar(){
+    let nome = input_lugar.value;
+    let tipo = select_tipo.value;
+    let nota = input_nota.value;
+
+    if(nome == '' || nota == ''){
+        alert('Preencha todos os campos!');
+    }
+    else{
+        fetch('/posts/lugares', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                nomeServer: nome,
+                tipoServer: tipo,
+                notaServer: nota
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                input_lugar.value = '';
+                input_nota.value = '';
+                carregarLugares();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+    }
+}
+
+function alternarLugar(idLugar){
+    if(sessionStorage.ID_USUARIO == undefined){
+        alert('Entre na sua conta para marcar um lugar ♡');
+        window.location = 'login.html';
+    }
+    else{
+        fetch(`/posts/lugares/${idLugar}/alternar`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                carregarLugares();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            alert(erro.message);
+        });
+    }
+}
+
+function removerLugar(idLugar){
+    if(confirm('Remover este lugar da lista?') == true){
+        fetch(`/posts/lugares/${idLugar}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                carregarLugares();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+    }
+}

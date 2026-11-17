@@ -17,18 +17,6 @@ router.post("/config/musica", upload.musica.single("musica"), function (req, res
     postsController.atualizarMusicaCasal(req, res);
 });
 
-router.get("/qualidades", function (req, res) {
-    postsController.listarQualidades(req, res);
-});
-
-router.post("/qualidades", function (req, res) {
-    postsController.adicionarQualidade(req, res);
-});
-
-router.delete("/qualidades/:idQualidade", function (req, res) {
-    postsController.removerQualidade(req, res);
-});
-
 router.get("/sonhos", function (req, res) {
     postsController.listarSonhos(req, res);
 });

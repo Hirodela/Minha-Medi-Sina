@@ -1,95 +1,102 @@
-var audioMusica = new Audio();
-var musicaDisponivel = false;
+let temMusica = false;
 
-function atualizarPlayer(titulo, status) {
-    if (titulo != null) {
-        document.getElementById("player-titulo-texto").textContent = titulo;
+function definirMusica(endereco, nome){
+    temMusica = true;
+    audio_musica.src = endereco;
+
+    span_titulo_musica.innerHTML = `🎶 ${nome}`;
+    span_status_musica.innerHTML = `Clique para tocar ♡`;
+}
+
+function carregarMusica(){
+    fetch('/posts/config/casal')
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(config){
+                if(config.musicaUrl != null && config.musicaUrl != ''){
+                    definirMusica(config.musicaUrl, config.musicaNome);
+                }
+            });
+        }
+        else{
+            span_status_musica.innerHTML = `Não foi possível carregar a música`;
+        }
+    })
+    .catch(function(erro){
+        console.log(erro);
+    });
+}
+
+function tocarOuPausar(){
+    if(temMusica == false){
+        span_status_musica.innerHTML = `Clique em 🎵 para escolher um .mp3`;
     }
-    document.getElementById("player-status-texto").textContent = status;
+    else if(audio_musica.paused == true){
+        audio_musica.play();
+    }
+    else{
+        audio_musica.pause();
+    }
 }
 
-function definirMusica(endereco, nome) {
-    musicaDisponivel = true;
-    audioMusica.src = endereco;
-    audioMusica.loop = true;
-    atualizarPlayer("🎶 " + (nome || "Nossa Música ♡"), "Clique para tocar ♡");
+function musicaTocando(){
+    div_player.className = 'player-musica tocando';
+    botao_tocar.innerHTML = `⏸`;
+    span_status_musica.innerHTML = `Tocando agora ♡`;
 }
 
-function carregarMusica() {
-    requisicao("/posts/config/casal")
-        .then(function (config) {
-            if (config.musicaUrl) {
-                definirMusica(config.musicaUrl, config.musicaNome);
+function musicaPausada(){
+    div_player.className = 'player-musica';
+    botao_tocar.innerHTML = `▶`;
+    span_status_musica.innerHTML = `Pausada`;
+}
+
+function musicaComErro(){
+    temMusica = false;
+    span_titulo_musica.innerHTML = `🎶 Nossa Música ♡`;
+    span_status_musica.innerHTML = `Arquivo não encontrado: clique em 🎵`;
+}
+
+function escolherMusica(){
+    if(sessionStorage.ID_USUARIO == undefined){
+        alert('Entre na sua conta para escolher a nossa música ♡');
+        window.location = 'login.html';
+    }
+    else{
+        input_musica.click();
+    }
+}
+
+function enviarMusica(){
+    if(input_musica.files.length > 0){
+        let dados = new FormData();
+        dados.append('idUsuarioServer', sessionStorage.ID_USUARIO);
+        dados.append('musica', input_musica.files[0]);
+
+        audio_musica.pause();
+        span_status_musica.innerHTML = `Enviando a música...`;
+
+        fetch('/posts/config/musica', {
+            method: 'POST',
+            body: dados
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                resposta.json().then(function(resultado){
+                    definirMusica(resultado.musicaUrl, resultado.musicaNome);
+                    tocarOuPausar();
+                });
+            }
+            else{
+                resposta.json().then(function(dados){
+                    span_status_musica.innerHTML = dados.erro;
+                });
             }
         })
-        .catch(function () {
-            atualizarPlayer(null, "Não foi possível carregar a música");
-        });
-}
-
-function tocarOuPausar() {
-    if (!musicaDisponivel) {
-        atualizarPlayer(null, "Clique em 🎵 para escolher um .mp3");
-        return;
-    }
-
-    if (audioMusica.paused) {
-        audioMusica.play().catch(function () {
-            atualizarPlayer(null, "Não foi possível tocar a música");
-        });
-    } else {
-        audioMusica.pause();
-    }
-}
-
-function escolherMusica() {
-    if (exigirLogin("Entre na sua conta para escolher a nossa música ♡")) {
-        document.getElementById("input-arquivo-musica").click();
-    }
-}
-
-function enviarMusica() {
-    var campo = document.getElementById("input-arquivo-musica");
-    var usuario = usuarioLogado();
-
-    if (campo.files.length == 0 || !usuario) {
-        return;
-    }
-
-    var dados = new FormData();
-    dados.append("idUsuarioServer", usuario.id);
-    dados.append("musica", campo.files[0]);
-
-    audioMusica.pause();
-    atualizarPlayer(null, "Enviando a música...");
-
-    requisicao("/posts/config/musica", { method: "POST", body: dados })
-        .then(function (resultado) {
-            definirMusica(resultado.musicaUrl, resultado.musicaNome);
-            tocarOuPausar();
-        })
-        .catch(function (erro) {
-            atualizarPlayer(null, erro.message);
+        .catch(function(erro){
+            console.log(erro);
         });
 
-    campo.value = "";
+        input_musica.value = '';
+    }
 }
-
-audioMusica.addEventListener("play", function () {
-    document.getElementById("player-musica").classList.add("tocando");
-    document.getElementById("botao-tocar-musica").textContent = "⏸";
-    atualizarPlayer(null, "Tocando agora ♡");
-});
-
-audioMusica.addEventListener("pause", function () {
-    document.getElementById("player-musica").classList.remove("tocando");
-    document.getElementById("botao-tocar-musica").textContent = "▶";
-    atualizarPlayer(null, "Pausada");
-});
-
-audioMusica.addEventListener("error", function () {
-    musicaDisponivel = false;
-    atualizarPlayer("🎶 Nossa Música ♡", "Arquivo não encontrado: clique em 🎵");
-});
-
-document.addEventListener("DOMContentLoaded", carregarMusica);

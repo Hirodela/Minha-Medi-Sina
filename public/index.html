@@ -6,7 +6,7 @@
     <title>Início · Minha Medi Sina ♡ Para Giovana</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
+  <body onload="atualizarCabecalho(); carregarMusica(); iniciarContador()">
     <header class="cabecalho-site">
       <a class="logo" href="index.html">
         Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
@@ -17,7 +17,7 @@
         <a href="nossa-historia.html">Nossa História</a>
         <a href="publicacoes.html">Feed de Posts</a>
       </nav>
-      <div class="acoes-navegacao" id="acoes-navegacao">
+      <div class="acoes-navegacao" id="div_acoes">
         <a class="botao botao-discreto" href="login.html">Entrar</a>
         <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
       </div>
@@ -50,25 +50,25 @@
         </p>
         <div class="contador-grade">
           <div class="contador-item">
-            <b id="contador-dias">0</b>
+            <b id="b_dias">0</b>
             <span>Dias</span>
           </div>
           <div class="contador-item">
-            <b id="contador-horas">00</b>
+            <b id="b_horas">00</b>
             <span>Horas</span>
           </div>
           <div class="contador-item">
-            <b id="contador-minutos">00</b>
+            <b id="b_minutos">00</b>
             <span>Minutos</span>
           </div>
           <div class="contador-item">
-            <b id="contador-segundos">00</b>
+            <b id="b_segundos">00</b>
             <span>Segundos</span>
           </div>
         </div>
       </section>
 
-      <section class="secao-sobre" id="secao-sobre">
+      <section class="secao-sobre">
         <div class="foto-ilustrativa foto-ilustrativa-6">
           <img src="fotos/IMG-20260915-WA0001.jpg" alt="No jardim botânico">
         </div>
@@ -87,17 +87,33 @@
         </div>
       </section>
 
-      <section>
-        <div class="cabecalho-secao">
-          <div>
-            <p class="sobretitulo">Interaja nos nossos momentos</p>
-            <h2>Últimos Posts do Nosso Mural</h2>
-          </div>
-          <a class="botao" href="publicacoes.html">Ver todos os posts e comentar</a>
+      <section class="convite-mural">
+        <div class="convite-mural-texto">
+          <h2>
+            Um mural inteirinho
+            <em class="destaque-manuscrito">só nosso</em>
+          </h2>
+          <p>
+            É no feed que ficam guardadas as fotos, as mensagens e as lembranças
+            de cada momento que vivemos juntos. Passe por lá para rever tudo,
+            curtir os seus favoritos e deixar um comentário cheio de carinho.
+          </p>
+          <ul class="convite-mural-itens">
+            <li><span>📸</span> Fotos e lembranças</li>
+            <li><span>♡</span> Curtidas</li>
+            <li><span>💬</span> Comentários</li>
+          </ul>
+          <a class="botao botao-principal" href="publicacoes.html">Ir para o feed de posts →</a>
         </div>
-        <div class="grade-posts" id="lista-posts">
-          <div class="caixa estado-vazio">
-            <p>Carregando os posts da nossa história…</p>
+        <div class="convite-mural-fotos">
+          <div class="foto-mural">
+            <img src="fotos/20260823_160834.jpg" alt="">
+          </div>
+          <div class="foto-mural">
+            <img src="fotos/20260823_173056.jpg" alt="">
+          </div>
+          <div class="foto-mural">
+            <img src="fotos/IMG-20260628-WA0305.jpg" alt="">
           </div>
         </div>
       </section>
@@ -109,16 +125,16 @@
       </div>
     </section>
 
-    <footer class="rodape" id="rodape">
+    <footer class="rodape">
       <div class="conteudo-pagina">
         <div class="rodape-marca">
           <a class="logo" href="index.html">
             Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
           </a>
         </div>
-        <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+        <nav class="rodape-navegacao">
           <ul class="rodape-links">
-            <li><a href="index.html" aria-current="page">Início</a></li>
+            <li><a href="index.html" class="ativo">Início</a></li>
             <li><a href="sobre.html">Sobre a Giovana</a></li>
             <li><a href="nossa-historia.html">Nossa História</a></li>
             <li><a href="publicacoes.html">Feed de Posts</a></li>
@@ -127,18 +143,18 @@
       </div>
     </footer>
 
-    <div class="player-musica" id="player-musica">
-      <button type="button" class="player-botao-tocar" id="botao-tocar-musica" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
+    <div class="player-musica" id="div_player">
+      <button class="player-botao-tocar" id="botao_tocar" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
       <div class="player-info">
-        <span class="player-titulo" id="player-titulo-texto">🎶 Nossa Música ♡</span>
-        <span class="player-status" id="player-status-texto">Clique para tocar ♡</span>
+        <span class="player-titulo" id="span_titulo_musica">🎶 Nossa Música ♡</span>
+        <span class="player-status" id="span_status_musica">Clique para tocar ♡</span>
       </div>
-      <button type="button" class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
-      <input type="file" id="input-arquivo-musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+      <button class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
+      <input type="file" id="input_musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+      <audio id="audio_musica" loop onplay="musicaTocando()" onpause="musicaPausada()" onerror="musicaComErro()"></audio>
     </div>
 
     <script src="js/geral.js"></script>
-    <script src="js/posts.js"></script>
     <script src="js/musica.js"></script>
     <script src="js/inicio.js"></script>
   </body>

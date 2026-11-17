@@ -1,150 +1,64 @@
-function usuarioLogado() {
-    if (!sessionStorage.ID_USUARIO) {
-        return null;
-    }
-
-    return {
-        id: Number(sessionStorage.ID_USUARIO),
-        nome: sessionStorage.NOME_USUARIO,
-        fotoPerfil: sessionStorage.FOTO_USUARIO || null
-    };
-}
-
-function guardarUsuario(usuario) {
-    sessionStorage.ID_USUARIO = usuario.id;
-    sessionStorage.NOME_USUARIO = usuario.nome;
-    sessionStorage.FOTO_USUARIO = usuario.fotoPerfil || "";
-}
-
-function sair() {
+function sair(){
     sessionStorage.clear();
-    window.location = "index.html";
+    window.location = 'index.html';
 }
 
-function exigirLogin(mensagem) {
-    var usuario = usuarioLogado();
+function mostrarMensagem(texto, tipo){
+    p_mensagem.innerHTML = texto;
+    p_mensagem.className = `mensagem-formulario ${tipo}`;
+}
 
-    if (!usuario) {
-        alert(mensagem || "Entre na sua conta para continuar ♡");
-        window.location = "login.html";
+function colocarDataDeHoje(){
+    let hoje = new Date();
+    let ano = hoje.getFullYear();
+    let mes = hoje.getMonth() + 1;
+    let dia = hoje.getDate();
+
+    if(mes < 10){
+        mes = `0${mes}`;
+    }
+    if(dia < 10){
+        dia = `0${dia}`;
     }
 
-    return usuario;
+    input_data.value = `${ano}-${mes}-${dia}`;
 }
 
-function requisicao(url, opcoes) {
-    return fetch(url, opcoes)
-        .then(function (resposta) {
-            return resposta.text().then(function (texto) {
-                var dados = null;
+function atualizarCabecalho(){
+    if(sessionStorage.ID_USUARIO != undefined){
+        let nome = sessionStorage.NOME_USUARIO;
+        let foto = sessionStorage.FOTO_USUARIO;
 
-                try {
-                    dados = texto ? JSON.parse(texto) : null;
-                } catch (erro) {
-                    dados = texto;
-                }
-
-                if (!resposta.ok) {
-                    var mensagem = "Não foi possível concluir a ação.";
-
-                    if (dados && dados.erro) {
-                        mensagem = dados.erro;
-                    } else if (typeof dados == "string" && dados != "" && dados.length < 200) {
-                        mensagem = dados;
-                    }
-
-                    throw new Error(mensagem);
-                }
-
-                return dados;
-            });
-        });
-}
-
-function enviarJson(url, metodo, corpo) {
-    return requisicao(url, {
-        method: metodo,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(corpo || {})
-    });
-}
-
-function escaparHtml(texto) {
-    return String(texto == null ? "" : texto)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-}
-
-function formatarData(dataIso) {
-    var partes = String(dataIso || "").split("-");
-
-    if (partes.length != 3) {
-        return "";
-    }
-
-    return partes[2] + "/" + partes[1] + "/" + partes[0];
-}
-
-function dataDeHoje() {
-    var hoje = new Date();
-    var mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    var dia = String(hoje.getDate()).padStart(2, "0");
-
-    return hoje.getFullYear() + "-" + mes + "-" + dia;
-}
-
-function mostrarMensagem(idElemento, texto, tipo) {
-    var elemento = document.getElementById(idElemento);
-
-    if (elemento) {
-        elemento.textContent = texto;
-        elemento.className = "mensagem-formulario " + (tipo || "");
+        if(foto == ''){
+            div_acoes.innerHTML = `
+                <a class="botao botao-principal" href="dashboard.html">Olá, ${nome} ♡</a>
+                <a class="avatar" href="perfil.html" >${nome[0].toUpperCase()}♡</a>
+            `;
+        }
+        else{
+            div_acoes.innerHTML = `
+                <a class="botao botao-principal" href="dashboard.html">Olá, ${nome} ♡</a>
+                <a class="avatar" href="perfil.html" style="background-image: url('${foto}')"></a>
+            `;
+        }
     }
 }
 
-function aplicarAvatar(elemento, nome, foto) {
-    if (foto) {
-        elemento.style.backgroundImage = "url('" + encodeURI(foto) + "')";
-        elemento.textContent = "";
-    } else {
-        elemento.style.backgroundImage = "";
-        elemento.textContent = nome ? nome.trim().charAt(0).toUpperCase() + "♡" : "♡";
+function validarSessao(){
+    if(sessionStorage.ID_USUARIO == undefined){
+        window.location = 'login.html';
+    }
+    else{
+        let nome = sessionStorage.NOME_USUARIO;
+        let foto = sessionStorage.FOTO_USUARIO;
+
+        span_nome_usuario.innerHTML = nome;
+        span_avatar.innerHTML = `${nome[0].toUpperCase()}♡`;
+        span_avatar.style.backgroundImage = '';
+
+        if(foto != ''){
+            span_avatar.innerHTML = '';
+            span_avatar.style.backgroundImage = `url('${foto}')`;
+        }
     }
 }
-
-function atualizarCabecalho() {
-    var usuario = usuarioLogado();
-    var acoes = document.getElementById("acoes-navegacao");
-
-    if (!usuario) {
-        return;
-    }
-
-    if (acoes) {
-        acoes.innerHTML =
-            '<a class="botao botao-principal" href="dashboard.html">Olá, ' + escaparHtml(usuario.nome) + " ♡</a>" +
-            '<a class="avatar" href="perfil.html" title="Meu perfil"></a>';
-    }
-
-    var nomes = document.querySelectorAll(".nome-usuario-logado");
-    for (var i = 0; i < nomes.length; i++) {
-        nomes[i].textContent = usuario.nome;
-    }
-
-    var avatares = document.querySelectorAll(".avatar");
-    for (var j = 0; j < avatares.length; j++) {
-        aplicarAvatar(avatares[j], usuario.nome, usuario.fotoPerfil);
-    }
-}
-
-function protegerPainel() {
-    if (document.querySelector(".painel") && !usuarioLogado()) {
-        window.location = "login.html";
-    }
-}
-
-protegerPainel();
-document.addEventListener("DOMContentLoaded", atualizarCabecalho);

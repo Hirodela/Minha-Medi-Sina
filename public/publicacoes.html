@@ -6,7 +6,7 @@
     <title>Feed de Posts · Minha Medi Sina ♡</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
+  <body onload="atualizarCabecalho(); carregarMusica(); mostrarPublicacaoRapida(); carregarFeed()">
     <header class="cabecalho-site">
       <a class="logo" href="index.html">
         Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
@@ -17,7 +17,7 @@
         <a href="nossa-historia.html">Nossa História</a>
         <a href="publicacoes.html" class="ativo">Feed de Posts</a>
       </nav>
-      <div class="acoes-navegacao" id="acoes-navegacao">
+      <div class="acoes-navegacao" id="div_acoes">
         <a class="botao botao-discreto" href="login.html">Entrar</a>
         <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
       </div>
@@ -31,18 +31,18 @@
         <a class="botao botao-principal" href="nova-lembranca.html">+ Criar Novo Post com Foto</a>
       </div>
 
-      <section id="secao-publicacao-rapida" class="publicacao-rapida" hidden>
+      <section id="section_publicar" class="publicacao-rapida" hidden>
         <h3>Quer deixar um post especial para a Giovana agora?</h3>
-        <form id="formulario-publicacao-rapida" onsubmit="publicarRapido(event)">
+        <div>
           <div class="duas-colunas">
             <div class="campo">
-              <label for="input-rapido-titulo">Título do Post</label>
-              <input id="input-rapido-titulo" type="text" placeholder="Ex: Mais um fim de semana perfeito ao seu lado" required maxlength="120" />
+              <label for="input_titulo">Título do Post</label>
+              <input id="input_titulo" type="text" placeholder="Ex: Mais um fim de semana perfeito ao seu lado" maxlength="120" />
             </div>
             <div class="duas-colunas">
               <div class="campo">
-                <label for="select-rapido-categoria">Categoria</label>
-                <select id="select-rapido-categoria">
+                <label for="select_categoria">Categoria</label>
+                <select id="select_categoria">
                   <option value="Mensagens">Mensagens</option>
                   <option value="Fotografias">Fotografias</option>
                   <option value="Datas especiais">Datas especiais</option>
@@ -50,55 +50,56 @@
                 </select>
               </div>
               <div class="campo">
-                <label for="input-rapido-data">Data</label>
-                <input id="input-rapido-data" type="date" required />
+                <label for="input_data">Data</label>
+                <input id="input_data" type="date" />
               </div>
             </div>
           </div>
           <div class="campo">
-            <label for="input-rapido-descricao">Mensagem do Post</label>
-            <textarea class="textarea-curta" id="input-rapido-descricao" placeholder="Escreva aqui sua lembrança ou declaração..." required></textarea>
+            <label for="input_descricao">Mensagem do Post</label>
+            <textarea class="textarea-curta" id="input_descricao" placeholder="Escreva aqui sua lembrança ou declaração..."></textarea>
           </div>
           <div class="linha-entre linha-quebra">
             <a href="nova-lembranca.html" class="texto-suave">Deseja enviar fotografia junto? Clique aqui →</a>
-            <button type="submit" class="botao botao-principal">+ Publicar no Mural</button>
+            <button class="botao botao-principal" onclick="publicarRapido()">+ Publicar no Mural</button>
           </div>
-        </form>
+        </div>
       </section>
 
-      <div class="grade-posts" id="lista-posts">
+      <div class="grade-posts" id="div_posts">
         <div class="caixa estado-vazio">
           <p>Carregando os posts do mural…</p>
         </div>
       </div>
     </main>
 
-    <footer class="rodape" id="rodape">
+    <footer class="rodape">
       <div class="conteudo-pagina">
         <div class="rodape-marca">
           <a class="logo" href="index.html">
             Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
           </a>
         </div>
-        <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+        <nav class="rodape-navegacao">
           <ul class="rodape-links">
             <li><a href="index.html">Início</a></li>
             <li><a href="sobre.html">Sobre a Giovana</a></li>
             <li><a href="nossa-historia.html">Nossa História</a></li>
-            <li><a href="publicacoes.html" aria-current="page">Feed de Posts</a></li>
+            <li><a href="publicacoes.html" class="ativo">Feed de Posts</a></li>
           </ul>
         </nav>
       </div>
     </footer>
 
-    <div class="player-musica" id="player-musica">
-      <button type="button" class="player-botao-tocar" id="botao-tocar-musica" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
+    <div class="player-musica" id="div_player">
+      <button class="player-botao-tocar" id="botao_tocar" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
       <div class="player-info">
-        <span class="player-titulo" id="player-titulo-texto">🎶 Nossa Música ♡</span>
-        <span class="player-status" id="player-status-texto">Clique em 🎵 para escolher um .mp3</span>
+        <span class="player-titulo" id="span_titulo_musica">🎶 Nossa Música ♡</span>
+        <span class="player-status" id="span_status_musica">Clique em 🎵 para escolher um .mp3</span>
       </div>
-      <button type="button" class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
-      <input type="file" id="input-arquivo-musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+      <button class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
+      <input type="file" id="input_musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+      <audio id="audio_musica" loop onplay="musicaTocando()" onpause="musicaPausada()" onerror="musicaComErro()"></audio>
     </div>
 
     <script src="js/geral.js"></script>

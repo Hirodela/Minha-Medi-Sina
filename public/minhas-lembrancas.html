@@ -6,7 +6,7 @@
   <title>Meus Posts · Minha Medi Sina ♡</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body onload="validarSessao(); carregarMeusPosts()">
   <div class="painel">
     <aside class="menu-lateral">
       <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
@@ -21,7 +21,7 @@
         <div>
           <h6 class="texto-suave">Gerencie os seus posts, curtidas e comentários</h6>
         </div>
-        <div><span class="nome-usuario-logado"></span> <span class="avatar"></span></div>
+        <div><span id="span_nome_usuario"></span> <span class="avatar" id="span_avatar"></span></div>
       </div>
       <div class="titulo-pagina">
         <div>
@@ -31,10 +31,10 @@
         <a class="botao botao-principal" href="nova-lembranca.html">+ Criar Novo Post</a>
       </div>
       <div class="filtros">
-        <span class="texto-suave" id="total-posts"></span>
+        <span class="texto-suave" id="span_total"></span>
       </div>
       <h2>Suas Publicações</h2>
-      <div id="lista-posts" class="grade-posts lista-meus-posts"></div>
+      <div id="div_posts" class="grade-posts lista-meus-posts"></div>
     </main>
   </div>
 

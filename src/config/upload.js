@@ -1,79 +1,48 @@
-var multer = require("multer");
-var path = require("path");
-var fs = require("fs");
+const multer = require('multer');
+const path = require('path');
+const crypto = require('crypto');
 
-var pastaUploads = path.join(__dirname, "..", "..", "public", "uploads");
+const diretorio = 'public/uploads/';
 
-if (!fs.existsSync(pastaUploads)) {
-    fs.mkdirSync(pastaUploads, { recursive: true });
-}
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, diretorio)
+  },
 
-var extensoesImagem = [".jpg", ".jpeg", ".png", ".webp"];
-var extensoesMusica = [".mp3", ".wav", ".ogg", ".m4a"];
+  filename: (req, file, cb) => {
+    const extensaoArquivo = path.extname(file.originalname).toLowerCase();
 
-function criarNomeArquivo(req, file, cb) {
-    var extensao = path.extname(file.originalname).toLowerCase();
-    var numeroAleatorio = Math.round(Math.random() * 1000000000);
-    cb(null, Date.now() + "-" + numeroAleatorio + extensao);
-}
+    const novoNomeArquivo = crypto
+      .randomBytes(16)
+      .toString('hex');
 
-function arquivoInvalido(mensagem) {
-    var erro = new Error(mensagem);
-    erro.arquivoInvalido = true;
-    return erro;
-}
+    cb(null, `${novoNomeArquivo}${extensaoArquivo}`)
+  }
+});
 
-function filtroImagem(req, file, cb) {
-    var extensao = path.extname(file.originalname).toLowerCase();
+function filtrarExtensoes(extensoes, mensagem) {
+  return (req, file, cb) => {
+    const extensaoArquivo = path.extname(file.originalname).toLowerCase();
 
-    if (extensoesImagem.includes(extensao) && file.mimetype.startsWith("image/")) {
-        cb(null, true);
+    if (extensoes.includes(extensaoArquivo)) {
+      cb(null, true)
     } else {
-        cb(arquivoInvalido("Envie uma imagem JPG, PNG ou WEBP!"));
+      cb(new Error(mensagem))
     }
+  }
 }
 
-function filtroMusica(req, file, cb) {
-    var extensao = path.extname(file.originalname).toLowerCase();
-
-    if (extensoesMusica.includes(extensao)) {
-        cb(null, true);
-    } else {
-        cb(arquivoInvalido("Envie uma música MP3, WAV, OGG ou M4A!"));
-    }
-}
-
-var armazenamento = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, pastaUploads);
-    },
-    filename: criarNomeArquivo
+const imagem = multer({
+  storage,
+  fileFilter: filtrarExtensoes(['.jpg', '.jpeg', '.png', '.webp'], 'Envie uma imagem JPG, PNG ou WEBP!'),
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-var imagem = multer({
-    storage: armazenamento,
-    fileFilter: filtroImagem,
-    limits: { fileSize: 5 * 1024 * 1024 }
+const musica = multer({
+  storage,
+  fileFilter: filtrarExtensoes(['.mp3', '.wav', '.ogg', '.m4a'], 'Envie uma música MP3, WAV, OGG ou M4A!'),
+  limits: { fileSize: 20 * 1024 * 1024 }
 });
 
-var musica = multer({
-    storage: armazenamento,
-    fileFilter: filtroMusica,
-    limits: { fileSize: 20 * 1024 * 1024 }
-});
 
-function apagarArquivo(caminho) {
-    if (!caminho || !caminho.startsWith("/uploads/")) {
-        return;
-    }
-
-    var arquivo = path.join(pastaUploads, path.basename(caminho));
-
-    fs.unlink(arquivo, function () { });
-}
-
-module.exports = {
-    imagem,
-    musica,
-    apagarArquivo
-};
+module.exports = { imagem, musica };

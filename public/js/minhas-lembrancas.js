@@ -1,29 +1,48 @@
-function carregarMeusPosts() {
-    var usuario = usuarioLogado();
+function carregarMeusPosts(){
+    fetch(`/posts/usuario/${sessionStorage.ID_USUARIO}`)
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(posts){
+                mostrarListaPosts(posts, true);
 
-    if (!usuario) {
-        return;
-    }
-
-    carregarPosts("/posts/usuario/" + usuario.id, 0, true)
-        .then(function (posts) {
-            var texto = posts.length == 1 ? "1 post publicado" : posts.length + " posts publicados";
-            document.getElementById("total-posts").textContent = texto;
-        });
+                if(posts.length == 1){
+                    span_total.innerHTML = `1 post publicado`;
+                }
+                else{
+                    span_total.innerHTML = `${posts.length} posts publicados`;
+                }
+            });
+        }
+        else{
+            resposta.json().then(function(dados){
+                console.log(dados.erro);
+            });
+            span_total.innerHTML = `0 posts publicados`;
+        }
+    })
+    .catch(function(erro){
+        console.log(erro);
+    });
 }
 
-function excluirPost(idPost) {
-    var usuario = usuarioLogado();
-
-    if (!usuario || !confirm("Tem certeza de que deseja excluir este post? As curtidas e os comentários dele também serão apagados.")) {
-        return;
-    }
-
-    enviarJson("/posts/" + idPost, "DELETE", { idUsuarioServer: usuario.id })
-        .then(carregarMeusPosts)
-        .catch(function (erro) {
-            alert(erro.message);
+function excluirPost(idPost){
+    if(confirm('Tem certeza de que deseja excluir este post? As curtidas e os comentários dele também serão apagados.') == true){
+        fetch(`/posts/${idPost}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                carregarMeusPosts();
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
         });
+    }
 }
-
-document.addEventListener("DOMContentLoaded", carregarMeusPosts);

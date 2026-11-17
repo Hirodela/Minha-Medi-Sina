@@ -6,7 +6,7 @@
     <title>Nossa História · Minha Medi Sina ♡</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
+  <body onload="atualizarCabecalho(); carregarMusica(); mostrarFormularios(); carregarCapitulos(); carregarSonhos(); carregarLugares()">
     <header class="cabecalho-site">
       <a class="logo" href="index.html">
         Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
@@ -17,7 +17,7 @@
         <a href="nossa-historia.html" class="ativo">Nossa História</a>
         <a href="publicacoes.html">Feed de Posts</a>
       </nav>
-      <div class="acoes-navegacao" id="acoes-navegacao">
+      <div class="acoes-navegacao" id="div_acoes">
         <a class="botao botao-discreto" href="login.html">Entrar</a>
         <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
       </div>
@@ -33,44 +33,41 @@
         </p>
       </div>
 
-      <section id="secao-formulario-historia" class="publicacao-rapida bloco-central margem-base-36" hidden>
+      <section id="section_capitulo" class="publicacao-rapida bloco-central margem-base-36" hidden>
         <h3>Adicionar um novo card na Linha do Tempo</h3>
-        <form id="formulario-historia" onsubmit="adicionarCapitulo(event)">
+        <div>
           <div class="duas-colunas">
             <div class="campo">
-              <label for="input-historia-etiqueta">Etiqueta do Capítulo</label>
+              <label for="input_etiqueta">Etiqueta do Capítulo</label>
               <input
-                id="input-historia-etiqueta"
+                id="input_etiqueta"
                 type="text"
                 placeholder="Ex: Nosso Primeiro Aniversário, Viagem Especial..."
-                required
                 maxlength="50"
               />
             </div>
             <div class="campo">
-              <label for="input-historia-titulo">Título do Card</label>
+              <label for="input_titulo">Título do Card</label>
               <input
-                id="input-historia-titulo"
+                id="input_titulo"
                 type="text"
                 placeholder="Ex: O dia em que conhecemos o nosso lugar favorito"
-                required
                 maxlength="120"
               />
             </div>
           </div>
           <div class="campo">
-            <label for="input-historia-descricao">História desse momento</label>
+            <label for="input_descricao">História desse momento</label>
             <textarea class="textarea-media"
-              id="input-historia-descricao"
+              id="input_descricao"
               placeholder="Conte com carinho como foi esse capítulo especial ao lado da Giovana..."
-              required
             ></textarea>
           </div>
           <div class="linha-entre">
-            <p id="mensagem-historia" class="mensagem-formulario sem-margem-topo"></p>
-            <button type="submit" class="botao botao-principal">+ Adicionar à Nossa História ♡</button>
+            <p id="p_mensagem" class="mensagem-formulario sem-margem-topo"></p>
+            <button class="botao botao-principal" onclick="adicionarCapitulo()">+ Adicionar à Nossa História ♡</button>
           </div>
-        </form>
+        </div>
       </section>
 
       <section class="linha-do-tempo">
@@ -104,7 +101,7 @@
           </p>
         </article>
 
-        <div class="conteudo-transparente" id="capitulos-personalizados"></div>
+        <div class="conteudo-transparente" id="div_capitulos"></div>
 
         <article class="linha-do-tempo-item">
           <span class="etiqueta">Hoje e Sempre</span>
@@ -132,22 +129,22 @@
         <div class="sonhos-progresso">
           <div class="linha-entre">
             <b class="titulo-progresso">Progresso dos nossos sonhos</b>
-            <span class="etiqueta" id="texto-progresso-sonhos">0 de 0 realizados</span>
+            <span class="etiqueta" id="span_progresso_sonhos">0 de 0 realizados</span>
           </div>
           <div class="barra-progresso">
-            <div class="barra-progresso-preenchida" id="barra-progresso-sonhos"></div>
+            <div class="barra-progresso-preenchida" id="div_barra_sonhos"></div>
           </div>
         </div>
 
-        <form class="formulario-sonho" id="formulario-sonho" onsubmit="adicionarSonho(event)" hidden>
-          <input type="text" id="input-sonho-titulo" placeholder="Adicionar um novo sonho ou meta para nós dois..." maxlength="120" required />
-          <button type="submit" class="botao botao-principal">+ Adicionar Sonho ♡</button>
-        </form>
+        <div class="formulario-sonho" id="div_adicionar_sonho" hidden>
+          <input type="text" id="input_sonho" placeholder="Adicionar um novo sonho ou meta para nós dois..." maxlength="120" />
+          <button class="botao botao-principal" onclick="adicionarSonho()">+ Adicionar Sonho ♡</button>
+        </div>
 
-        <div class="sonhos-grade" id="lista-sonhos"></div>
+        <div class="sonhos-grade" id="div_sonhos"></div>
       </section>
 
-      <section class="secao-lugares" id="secao-lugares">
+      <section class="secao-lugares" id="section_lugares">
         <div class="texto-centralizado bloco-central-estreito margem-base-26">
           <p class="sobretitulo">Roteiro do nosso amor</p>
           <h2>Lugares que Queremos Ir Juntos ✈️</h2>
@@ -156,17 +153,17 @@
           </p>
         </div>
 
-        <div id="secao-formulario-lugar" class="publicacao-rapida bloco-central margem-base-28" hidden>
+        <div id="div_adicionar_lugar" class="publicacao-rapida bloco-central margem-base-28" hidden>
           <h3>Adicionar um lugar que queremos ir ♡</h3>
-          <form id="formulario-lugar" onsubmit="adicionarLugar(event)">
+          <div>
             <div class="duas-colunas">
               <div class="campo">
-                <label for="input-lugar-nome">Destino</label>
-                <input type="text" id="input-lugar-nome" placeholder="Ex: Campos do Jordão, Café especial, Praia..." required maxlength="80" />
+                <label for="input_lugar">Destino</label>
+                <input type="text" id="input_lugar" placeholder="Ex: Campos do Jordão, Café especial, Praia..." maxlength="80" />
               </div>
               <div class="campo">
-                <label for="select-lugar-tipo">Tipo de Passeio</label>
-                <select id="select-lugar-tipo">
+                <label for="select_tipo">Tipo de Passeio</label>
+                <select id="select_tipo">
                   <option value="✈️ Viagem">✈️ Viagem</option>
                   <option value="🍝 Restaurante / Café">🍝 Restaurante / Café</option>
                   <option value="🌅 Passeio Romântico">🌅 Passeio Romântico</option>
@@ -176,45 +173,47 @@
               </div>
             </div>
             <div class="campo">
-              <label for="input-lugar-nota">O que queremos fazer lá</label>
-              <input type="text" id="input-lugar-nota" placeholder="Ex: Aproveitar o friozinho, jantar à luz de velas e tirar muitas fotos juntos..." required maxlength="180" />
+              <label for="input_nota">O que queremos fazer lá</label>
+              <input type="text" id="input_nota" placeholder="Ex: Aproveitar o friozinho, jantar à luz de velas e tirar muitas fotos juntos..." maxlength="180" />
             </div>
             <div class="linha-fim">
-              <button type="submit" class="botao botao-principal">+ Adicionar Lugar ♡</button>
+              <button class="botao botao-principal" onclick="adicionarLugar()">+ Adicionar Lugar ♡</button>
             </div>
-          </form>
+          </div>
         </div>
 
-        <div class="lugares-grade" id="lista-lugares"></div>
+        <div class="lugares-grade" id="div_lugares"></div>
       </section>
     </main>
 
-    <footer class="rodape" id="rodape">
+    <div id="div_coracoes"></div>
+    <footer class="rodape">
       <div class="conteudo-pagina">
         <div class="rodape-marca">
           <a class="logo" href="index.html">
             Minha Medi Sina<small>Para Giovana · Nosso cantinho</small>
           </a>
         </div>
-        <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+        <nav class="rodape-navegacao">
           <ul class="rodape-links">
             <li><a href="index.html">Início</a></li>
             <li><a href="sobre.html">Sobre a Giovana</a></li>
-            <li><a href="nossa-historia.html" aria-current="page">Nossa História</a></li>
+            <li><a href="nossa-historia.html" class="ativo">Nossa História</a></li>
             <li><a href="publicacoes.html">Feed de Posts</a></li>
           </ul>
         </nav>
       </div>
     </footer>
 
-    <div class="player-musica" id="player-musica">
-      <button type="button" class="player-botao-tocar" id="botao-tocar-musica" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
+    <div class="player-musica" id="div_player">
+      <button class="player-botao-tocar" id="botao_tocar" onclick="tocarOuPausar()" title="Tocar ou pausar nossa música">▶</button>
       <div class="player-info">
-        <span class="player-titulo" id="player-titulo-texto">🎶 Nossa Música ♡</span>
-        <span class="player-status" id="player-status-texto">Clique em 🎵 para escolher um .mp3</span>
+        <span class="player-titulo" id="span_titulo_musica">🎶 Nossa Música ♡</span>
+        <span class="player-status" id="span_status_musica">Clique em 🎵 para escolher um .mp3</span>
       </div>
-      <button type="button" class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
-      <input type="file" id="input-arquivo-musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+      <button class="player-botao-enviar" onclick="escolherMusica()" title="Escolher arquivo .mp3 do computador">🎵</button>
+      <input type="file" id="input_musica" accept=".mp3,audio/*" onchange="enviarMusica()" hidden />
+      <audio id="audio_musica" loop onplay="musicaTocando()" onpause="musicaPausada()" onerror="musicaComErro()"></audio>
     </div>
 
     <script src="js/geral.js"></script>

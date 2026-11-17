@@ -6,7 +6,7 @@
   <title>Criar Publicação · Minha Medi Sina ♡</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body onload="validarSessao(); carregarPagina()">
   <div class="painel">
     <aside class="menu-lateral">
       <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
@@ -21,31 +21,31 @@
         <div>
           <h6 class="texto-suave">Publique um novo post para a Giovana</h6>
         </div>
-        <div><span class="nome-usuario-logado"></span> <span class="avatar"></span></div>
+        <div><span id="span_nome_usuario"></span> <span class="avatar" id="span_avatar"></span></div>
       </div>
       <div class="titulo-pagina">
         <div>
-          <h1 id="titulo-pagina">Criar Novo Post</h1>
+          <h1 id="h1_titulo">Criar Novo Post</h1>
           <p>Guarde uma fotografia, declaração ou momento que merece ficar para sempre.</p>
         </div>
       </div>
-      <form class="caixa" onsubmit="salvarPost(event)">
+      <div class="caixa">
         <div class="campo">
-          <label for="input-titulo">Título do Post</label>
-          <input id="input-titulo" type="text" required maxlength="120" placeholder="Dê um título especial a esse momento">
+          <label for="input_titulo">Título do Post</label>
+          <input id="input_titulo" type="text" maxlength="120" placeholder="Dê um título especial a esse momento">
         </div>
         <div class="campo">
-          <label for="input-descricao">Mensagem / Descrição</label>
-          <textarea id="input-descricao" required placeholder="Escreva aqui a história desse dia ou uma mensagem carinhosa para a Giovana..."></textarea>
+          <label for="input_descricao">Mensagem / Descrição</label>
+          <textarea id="input_descricao" placeholder="Escreva aqui a história desse dia ou uma mensagem carinhosa para a Giovana..."></textarea>
         </div>
         <div class="duas-colunas">
           <div class="campo">
-            <label for="input-data">Data do Momento</label>
-            <input id="input-data" type="date" required>
+            <label for="input_data">Data do Momento</label>
+            <input id="input_data" type="date">
           </div>
           <div class="campo">
-            <label for="select-categoria">Categoria</label>
-            <select id="select-categoria">
+            <label for="select_categoria">Categoria</label>
+            <select id="select_categoria">
               <option value="Fotografias">Fotografias</option>
               <option value="Mensagens">Mensagens</option>
               <option value="Datas especiais">Datas especiais</option>
@@ -57,16 +57,16 @@
           <label>Fotografia do Post (opcional)</label>
           <div class="area-upload">
             <p>Escolha uma foto especial do computador ou telefone</p>
-            <button class="botao margem-vertical-12" type="button" id="botao-escolher-foto" onclick="escolherFoto()">Adicionar fotografia</button>
-            <input type="file" id="input-foto" accept="image/jpeg,image/png,image/webp" onchange="fotoEscolhida()" hidden>
-            <div class="previa-upload" id="previa-foto" hidden></div>
+            <button class="botao margem-vertical-12" id="botao_foto" onclick="escolherFoto()">Adicionar fotografia</button>
+            <input type="file" id="input_foto" accept="image/jpeg,image/png,image/webp" onchange="fotoEscolhida()" hidden>
+            <div class="previa-upload" id="div_previa" hidden></div>
           </div>
         </div>
-        <p id="mensagem-formulario" class="mensagem-formulario"></p>
+        <p id="p_mensagem" class="mensagem-formulario"></p>
         <div class="linha-botoes">
-          <button class="botao botao-principal" type="submit" id="botao-salvar">+ Publicar Post</button>
+          <button class="botao botao-principal" id="botao_salvar" onclick="salvarPost()">+ Publicar Post</button>
         </div>
-      </form>
+      </div>
     </main>
   </div>
     <script src="js/geral.js"></script>

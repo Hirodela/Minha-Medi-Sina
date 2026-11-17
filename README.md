@@ -9,7 +9,7 @@ Projeto individual desenvolvido com Node.js, Express, MySQL, HTML, CSS e JavaScr
 - Curtidas e comentários.
 - Perfil e foto de perfil.
 - Dashboard com métricas.
-- Configurações do casal, qualidades, sonhos e lugares.
+- Configurações do casal, sonhos e lugares.
 - Upload de imagens e música.
 
 ## Como executar

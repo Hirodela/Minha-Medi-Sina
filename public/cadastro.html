@@ -32,7 +32,7 @@
       <div class="autenticacao-topo">
         <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
       </div>
-      <form onsubmit="cadastrar(event)">
+      <div class="formulario-login">
         <nav class="autenticacao-abas">
           <a href="login.html">Entrar</a>
           <a class="ativo" href="cadastro.html">Criar conta</a>
@@ -41,23 +41,23 @@
           <h1>Vamos criar nosso cantinho?</h1>
         </div>
         <div class="campo">
-          <label for="input-nome">Nome completo</label>
-          <input id="input-nome" type="text" placeholder="Como você gostaria de ser chamado(a)?">
+          <label for="input_nome">Nome completo</label>
+          <input id="input_nome" type="text" placeholder="Como você gostaria de ser chamado(a)?">
         </div>
         <div class="campo">
-          <label for="input-email">E-mail</label>
-          <input id="input-email" type="email" placeholder="seuemail@exemplo.com">
+          <label for="input_email">E-mail</label>
+          <input id="input_email" type="email" placeholder="seuemail@exemplo.com">
         </div>
         <div class="campo">
-          <label for="input-senha">Senha</label>
-          <input id="input-senha" type="password" placeholder="Crie uma senha">
+          <label for="input_senha">Senha</label>
+          <input id="input_senha" type="password" placeholder="Crie uma senha">
         </div>
         <div class="linha-opcoes">
           <span class="texto-suave">Mínimo: 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 símbolo</span>
         </div>
-        <button class="botao botao-principal botao-largo" type="submit">Criar minha conta</button>
-        <p id="mensagem-formulario" class="mensagem-formulario"></p>
-      </form>
+        <button class="botao botao-principal botao-largo" onclick="cadastrar()">Criar minha conta</button>
+        <p id="p_mensagem" class="mensagem-formulario"></p>
+      </div>
     </div>
   </main>
     <script src="js/geral.js"></script>

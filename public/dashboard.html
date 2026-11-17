@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
-<body>
+<body onload="validarSessao(); carregarDashboard()">
   <div class="painel">
     <aside class="menu-lateral">
       <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana ♡</small></a>
@@ -21,7 +21,7 @@
     <main class="painel-conteudo">
       <div class="painel-topo">
         <h6 class="texto-suave">Painel de métricas, curtidas e comentários</h6>
-        <div><span class="nome-usuario-logado"></span> <span class="avatar"></span></div>
+        <div><span id="span_nome_usuario"></span> <span class="avatar" id="span_avatar"></span></div>
       </div>
 
       <div class="indicadores">
@@ -30,15 +30,15 @@
             <span class="texto-suave">Total de Posts</span>
             <span class="indicador-icone">📸</span>
           </div> 
-          <b id="indicador-total-posts">0</b>
-          <span class="texto-suave" id="indicador-legenda-posts">Momentos publicados no mural</span>
+          <b id="b_total_posts"></b>
+          <span class="texto-suave" id="span_legenda_posts"></span>
         </div>
         <div class="indicador">
           <div class="indicador-topo">
             <span class="texto-suave">Total de Curtidas</span>
             <span class="indicador-icone">❤️</span>
           </div>
-          <b id="indicador-total-curtidas">0</b>
+          <b id="b_total_curtidas"></b>
           <span class="texto-suave">Cheio de amor no mural ♡</span>
         </div>
         <div class="indicador">
@@ -46,7 +46,7 @@
             <span class="texto-suave">Comentários</span>
             <span class="indicador-icone">💬</span>
           </div>
-          <b id="indicador-total-comentarios">0</b>
+          <b id="b_total_comentarios"></b>
           <span class="texto-suave">Mensagens nos posts</span>
         </div>
         <div class="indicador">
@@ -54,8 +54,8 @@
             <span class="texto-suave">Categoria Favorita</span>
             <span class="indicador-icone">👑</span>
           </div>
-          <b id="indicador-categoria-favorita">—</b>
-          <span class="texto-suave" id="indicador-legenda-categoria">Tema mais publicado</span>
+          <b id="b_categoria_favorita"></b>
+          <span class="texto-suave" id="span_legenda_categoria">Tema mais publicado</span>
         </div>
       </div>
 
@@ -66,10 +66,10 @@
               <p class="sobretitulo">Distribuição do mural</p>
               <h3>Posts por Categoria</h3>
             </div>
-            <span class="etiqueta" id="resumo-grafico-categorias">Categorias</span>
+            <span class="etiqueta" id="span_resumo_categorias">Categorias</span>
           </div>
           <div class="grafico-area">
-            <canvas id="grafico-categorias"></canvas>
+            <canvas id="canvas_categorias"></canvas>
           </div>
         </div>
 
@@ -79,10 +79,10 @@
               <p class="sobretitulo">Interações recebidas</p>
               <h3>Curtidas e Comentários por Tema</h3>
             </div>
-            <span class="etiqueta" id="resumo-grafico-engajamento">Engajamento</span>
+            <span class="etiqueta" id="span_resumo_engajamento">Engajamento</span>
           </div>
           <div class="grafico-area">
-            <canvas id="grafico-engajamento"></canvas>
+            <canvas id="canvas_engajamento"></canvas>
           </div>
         </div>
       </div>
@@ -99,20 +99,20 @@
           <a class="meta-linha" href="nossa-historia.html">
             <div class="meta-topo">
               <span>✨ Nossos Sonhos & Metas</span>
-              <b id="texto-meta-sonhos">0 realizados</b>
+              <b id="b_meta_sonhos">0 realizados</b>
             </div>
             <div class="barra-progresso">
-              <div class="barra-progresso-preenchida" id="barra-meta-sonhos"></div>
+              <div class="barra-progresso-preenchida" id="div_barra_sonhos"></div>
             </div>
           </a>
 
-          <a class="meta-linha" href="nossa-historia.html#secao-lugares">
+          <a class="meta-linha" href="nossa-historia.html#section_lugares">
             <div class="meta-topo">
               <span>✈️ Lugares para Irmos Juntos</span>
-              <b id="texto-meta-lugares">0 destinos</b>
+              <b id="b_meta_lugares">0 destinos</b>
             </div>
             <div class="barra-progresso">
-              <div class="barra-progresso-preenchida" id="barra-meta-lugares"></div>
+              <div class="barra-progresso-preenchida" id="div_barra_lugares"></div>
             </div>
           </a>
         </div>
@@ -121,7 +121,6 @@
   </div>
 
     <script src="js/geral.js"></script>
-    <script src="js/posts.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html>

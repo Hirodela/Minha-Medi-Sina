@@ -1,35 +1,74 @@
-function publicarRapido(evento) {
-    evento.preventDefault();
-
-    var usuario = exigirLogin("Entre na sua conta para publicar ♡");
-
-    if (!usuario) {
-        return;
+function mostrarPublicacaoRapida(){
+    if(sessionStorage.ID_USUARIO != undefined){
+        section_publicar.hidden = false;
+        colocarDataDeHoje();
     }
-
-    var dados = new FormData();
-    dados.append("idUsuarioServer", usuario.id);
-    dados.append("tituloServer", document.getElementById("input-rapido-titulo").value.trim());
-    dados.append("descricaoServer", document.getElementById("input-rapido-descricao").value.trim());
-    dados.append("dataLembrancaServer", document.getElementById("input-rapido-data").value);
-    dados.append("categoriaServer", document.getElementById("select-rapido-categoria").value);
-
-    requisicao("/posts", { method: "POST", body: dados })
-        .then(function () {
-            document.getElementById("formulario-publicacao-rapida").reset();
-            document.getElementById("input-rapido-data").value = dataDeHoje();
-            return carregarPosts(urlFeed(), 0, false);
-        })
-        .catch(function (erro) {
-            alert(erro.message);
-        });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (usuarioLogado()) {
-        document.getElementById("secao-publicacao-rapida").hidden = false;
-        document.getElementById("input-rapido-data").value = dataDeHoje();
+function carregarFeed(){
+    let url = '/posts';
+
+    if(sessionStorage.ID_USUARIO != undefined){
+        url = `/posts?idUsuario=${sessionStorage.ID_USUARIO}`;
     }
 
-    carregarPosts(urlFeed(), 0, false);
-});
+    fetch(url)
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(posts){
+                mostrarListaPosts(posts, false);
+            });
+        }
+        else{
+            resposta.json().then(function(dados){
+                console.log(dados.erro);
+            });
+        }
+    })
+    .catch(function(erro){
+        console.log(erro);
+    });
+}
+
+function publicarRapido(){
+    let titulo = input_titulo.value;
+    let descricao = input_descricao.value;
+    let data = input_data.value;
+    let categoria = select_categoria.value;
+
+    if(titulo == '' || descricao == '' || data == ''){
+        alert('Preencha todos os campos!');
+    }
+    else{
+        fetch('/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                tituloServer: titulo,
+                descricaoServer: descricao,
+                dataLembrancaServer: data,
+                categoriaServer: categoria
+            })
+        })
+        .then(function(resposta){
+            if(resposta.ok){
+                input_titulo.value = '';
+                input_descricao.value = '';
+                colocarDataDeHoje();
+                carregarFeed();
+            }
+            else{
+                resposta.json().then(function(dados){
+                    alert(dados.erro);
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            alert(erro.message);
+        });
+    }
+}

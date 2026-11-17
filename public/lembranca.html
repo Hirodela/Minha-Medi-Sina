@@ -6,7 +6,7 @@
   <title>Detalhes do Post · Minha Medi Sina ♡</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body onload="atualizarCabecalho(); carregarPost()">
   <header class="cabecalho-site">
     <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
     <nav>
@@ -15,25 +15,25 @@
       <a href="nossa-historia.html">Nossa História</a>
       <a href="publicacoes.html" class="ativo">Feed de Posts</a>
     </nav>
-    <div class="acoes-navegacao" id="acoes-navegacao">
+    <div class="acoes-navegacao" id="div_acoes">
       <a class="botao botao-discreto" href="login.html">Entrar</a>
       <a class="botao botao-principal" href="cadastro.html">Criar conta</a>
     </div>
   </header>
   <main class="conteudo-pagina">
-    <article class="artigo" id="artigo"></article>
+    <article class="artigo" id="article_post"></article>
   </main>
-  <footer class="rodape" id="rodape">
+  <footer class="rodape">
     <div class="conteudo-pagina">
       <div class="rodape-marca">
         <a class="logo" href="index.html">Minha Medi Sina<small>Para Giovana · Nosso cantinho</small></a>
       </div>
-      <nav class="rodape-navegacao" aria-label="Navegação do rodapé">
+      <nav class="rodape-navegacao">
         <ul class="rodape-links">
           <li><a href="index.html">Início</a></li>
           <li><a href="sobre.html">Sobre a Giovana</a></li>
           <li><a href="nossa-historia.html">Nossa História</a></li>
-          <li><a href="publicacoes.html" aria-current="page">Feed de Posts</a></li>
+          <li><a href="publicacoes.html" class="ativo">Feed de Posts</a></li>
         </ul>
       </nav>
     </div>

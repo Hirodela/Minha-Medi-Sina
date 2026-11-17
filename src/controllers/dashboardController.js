@@ -6,6 +6,7 @@ function obterMetricas(req, res) {
     dashboardModel.buscarKpis()
         .then(function (resultadoKpis) {
             kpis = resultadoKpis[0];
+
             return dashboardModel.buscarMetricasPorCategoria();
         })
         .then(function (resultadoCategorias) {
@@ -20,11 +21,17 @@ function obterMetricas(req, res) {
                 });
             }
 
+            var categoriaFavorita = null;
+
+            if (categorias.length > 0) {
+                categoriaFavorita = categorias[0].categoria;
+            }
+
             res.json({
                 totalPosts: kpis.totalPosts,
                 totalCurtidas: kpis.totalCurtidas,
                 totalComentarios: kpis.totalComentarios,
-                categoriaFavorita: categorias.length > 0 ? categorias[0].categoria : null,
+                categoriaFavorita: categoriaFavorita,
                 totalSonhos: kpis.totalSonhos,
                 sonhosRealizados: kpis.sonhosRealizados,
                 totalLugares: kpis.totalLugares,
@@ -34,8 +41,7 @@ function obterMetricas(req, res) {
         })
         .catch(function (erro) {
             console.log(erro);
-            console.log("\nHouve um erro ao buscar as métricas! Erro: ", erro.sqlMessage);
-            res.status(500).json({ erro: erro.sqlMessage });
+            res.status(500).json({ erro: "Houve um erro ao buscar as métricas." });
         });
 }
 

@@ -1,31 +1,49 @@
-function entrar(evento) {
-    evento.preventDefault();
+function entrar(){
+    let email = input_email.value;
+    let senha = input_senha.value;
 
-    var email = document.getElementById("input-email").value.trim();
-    var senha = document.getElementById("input-senha").value;
-
-    if (email == "" || senha == "") {
-        mostrarMensagem("mensagem-formulario", "Informe o e-mail e a senha!", "erro");
-        return;
+    if(email == '' || senha == ''){
+        mostrarMensagem('Informe o e-mail e a senha!', 'erro');
     }
-
-    enviarJson("/usuarios/autenticar", "POST", {
-        emailServer: email,
-        senhaServer: senha
-    })
-        .then(function (usuario) {
-            guardarUsuario(usuario);
-            mostrarMensagem("mensagem-formulario", "Login realizado! Entrando...", "sucesso");
-
-            setTimeout(function () {
-                window.location = "dashboard.html";
-            }, 700);
+    else{
+        fetch('/usuarios/autenticar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                senhaServer: senha
+            })
         })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
-        });
-}
+        .then(function(resposta){
+            if(resposta.ok){
+                resposta.json().then(function(usuario){
+                    sessionStorage.ID_USUARIO = usuario.id;
+                    sessionStorage.NOME_USUARIO = usuario.nome;
 
-if (usuarioLogado()) {
-    window.location = "dashboard.html";
+                    if(usuario.fotoPerfil == null){
+                        sessionStorage.FOTO_USUARIO = '';
+                    }
+                    else{
+                        sessionStorage.FOTO_USUARIO = usuario.fotoPerfil;
+                    }
+
+                    mostrarMensagem('Login realizado! Entrando...', 'sucesso');
+
+                    setTimeout(function(){
+                        window.location = 'dashboard.html';
+                    }, 700);
+                });
+            }
+            else{
+                resposta.json().then(function(dados){
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+        });
+    }
 }

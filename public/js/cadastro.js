@@ -1,28 +1,43 @@
-function cadastrar(evento) {
-    evento.preventDefault();
+function cadastrar(){
+    let nome = input_nome.value;
+    let email = input_email.value;
+    let senha = input_senha.value;
 
-    var nome = document.getElementById("input-nome").value.trim();
-    var email = document.getElementById("input-email").value.trim();
-    var senha = document.getElementById("input-senha").value;
-
-    if (nome.length < 2) {
-        mostrarMensagem("mensagem-formulario", "Informe seu nome (mínimo 2 caracteres)!", "erro");
-        return;
+    if(nome == '' || email == '' || senha == ''){
+        mostrarMensagem('Preencha todos os campos!', 'erro');
     }
-
-    enviarJson("/usuarios/cadastrar", "POST", {
-        nomeServer: nome,
-        emailServer: email,
-        senhaServer: senha
-    })
-        .then(function () {
-            mostrarMensagem("mensagem-formulario", "Conta criada com sucesso! Indo para o login...", "sucesso");
-
-            setTimeout(function () {
-                window.location = "login.html";
-            }, 1400);
+    else if(nome.length < 2){
+        mostrarMensagem('Informe seu nome (mínimo 2 caracteres)!', 'erro');
+    }
+    else{
+        fetch('/usuarios/cadastrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nomeServer: nome,
+                emailServer: email,
+                senhaServer: senha
+            })
         })
-        .catch(function (erro) {
-            mostrarMensagem("mensagem-formulario", erro.message, "erro");
+        .then(function(resposta){
+            if(resposta.ok){
+                mostrarMensagem('Conta criada com sucesso! Indo para o login...', 'sucesso');
+
+                setTimeout(function(){
+                    window.location = 'login.html';
+                }, 1400);
+            }
+            else{
+                resposta.json().then(function(dados){
+                    mostrarMensagem(dados.erro, 'erro');
+                });
+            }
+        })
+        .catch(function(erro){
+            console.log(erro);
+            mostrarMensagem(erro.message, 'erro');
         });
+    }
 }

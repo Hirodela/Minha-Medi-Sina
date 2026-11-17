@@ -1,61 +1,79 @@
-function mostrarPostNaoEncontrado(mensagem) {
-    document.getElementById("artigo").innerHTML =
-        '<div class="caixa estado-vazio">' +
-            "<h3>♡</h3>" +
-            "<p>" + escaparHtml(mensagem) + "</p>" +
-            '<a class="botao botao-principal" href="publicacoes.html">Voltar ao feed</a>' +
-        "</div>";
-}
+let idPost = Number(window.location.search.replace('?id=', ''));
 
-function mostrarPost(post) {
-    var usuario = usuarioLogado();
-    var paragrafos = post.descricao.split(/\n+/);
-    var htmlDescricao = "";
+function carregarPost(){
+    let url = `/posts/${idPost}`;
 
-    for (var i = 0; i < paragrafos.length; i++) {
-        if (paragrafos[i].trim() != "") {
-            htmlDescricao += '<p class="artigo-paragrafo">' + escaparHtml(paragrafos[i]) + "</p>";
+    if(sessionStorage.ID_USUARIO != undefined){
+        url = `/posts/${idPost}?idUsuario=${sessionStorage.ID_USUARIO}`;
+    }
+
+    fetch(url)
+    .then(function(resposta){
+        if(resposta.ok){
+            resposta.json().then(function(post){
+                mostrarPost(post);
+            });
         }
-    }
-
-    var acoes = '<a class="botao" href="publicacoes.html">← Voltar ao feed</a>';
-
-    if (usuario && usuario.id == post.idUsuario) {
-        acoes += '<a class="botao" href="nova-lembranca.html?id=' + post.id + '">✎ Editar post</a>';
-    }
-
-    document.title = post.titulo + " · Minha Medi Sina ♡";
-
-    document.getElementById("artigo").innerHTML =
-        '<div class="card-detalhes-artigo">' +
-            '<span class="etiqueta">' + escaparHtml(post.categoria) + "</span>" +
-            '<span class="texto-suave">' + formatarData(post.dataLembranca) + "</span>" +
-        "</div>" +
-        "<h1>" + escaparHtml(post.titulo) + "</h1>" +
-        '<p class="texto-suave post-autor">Publicado por ' + escaparHtml(post.autor) + "</p>" +
-        htmlFotoPost(post, "detalhe-foto", "detalhe-sem-foto") +
-        htmlDescricao +
-        '<div class="caixa artigo-interacoes">' +
-            htmlInteracoes(post, false) +
-        "</div>" +
-        '<div class="linha-botoes margem-topo-24">' + acoes + "</div>";
-
-    abrirComentarios(post.id);
+    })
+    .catch(function(erro){
+        console.log(erro);
+    });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    var parametros = new URLSearchParams(window.location.search);
-    var idPost = Number(parametros.get("id"));
-    var usuario = usuarioLogado();
+function mostrarPost(post){
+    let descricao = post.descricao.replaceAll('\n', '<br>');
 
-    if (!idPost) {
-        mostrarPostNaoEncontrado("Post não encontrado.");
-        return;
+    let partes = post.dataLembranca.split('-');
+    let data = `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+    let foto = `<div class="foto-ilustrativa foto-ilustrativa-1 detalhe-sem-foto"></div>`;
+    if(post.foto != null){
+        foto = `<img class="detalhe-foto" src="${post.foto}" alt="${post.titulo}">`;
     }
 
-    requisicao("/posts/" + idPost + (usuario ? "?idUsuario=" + usuario.id : ""))
-        .then(mostrarPost)
-        .catch(function (erro) {
-            mostrarPostNaoEncontrado(erro.message);
-        });
-});
+    let classeCurtir = 'botao-curtir';
+    if(post.curtiu > 0){
+        classeCurtir = 'botao-curtir curtido';
+    }
+
+    let botaoEditar = ``;
+    if(sessionStorage.ID_USUARIO == post.idUsuario){
+        botaoEditar = `<a class="botao" href="nova-lembranca.html?id=${post.id}">Editar post</a>`;
+    }
+
+    article_post.innerHTML = `
+        <div class="card-detalhes-artigo">
+            <span class="etiqueta">${post.categoria}</span>
+            <span class="texto-suave">${data}</span>
+        </div>
+        <h1>${post.titulo}</h1>
+        <p class="texto-suave post-autor">Publicado por ${post.autor}</p>
+        ${foto}
+        <p class="artigo-paragrafo">${descricao}</p>
+        <div class="caixa artigo-interacoes">
+            <div class="barra-social">
+                <div class="botoes-sociais">
+                    <button class="${classeCurtir}" id="botao_curtir_${post.id}" onclick="curtir(${post.id})">
+                        <span class="icone-curtir">❤️</span> <span id="span_curtidas_${post.id}">${post.totalCurtidas}</span>
+                    </button>
+                    <button class="botao-comentarios">
+                        💬 <span id="span_comentarios_${post.id}">${post.totalComentarios}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="comentarios-gaveta">
+                <div class="comentarios-lista" id="div_lista_comentarios_${post.id}"></div>
+                <div class="comentario-formulario">
+                    <input type="text" id="input_comentario_${post.id}" placeholder="Escreva um comentário carinhoso..." maxlength="500">
+                    <button onclick="comentar(${post.id})">Enviar</button>
+                </div>
+            </div>
+        </div>
+        <div class="linha-botoes margem-topo-24">
+            <a class="botao" href="publicacoes.html">← Voltar ao feed</a>
+            ${botaoEditar}
+        </div>
+    `;
+
+    carregarComentarios(post.id);
+}
