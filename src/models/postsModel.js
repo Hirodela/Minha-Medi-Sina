@@ -2,64 +2,31 @@ var database = require("../database/config");
 
 function listarTodos(idUsuarioLogado) {
     var instrucaoSql = `
-        SELECT
-            p.id,
-            p.fk_usuario AS idUsuario,
-            u.nome AS autor,
-            p.titulo,
-            p.descricao,
-            DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
-            p.categoria,
-            p.foto,
-            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
-            (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
-            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
-        FROM post AS p
-        JOIN usuario AS u ON u.id = p.fk_usuario
-        ORDER BY p.data_lembranca DESC, p.id DESC;
+        SELECT vw_post_completo.*,
+               (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = vw_post_completo.id AND curtida.fk_usuario = ?) AS curtiu
+        FROM vw_post_completo
+        ORDER BY dataLembranca DESC, id DESC;
     `;
     return database.executar(instrucaoSql, [idUsuarioLogado]);
 }
 
 function listarPorUsuario(idUsuario) {
     var instrucaoSql = `
-        SELECT
-            p.id,
-            p.fk_usuario AS idUsuario,
-            u.nome AS autor,
-            p.titulo,
-            p.descricao,
-            DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
-            p.categoria,
-            p.foto,
-            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
-            (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
-            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
-        FROM post AS p
-        JOIN usuario AS u ON u.id = p.fk_usuario
-        WHERE p.fk_usuario = ?
-        ORDER BY p.data_lembranca DESC, p.id DESC;
+        SELECT vw_post_completo.*,
+               (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = vw_post_completo.id AND curtida.fk_usuario = ?) AS curtiu
+        FROM vw_post_completo
+        WHERE idUsuario = ?
+        ORDER BY dataLembranca DESC, id DESC;
     `;
     return database.executar(instrucaoSql, [idUsuario, idUsuario]);
 }
 
 function buscarPorId(idPost, idUsuarioLogado) {
     var instrucaoSql = `
-        SELECT
-            p.id,
-            p.fk_usuario AS idUsuario,
-            u.nome AS autor,
-            p.titulo,
-            p.descricao,
-            DATE_FORMAT(p.data_lembranca, '%Y-%m-%d') AS dataLembranca,
-            p.categoria,
-            p.foto,
-            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id) AS totalCurtidas,
-            (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = p.id) AS totalComentarios,
-            (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = p.id AND curtida.fk_usuario = ?) AS curtiu
-        FROM post AS p
-        JOIN usuario AS u ON u.id = p.fk_usuario
-        WHERE p.id = ?;
+        SELECT vw_post_completo.*,
+               (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = vw_post_completo.id AND curtida.fk_usuario = ?) AS curtiu
+        FROM vw_post_completo
+        WHERE id = ?;
     `;
     return database.executar(instrucaoSql, [idUsuarioLogado, idPost]);
 }
@@ -121,16 +88,15 @@ function contarCurtidasPost(idPost) {
 
 function listarComentarios(idPost) {
     var instrucaoSql = `
-        SELECT
-            c.id,
-            c.fk_usuario AS idUsuario,
-            u.nome AS autor,
-            c.texto,
-            DATE_FORMAT(c.dt_comentario, '%d/%m/%Y %H:%i') AS dataComentario
-        FROM comentario AS c
-        JOIN usuario AS u ON u.id = c.fk_usuario
-        WHERE c.fk_post = ?
-        ORDER BY c.dt_comentario, c.id;
+        SELECT comentario.id,
+               comentario.fk_usuario AS idUsuario,
+               usuario.nome AS autor,
+               comentario.texto,
+               DATE_FORMAT(comentario.dt_comentario, '%d/%m/%Y %H:%i') AS dataComentario
+        FROM comentario
+        JOIN usuario ON comentario.fk_usuario = usuario.id
+        WHERE comentario.fk_post = ?
+        ORDER BY comentario.id;
     `;
     return database.executar(instrucaoSql, [idPost]);
 }

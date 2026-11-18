@@ -112,3 +112,45 @@ INSERT INTO lugar_casal (id, fk_usuario, nome, tipo, nota, visitado) VALUES
 (1, 2, 'Campos do Jordão', '✈️ Viagem', 'Curtir o friozinho juntos, tomar chocolate quente e passear de mãos dadas.', 0),
 (2, 1, 'Jantar à Luz de Velas', '🍝 Restaurante / Café', 'Conhecer um restaurante especial para comemorar mais um capítulo do nosso amor.', 0),
 (3, 2, 'Praia ao Pôr do Sol', '🏖️ Praia / Natureza', 'Ver o sol se pôr no mar, caminhar na areia e guardar novas fotografias para o mural.', 0);
+
+-- VIEWS
+
+-- view dos posts com o nome de quem postou e quantas curtidas e comentarios tem
+CREATE VIEW vw_post_completo AS
+SELECT post.id,
+       post.fk_usuario AS idUsuario,
+       usuario.nome AS autor,
+       post.titulo,
+       post.descricao,
+       DATE_FORMAT(post.data_lembranca, '%Y-%m-%d') AS dataLembranca,
+       post.categoria,
+       post.foto,
+       (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = post.id) AS totalCurtidas,
+       (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = post.id) AS totalComentarios
+FROM post
+JOIN usuario ON post.fk_usuario = usuario.id;
+
+SELECT * FROM vw_post_completo;
+
+-- view com os numeros da dashboard
+CREATE VIEW vw_dashboard_kpis AS
+SELECT (SELECT COUNT(*) FROM post) AS totalPosts,
+       (SELECT COUNT(*) FROM curtida) AS totalCurtidas,
+       (SELECT COUNT(*) FROM comentario) AS totalComentarios,
+       (SELECT COUNT(*) FROM sonho_casal) AS totalSonhos,
+       (SELECT COUNT(*) FROM sonho_casal WHERE realizado = 1) AS sonhosRealizados,
+       (SELECT COUNT(*) FROM lugar_casal) AS totalLugares,
+       (SELECT COUNT(*) FROM lugar_casal WHERE visitado = 1) AS lugaresVisitados;
+
+SELECT * FROM vw_dashboard_kpis;
+
+-- view com os posts separados por categoria (usa a view de cima)
+CREATE VIEW vw_metricas_categoria AS
+SELECT categoria,
+       COUNT(*) AS totalPosts,
+       SUM(totalCurtidas) AS totalCurtidas,
+       SUM(totalComentarios) AS totalComentarios
+FROM vw_post_completo
+GROUP BY categoria;
+
+SELECT * FROM vw_metricas_categoria;
