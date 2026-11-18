@@ -24,6 +24,14 @@ app.use("/usuarios", usuarioRouter);
 app.use("/posts", postsRouter);
 app.use("/dashboard", dashboardRouter);
 
+app.use(function (erro, req, res, next) {
+    if (erro.code == "LIMIT_FILE_SIZE") {
+        res.status(400).json({ erro: "O arquivo é grande demais!" });
+    } else {
+        res.status(400).json({ erro: erro.message });
+    }
+});
+
 app.listen(PORTA_APP, function () {
     console.log(`
     Minha Medi Sina ♡
