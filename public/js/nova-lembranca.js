@@ -62,6 +62,11 @@ function fotoEscolhida(){
             input_foto.value = '';
             mostrarMensagem('A fotografia pode ter no máximo 5 MB!', 'erro');
         }
+        else{
+            let endereco = URL.createObjectURL(input_foto.files[0]);
+            mostrarPrevia(endereco);
+            removerFotoAtual = false;
+        }
     }
 }
 

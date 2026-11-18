@@ -113,9 +113,6 @@ INSERT INTO lugar_casal (id, fk_usuario, nome, tipo, nota, visitado) VALUES
 (2, 1, 'Jantar à Luz de Velas', '🍝 Restaurante / Café', 'Conhecer um restaurante especial para comemorar mais um capítulo do nosso amor.', 0),
 (3, 2, 'Praia ao Pôr do Sol', '🏖️ Praia / Natureza', 'Ver o sol se pôr no mar, caminhar na areia e guardar novas fotografias para o mural.', 0);
 
--- VIEWS
-
--- view dos posts com o nome de quem postou e quantas curtidas e comentarios tem
 CREATE VIEW vw_post_completo AS
 SELECT post.id,
        post.fk_usuario AS idUsuario,
@@ -132,7 +129,6 @@ JOIN usuario ON post.fk_usuario = usuario.id;
 
 SELECT * FROM vw_post_completo;
 
--- view com os numeros da dashboard
 CREATE VIEW vw_dashboard_kpis AS
 SELECT (SELECT COUNT(*) FROM post) AS totalPosts,
        (SELECT COUNT(*) FROM curtida) AS totalCurtidas,
@@ -144,7 +140,6 @@ SELECT (SELECT COUNT(*) FROM post) AS totalPosts,
 
 SELECT * FROM vw_dashboard_kpis;
 
--- view com os posts separados por categoria (usa a view de cima)
 CREATE VIEW vw_metricas_categoria AS
 SELECT categoria,
        COUNT(*) AS totalPosts,

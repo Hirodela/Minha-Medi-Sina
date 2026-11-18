@@ -1683,12 +1683,7 @@ main > .indicadores,
   place-items: center;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(184, 70, 111, 0.45);
-  transition: transform 0.2s ease;
 }
-
-.player-botao-tocar:hover { transform: scale(1.06); }
-
-.player-musica.tocando .player-botao-tocar { animation: batimento 1.8s ease-in-out infinite; }
 
 .player-info {
   display: flex;
