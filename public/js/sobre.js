@@ -3,7 +3,7 @@ let textoCarta = '';
 let assinaturaCarta = '';
 
 function mostrarBotaoEditar(){
-    if(sessionStorage.ID_USUARIO != undefined){
+    if(usuarioEhAdmin()){
         botao_editar_carta.hidden = false;
     }
 }

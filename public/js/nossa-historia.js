@@ -1,5 +1,5 @@
 function mostrarFormularios(){
-    if(sessionStorage.ID_USUARIO != undefined){
+    if(usuarioEhAdmin()){
         section_capitulo.hidden = false;
         div_adicionar_sonho.hidden = false;
         div_adicionar_lugar.hidden = false;
@@ -16,7 +16,7 @@ function carregarCapitulos(){
                 for(let i = 0; i < capitulos.length; i++){
                     let botaoExcluir = ``;
 
-                    if(sessionStorage.ID_USUARIO != undefined){
+                    if(usuarioEhAdmin()){
                         botaoExcluir = `<button class="botao-excluir-capitulo" onclick="excluirCapitulo(${capitulos[i].id})">✕ Excluir</button>`;
                     }
 
@@ -124,8 +124,9 @@ function carregarSonhos(){
 
                 for(let i = 0; i < sonhos.length; i++){
                     let botaoRemover = ``;
+                    let esconder = usuarioEhAdmin() ? `` : `hidden`;
 
-                    if(sessionStorage.ID_USUARIO != undefined){
+                    if(usuarioEhAdmin()){
                         botaoRemover = `<button class="comentario-excluir" onclick="removerSonho(${sonhos[i].id})" title="Remover sonho">&times;</button>`;
                     }
 
@@ -135,7 +136,7 @@ function carregarSonhos(){
                         div_sonhos.innerHTML += `
                             <div class="sonho-card realizado">
                                 <label class="sonho-marcador">
-                                    <input type="checkbox" onchange="alternarSonho(${sonhos[i].id}, 1)" checked>
+                                    <input type="checkbox" onchange="alternarSonho(${sonhos[i].id}, 1)" checked ${esconder}>
                                     <span class="sonho-texto">${sonhos[i].titulo}</span>
                                 </label>
                                 <span class="sonho-situacao">Realizado ♡</span>
@@ -147,7 +148,7 @@ function carregarSonhos(){
                         div_sonhos.innerHTML += `
                             <div class="sonho-card">
                                 <label class="sonho-marcador">
-                                    <input type="checkbox" onchange="alternarSonho(${sonhos[i].id}, 0)">
+                                    <input type="checkbox" onchange="alternarSonho(${sonhos[i].id}, 0)" ${esconder}>
                                     <span class="sonho-texto">${sonhos[i].titulo}</span>
                                 </label>
                                 <span class="sonho-situacao">Em breve</span>
@@ -299,8 +300,9 @@ function carregarLugares(){
 
                 for(let i = 0; i < lugares.length; i++){
                     let botaoRemover = ``;
+                    let esconder = usuarioEhAdmin() ? `` : `hidden`;
 
-                    if(sessionStorage.ID_USUARIO != undefined){
+                    if(usuarioEhAdmin()){
                         botaoRemover = `<button class="comentario-excluir" onclick="removerLugar(${lugares[i].id})" title="Remover lugar">&times;</button>`;
                     }
 
@@ -317,7 +319,7 @@ function carregarLugares(){
                                 </div>
                                 <div class="lugar-card-rodape">
                                     <span class="texto-suave">Já fomos juntos ♡</span>
-                                    <button class="lugar-botao-situacao" onclick="alternarLugar(${lugares[i].id})">✓ Visitado</button>
+                                    <button class="lugar-botao-situacao" onclick="alternarLugar(${lugares[i].id})" ${esconder}>✓ Visitado</button>
                                 </div>
                             </div>
                         `;
@@ -335,7 +337,7 @@ function carregarLugares(){
                                 </div>
                                 <div class="lugar-card-rodape">
                                     <span class="texto-suave">Ainda vamos conhecer</span>
-                                    <button class="lugar-botao-situacao" onclick="alternarLugar(${lugares[i].id})">Marcar como visitado</button>
+                                    <button class="lugar-botao-situacao" onclick="alternarLugar(${lugares[i].id})" ${esconder}>Marcar como visitado</button>
                                 </div>
                             </div>
                         `;

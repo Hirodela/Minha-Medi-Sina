@@ -21,6 +21,7 @@ function entrar(){
                 resposta.json().then(function(usuario){
                     sessionStorage.ID_USUARIO = usuario.id;
                     sessionStorage.NOME_USUARIO = usuario.nome;
+                    sessionStorage.ADMIN_USUARIO = usuario.ehAdmin;
 
                     if(usuario.fotoPerfil == null){
                         sessionStorage.FOTO_USUARIO = '';

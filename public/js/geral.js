@@ -1,3 +1,7 @@
+function usuarioEhAdmin(){
+    return sessionStorage.ADMIN_USUARIO == 'true';
+}
+
 function sair(){
     sessionStorage.clear();
     window.location = 'index.html';

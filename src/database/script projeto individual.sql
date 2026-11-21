@@ -1,90 +1,103 @@
-CREATE DATABASE minha_medi_sina;
-USE minha_medi_sina;
+create database minha_medi_sina;
+use minha_medi_sina;
 
-CREATE TABLE usuario (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(80) NOT NULL,
-    email VARCHAR(120) NOT NULL UNIQUE,
-    senha VARCHAR(100) NOT NULL,
-    foto_perfil VARCHAR(255) NULL
+create table usuario (
+    id int not null auto_increment primary key,
+    nome varchar(80) not null,
+    email varchar(120) not null unique,
+    senha varchar(100) not null,
+    foto_perfil varchar(255),
+    fk_admin int,
+    foreign key (fk_admin) references usuario(id)
 );
 
-CREATE TABLE post (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(120) NOT NULL,
-    descricao TEXT NOT NULL,
-    data_lembranca DATE NOT NULL,
-    categoria VARCHAR(50) NOT NULL,
-    foto VARCHAR(255) NULL,
-    fk_usuario INT NOT NULL,
-    CONSTRAINT fk_post_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id) 
+create table post (
+    id int not null auto_increment primary key,
+    titulo varchar(120) not null,
+    descricao text not null,
+    data_lembranca date not null,
+    categoria varchar(50) not null,
+    foto varchar(255),
+    fk_usuario int not null,
+    foreign key (fk_usuario) references usuario(id)
 );
 
-CREATE TABLE curtida (
-    fk_usuario INT NOT NULL,
-    fk_post INT NOT NULL,
-    CONSTRAINT pk_curtida PRIMARY KEY (fk_usuario, fk_post),
-    CONSTRAINT fk_curtida_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id),
-    CONSTRAINT fk_curtida_post FOREIGN KEY (fk_post) REFERENCES post(id)
+create table curtida (
+    fk_usuario int not null,
+    fk_post int not null,
+    primary key (fk_usuario, fk_post),
+    foreign key (fk_usuario) references usuario(id),
+    foreign key (fk_post) references post(id)
 );
 
-CREATE TABLE comentario (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    texto VARCHAR(500) NOT NULL,
-    dt_comentario DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fk_usuario INT NOT NULL,
-    CONSTRAINT fk_comentario_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id),
-    fk_post INT NOT NULL,
-    CONSTRAINT fk_comentario_post FOREIGN KEY (fk_post) REFERENCES post(id)
+create table comentario (
+    id int not null auto_increment primary key,
+    texto varchar(500) not null,
+    dt_comentario datetime default current_timestamp,
+    fk_usuario int not null,
+    fk_post int not null,
+    foreign key (fk_usuario) references usuario(id),
+    foreign key (fk_post) references post(id)
 );
 
-CREATE TABLE config_casal (
-    id INT PRIMARY KEY DEFAULT 1,
-    sobre_titulo VARCHAR(160) NOT NULL,
-    sobre_texto TEXT NOT NULL,
-    sobre_assinatura VARCHAR(160) NOT NULL,
-    musica_url VARCHAR(255) NULL,
-    musica_nome VARCHAR(120) NULL
+create table config_casal (
+    id int not null default 1 primary key,
+    sobre_titulo varchar(160) not null,
+    sobre_texto text not null,
+    sobre_assinatura varchar(160) not null,
+    musica_url varchar(255),
+    musica_nome varchar(120)
 );
 
-CREATE TABLE sonho_casal (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(180) NOT NULL,
-    realizado TINYINT(1) DEFAULT 0,
-    fk_usuario INT NULL,
-    CONSTRAINT fk_sonho_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+create table sonho_casal (
+    id int not null auto_increment primary key,
+    titulo varchar(180) not null,
+    realizado tinyint(1) default 0,
+    fk_usuario int,
+    foreign key (fk_usuario) references usuario(id)
 );
 
-CREATE TABLE lugar_casal (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(120) NOT NULL,
-    tipo VARCHAR(60) NOT NULL,
-    nota VARCHAR(255) NOT NULL,
-    visitado TINYINT(1) DEFAULT 0,
-    fk_usuario INT NULL,
-    CONSTRAINT fk_lugar_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+create table lugar_casal (
+    id int not null auto_increment primary key,
+    nome varchar(120) not null,
+    tipo varchar(60) not null,
+    nota varchar(255) not null,
+    visitado tinyint(1) default 0,
+    fk_usuario int,
+    foreign key (fk_usuario) references usuario(id)
 );
 
-CREATE TABLE capitulo_historia (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    etiqueta VARCHAR(50) NOT NULL,
-    titulo VARCHAR(120) NOT NULL,
-    descricao TEXT NOT NULL,
-    fk_usuario INT NULL,
-    CONSTRAINT fk_capitulo_usuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+create table capitulo_historia (
+    id int not null auto_increment primary key,
+    etiqueta varchar(50) not null,
+    titulo varchar(120) not null,
+    descricao text not null,
+    fk_usuario int,
+    foreign key (fk_usuario) references usuario(id)
 );
 
-INSERT INTO usuario (id, nome, email, senha) VALUES
-(1, 'Giovana ♡', 'giovana@amor.com', '123456'),
-(2, 'Seu Amor', 'amor@medisina.com', '123456');
+insert into usuario values
+(default, 'Giovana ♡', 'giovana@amor.com', '123456', null, null),
+(default, 'Seu Amor', 'amor@medisina.com', '123456', null, null);
 
-INSERT INTO post (id, fk_usuario, titulo, descricao, data_lembranca, categoria, foto) VALUES
-(1, 2, 'Um pôr do sol ao lado da Giovana', 'O céu mudou de cor naquele fim de tarde e eu só conseguia pensar na sorte que tenho de dividir a vida com você. Cada segundo ao seu lado vira meu lugar favorito no mundo.', '2026-02-14', 'Fotografias', NULL),
-(2, 1, 'Nosso café, risadas e conversas sem hora para acabar', 'Não precisamos de roteiros mirabolantes. Uma mesa de canto, dois cafés quentinhos e o seu sorriso já transformam qualquer dia comum na minha memória preferida.', '2026-04-18', 'Momentos engraçados', NULL),
-(3, 2, 'Para você ler sempre que sentir saudade', 'Giovana, você é a minha Medi Sina: a dose diária de paz, alegria e carinho que deixa tudo mais leve. Que este cantinho guarde para sempre tudo o que construímos juntos.', '2026-06-12', 'Mensagens', NULL),
-(4, 2, 'O dia em que nossa história ganhou um novo capítulo', 'Uma data marcada no calendário e no coração. Desde o primeiro olhar até cada plano de futuro, tudo faz mais sentido porque é com você.', '2026-08-25', 'Datas especiais', NULL);
+select usuario.id,
+       usuario.nome,
+       case
+           when usuario.fk_admin is null then 'Admin'
+           else 'Usuário'
+       end as perfil,
+       admin.nome as adminResponsavel
+from usuario
+left join usuario as admin
+on usuario.fk_admin = admin.id;
 
-INSERT INTO curtida (fk_usuario, fk_post) VALUES
+insert into post values
+(default, 'Um pôr do sol ao lado da Giovana', 'O céu mudou de cor naquele fim de tarde e eu só conseguia pensar na sorte que tenho de dividir a vida com você. Cada segundo ao seu lado vira meu lugar favorito no mundo.', '2026-02-14', 'Fotografias', null, 2),
+(default, 'Nosso café, risadas e conversas sem hora para acabar', 'Não precisamos de roteiros mirabolantes. Uma mesa de canto, dois cafés quentinhos e o seu sorriso já transformam qualquer dia comum na minha memória preferida.', '2026-04-18', 'Momentos engraçados', null, 1),
+(default, 'Para você ler sempre que sentir saudade', 'Giovana, você é a minha Medi Sina: a dose diária de paz, alegria e carinho que deixa tudo mais leve. Que este cantinho guarde para sempre tudo o que construímos juntos.', '2026-06-12', 'Mensagens', null, 2),
+(default, 'O dia em que nossa história ganhou um novo capítulo', 'Uma data marcada no calendário e no coração. Desde o primeiro olhar até cada plano de futuro, tudo faz mais sentido porque é com você.', '2026-08-25', 'Datas especiais', null, 2);
+
+insert into curtida values
 (1, 1),
 (2, 1),
 (1, 2),
@@ -92,60 +105,67 @@ INSERT INTO curtida (fk_usuario, fk_post) VALUES
 (1, 3),
 (1, 4);
 
-INSERT INTO comentario (id, fk_usuario, fk_post, texto) VALUES
-(1, 1, 1, 'Esse dia foi mágico! Quero repetir mil vezes com você ♡'),
-(2, 2, 2, 'A melhor companhia do universo inteiro! Te amo, Gi!'),
-(3, 1, 3, 'Você sempre sabe como fazer meu coração sorrir. Minha melhor escolha!');
+insert into comentario values
+(default, 'Esse dia foi mágico! Quero repetir mil vezes com você ♡', default, 1, 1),
+(default, 'A melhor companhia do universo inteiro! Te amo, Gi!', default, 2, 2),
+(default, 'Você sempre sabe como fazer meu coração sorrir. Minha melhor escolha!', default, 1, 3);
 
-INSERT INTO config_casal (id, sobre_titulo, sobre_texto, sobre_assinatura) VALUES
-(1, 'Quem é a Giovana pelos meus olhos ♡', 'Falar sobre a Giovana é falar sobre a pessoa que trouxe mais cor, calma e sentido para os meus dias. Ela tem aquele jeito único de transformar momentos simples em memórias inesquecíveis, sempre com um olhar doce, uma risada que contagia qualquer ambiente e um coração que não cabe no peito.\n\nAdmiro a força, a dedicação e a sensibilidade com que ela encara a vida. Estar ao lado dela me faz querer evoluir todos os dias, porque a Giovana inspira amor, parceria de verdade e a certeza de que encontrei a pessoa certa para dividir todos os sonhos.', 'Com todo o meu amor e admiração, sempre seu ♡');
+insert into config_casal values
+(1, 'Quem é a Giovana pelos meus olhos ♡', 'Falar sobre a Giovana é falar sobre a pessoa que trouxe mais cor, calma e sentido para os meus dias. Ela tem aquele jeito único de transformar momentos simples em memórias inesquecíveis, sempre com um olhar doce, uma risada que contagia qualquer ambiente e um coração que não cabe no peito.
+Admiro a força, a dedicação e a sensibilidade com que ela encara a vida. Estar ao lado dela me faz querer evoluir todos os dias, porque a Giovana inspira amor, parceria de verdade e a certeza de que encontrei a pessoa certa para dividir todos os sonhos.', 'Com todo o meu amor e admiração, sempre seu ♡', null, null);
 
-INSERT INTO sonho_casal (id, fk_usuario, titulo, realizado) VALUES
-(1, 2, 'Fazer uma viagem inesquecível só nós dois', 1),
-(2, 1, 'Assistir ao pôr do sol em um lugar especial', 1),
-(3, 2, 'Comemorar muitas datas especiais lado a lado', 1),
-(4, 1, 'Conhecer um destino dos nossos sonhos juntos', 0),
-(5, 2, 'Cozinhar um jantar romântico completo a dois', 0),
-(6, 1, 'Construir um álbum cheio de memórias para o futuro', 0);
+insert into sonho_casal values
+(default, 'Fazer uma viagem inesquecível só nós dois', 1, 2),
+(default, 'Assistir ao pôr do sol em um lugar especial', 1, 1),
+(default, 'Comemorar muitas datas especiais lado a lado', 1, 2),
+(default, 'Conhecer um destino dos nossos sonhos juntos', 0, 1),
+(default, 'Cozinhar um jantar romântico completo a dois', 0, 2),
+(default, 'Construir um álbum cheio de memórias para o futuro', 0, 1);
 
-INSERT INTO lugar_casal (id, fk_usuario, nome, tipo, nota, visitado) VALUES
-(1, 2, 'Campos do Jordão', '✈️ Viagem', 'Curtir o friozinho juntos, tomar chocolate quente e passear de mãos dadas.', 0),
-(2, 1, 'Jantar à Luz de Velas', '🍝 Restaurante / Café', 'Conhecer um restaurante especial para comemorar mais um capítulo do nosso amor.', 0),
-(3, 2, 'Praia ao Pôr do Sol', '🏖️ Praia / Natureza', 'Ver o sol se pôr no mar, caminhar na areia e guardar novas fotografias para o mural.', 0);
+insert into lugar_casal values
+(default, 'Campos do Jordão', '✈️ Viagem', 'Curtir o friozinho juntos, tomar chocolate quente e passear de mãos dadas.', 0, 2),
+(default, 'Jantar à Luz de Velas', '🍝 Restaurante / Café', 'Conhecer um restaurante especial para comemorar mais um capítulo do nosso amor.', 0, 1),
+(default, 'Praia ao Pôr do Sol', '🏖️ Praia / Natureza', 'Ver o sol se pôr no mar, caminhar na areia e guardar novas fotografias para o mural.', 0, 2);
 
-CREATE VIEW vw_post_completo AS
-SELECT post.id,
-       post.fk_usuario AS idUsuario,
-       usuario.nome AS autor,
+create view vw_post_completo as
+select post.id,
+       post.fk_usuario as idUsuario,
+       usuario.nome as autor,
        post.titulo,
        post.descricao,
-       DATE_FORMAT(post.data_lembranca, '%Y-%m-%d') AS dataLembranca,
+       date_format(post.data_lembranca, '%Y-%m-%d') as dataLembranca,
        post.categoria,
        post.foto,
-       (SELECT COUNT(*) FROM curtida WHERE curtida.fk_post = post.id) AS totalCurtidas,
-       (SELECT COUNT(*) FROM comentario WHERE comentario.fk_post = post.id) AS totalComentarios
-FROM post
-JOIN usuario ON post.fk_usuario = usuario.id;
+       (select count(*)
+        from curtida
+        where curtida.fk_post = post.id) as totalCurtidas,
+       (select count(*)
+        from comentario
+        where comentario.fk_post = post.id) as totalComentarios
+from post
+join usuario
+on post.fk_usuario = usuario.id;
 
-SELECT * FROM vw_post_completo;
+select * from vw_post_completo;
 
-CREATE VIEW vw_dashboard_kpis AS
-SELECT (SELECT COUNT(*) FROM post) AS totalPosts,
-       (SELECT COUNT(*) FROM curtida) AS totalCurtidas,
-       (SELECT COUNT(*) FROM comentario) AS totalComentarios,
-       (SELECT COUNT(*) FROM sonho_casal) AS totalSonhos,
-       (SELECT COUNT(*) FROM sonho_casal WHERE realizado = 1) AS sonhosRealizados,
-       (SELECT COUNT(*) FROM lugar_casal) AS totalLugares,
-       (SELECT COUNT(*) FROM lugar_casal WHERE visitado = 1) AS lugaresVisitados;
+create view vw_dashboard_kpis as
+select
+    (select count(*) from post) as totalPosts,
+    (select count(*) from curtida) as totalCurtidas,
+    (select count(*) from comentario) as totalComentarios,
+    (select count(*) from sonho_casal) as totalSonhos,
+    (select count(*) from sonho_casal where realizado = 1) as sonhosRealizados,
+    (select count(*) from lugar_casal) as totalLugares,
+    (select count(*) from lugar_casal where visitado = 1) as lugaresVisitados;
 
-SELECT * FROM vw_dashboard_kpis;
+select * from vw_dashboard_kpis;
 
-CREATE VIEW vw_metricas_categoria AS
-SELECT categoria,
-       COUNT(*) AS totalPosts,
-       SUM(totalCurtidas) AS totalCurtidas,
-       SUM(totalComentarios) AS totalComentarios
-FROM vw_post_completo
-GROUP BY categoria;
+create view vw_metricas_categoria as
+select vw_post_completo.categoria,
+       count(*) as totalPosts,
+       sum(vw_post_completo.totalCurtidas) as totalCurtidas,
+       sum(vw_post_completo.totalComentarios) as totalComentarios
+from vw_post_completo
+group by vw_post_completo.categoria;
 
-SELECT * FROM vw_metricas_categoria;
+select * from vw_metricas_categoria;

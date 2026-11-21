@@ -2,7 +2,8 @@ var database = require("../database/config");
 
 function autenticar(email, senha) {
     var instrucaoSql = `
-        SELECT id, nome, foto_perfil AS fotoPerfil
+        SELECT id, nome, foto_perfil AS fotoPerfil,
+               (fk_admin IS NULL) AS ehAdmin
         FROM usuario
         WHERE email = ? AND senha = ?;
     `;
@@ -11,11 +12,10 @@ function autenticar(email, senha) {
 
 function cadastrar(nome, email, senha) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?);
+        INSERT INTO usuario (nome, email, senha, fk_admin) VALUES (?, ?, ?, 1);
     `;
     return database.executar(instrucaoSql, [nome, email, senha]);
 }
-
 function buscarPorId(idUsuario) {
     var instrucaoSql = `
         SELECT id, nome, foto_perfil AS fotoPerfil

@@ -15,7 +15,8 @@ function autenticar(req, res) {
                     res.json({
                         id: resultadoAutenticar[0].id,
                         nome: resultadoAutenticar[0].nome,
-                        fotoPerfil: resultadoAutenticar[0].fotoPerfil
+                        fotoPerfil: resultadoAutenticar[0].fotoPerfil,
+                        ehAdmin: resultadoAutenticar[0].ehAdmin == 1
                     });
                 } else if (resultadoAutenticar.length == 0) {
                     res.status(403).json({ erro: "E-mail e/ou senha inválidos!" });
