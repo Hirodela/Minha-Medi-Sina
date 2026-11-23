@@ -9,7 +9,7 @@ function mostrarBotaoEditar(){
 }
 
 function carregarCarta(){
-    fetch('/posts/config/casal')
+    fetch('/casal/config')
     .then(function(resposta){
         if(resposta.ok){
             resposta.json().then(function(carta){
@@ -23,6 +23,7 @@ function carregarCarta(){
         }
     })
     .catch(function(erro){
+        console.log(erro);
     });
 }
 
@@ -68,7 +69,7 @@ function salvarCarta(){
         alert('Preencha todos os campos!');
     }
     else{
-        fetch('/posts/config/sobre-ela', {
+        fetch('/casal/sobre-ela', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

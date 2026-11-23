@@ -1,7 +1,7 @@
-var database = require("../database/config");
+let database = require("../database/config");
 
 function autenticar(email, senha) {
-    var instrucaoSql = `
+    let instrucaoSql = `
         SELECT id, nome, foto_perfil AS fotoPerfil,
                (fk_admin IS NULL) AS ehAdmin
         FROM usuario
@@ -11,13 +11,13 @@ function autenticar(email, senha) {
 }
 
 function cadastrar(nome, email, senha) {
-    var instrucaoSql = `
+    let instrucaoSql = `
         INSERT INTO usuario (nome, email, senha, fk_admin) VALUES (?, ?, ?, 1);
     `;
     return database.executar(instrucaoSql, [nome, email, senha]);
 }
 function buscarPorId(idUsuario) {
-    var instrucaoSql = `
+    let instrucaoSql = `
         SELECT id, nome, foto_perfil AS fotoPerfil
         FROM usuario
         WHERE id = ?;
@@ -26,14 +26,14 @@ function buscarPorId(idUsuario) {
 }
 
 function atualizarNome(idUsuario, nome) {
-    var instrucaoSql = `
+    let instrucaoSql = `
         UPDATE usuario SET nome = ? WHERE id = ?;
     `;
     return database.executar(instrucaoSql, [nome, idUsuario]);
 }
 
 function atualizarFotoPerfil(idUsuario, fotoPerfil) {
-    var instrucaoSql = `
+    let instrucaoSql = `
         UPDATE usuario SET foto_perfil = ? WHERE id = ?;
     `;
     return database.executar(instrucaoSql, [fotoPerfil, idUsuario]);

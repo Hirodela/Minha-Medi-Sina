@@ -1,6 +1,6 @@
-var mysql = require("mysql2");
+let mysql = require("mysql2");
 
-var mySqlConfig = {
+let mySqlConfig = {
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     user: process.env.DB_USER,
@@ -10,7 +10,7 @@ var mySqlConfig = {
 
 function executar(instrucaoSql, valores) {
     return new Promise(function (resolve, reject) {
-        var conexao = mysql.createConnection(mySqlConfig);
+        let conexao = mysql.createConnection(mySqlConfig);
         conexao.connect();
         conexao.query(instrucaoSql, valores, function (erro, resultados) {
             conexao.end();
@@ -19,6 +19,9 @@ function executar(instrucaoSql, valores) {
             } else {
                 resolve(resultados);
             }
+        });
+        conexao.on("error", function (erro) {
+            console.log("ERRO NO MySQL SERVER: ", erro.message);
         });
     });
 }

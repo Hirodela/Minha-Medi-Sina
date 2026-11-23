@@ -7,7 +7,7 @@ function mostrarFormularios(){
 }
 
 function carregarCapitulos(){
-    fetch('/posts/capitulos')
+    fetch('/historia/capitulos')
     .then(function(resposta){
         if(resposta.ok){
             resposta.json().then(function(capitulos){
@@ -53,7 +53,7 @@ function adicionarCapitulo(){
         mostrarMensagem('Preencha todos os campos!', 'erro');
     }
     else{
-        fetch('/posts/capitulos', {
+        fetch('/historia/capitulos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ function adicionarCapitulo(){
 
 function excluirCapitulo(idCapitulo){
     if(confirm('Excluir este capítulo da linha do tempo?') == true){
-        fetch(`/posts/capitulos/${idCapitulo}`, {
+        fetch(`/historia/capitulos/${idCapitulo}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -113,7 +113,7 @@ function excluirCapitulo(idCapitulo){
 }
 
 function carregarSonhos(){
-    fetch('/posts/sonhos')
+    fetch('/historia/sonhos')
     .then(function(resposta){
         if(resposta.ok){
             resposta.json().then(function(sonhos){
@@ -124,10 +124,11 @@ function carregarSonhos(){
 
                 for(let i = 0; i < sonhos.length; i++){
                     let botaoRemover = ``;
-                    let esconder = usuarioEhAdmin() ? `` : `hidden`;
+                    let esconder = `hidden`;
 
                     if(usuarioEhAdmin()){
                         botaoRemover = `<button class="comentario-excluir" onclick="removerSonho(${sonhos[i].id})" title="Remover sonho">&times;</button>`;
+                        esconder = ``;
                     }
 
                     if(sonhos[i].realizado == 1){
@@ -184,7 +185,7 @@ function adicionarSonho(){
         alert('Escreva um sonho!');
     }
     else{
-        fetch('/posts/sonhos', {
+        fetch('/historia/sonhos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -217,7 +218,7 @@ function alternarSonho(idSonho, realizado){
         window.location = 'login.html';
     }
     else{
-        fetch(`/posts/sonhos/${idSonho}/alternar`, {
+        fetch(`/historia/sonhos/${idSonho}/alternar`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -249,7 +250,7 @@ function alternarSonho(idSonho, realizado){
 
 function removerSonho(idSonho){
     if(confirm('Remover este sonho da lista?') == true){
-        fetch(`/posts/sonhos/${idSonho}`, {
+        fetch(`/historia/sonhos/${idSonho}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -292,7 +293,7 @@ function soltarCoracoes(){
 }
 
 function carregarLugares(){
-    fetch('/posts/lugares')
+    fetch('/historia/lugares')
     .then(function(resposta){
         if(resposta.ok){
             resposta.json().then(function(lugares){
@@ -300,10 +301,11 @@ function carregarLugares(){
 
                 for(let i = 0; i < lugares.length; i++){
                     let botaoRemover = ``;
-                    let esconder = usuarioEhAdmin() ? `` : `hidden`;
+                    let esconder = `hidden`;
 
                     if(usuarioEhAdmin()){
                         botaoRemover = `<button class="comentario-excluir" onclick="removerLugar(${lugares[i].id})" title="Remover lugar">&times;</button>`;
+                        esconder = ``;
                     }
 
                     if(lugares[i].visitado == 1){
@@ -365,7 +367,7 @@ function adicionarLugar(){
         alert('Preencha todos os campos!');
     }
     else{
-        fetch('/posts/lugares', {
+        fetch('/historia/lugares', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -401,7 +403,7 @@ function alternarLugar(idLugar){
         window.location = 'login.html';
     }
     else{
-        fetch(`/posts/lugares/${idLugar}/alternar`, {
+        fetch(`/historia/lugares/${idLugar}/alternar`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -429,7 +431,7 @@ function alternarLugar(idLugar){
 
 function removerLugar(idLugar){
     if(confirm('Remover este lugar da lista?') == true){
-        fetch(`/posts/lugares/${idLugar}`, {
+        fetch(`/historia/lugares/${idLugar}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,27 +1,35 @@
-var caminho_env = ".env.dev";
+let ambiente_processo = 'desenvolvimento';
+// let ambiente_processo = 'producao';
+
+let caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 
 require("dotenv").config({ path: caminho_env });
 
-var express = require("express");
-var cors = require("cors");
-var path = require("path");
+let express = require("express");
+let cors = require("cors");
+let path = require("path");
 
-var PORTA_APP = process.env.APP_PORT;
-var HOST_APP = process.env.APP_HOST;
+let PORTA_APP = process.env.APP_PORT;
+let HOST_APP = process.env.APP_HOST;
 
-var app = express();
+let app = express();
 
-var usuarioRouter = require("./src/routes/usuario");
-var postsRouter = require("./src/routes/posts");
-var dashboardRouter = require("./src/routes/dashboard");
+let usuarioRouter = require("./src/routes/usuario");
+let postsRouter = require("./src/routes/posts");
+let historiaRouter = require("./src/routes/historia");
+let casalRouter = require("./src/routes/casal");
+let dashboardRouter = require("./src/routes/dashboard");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
 app.use("/usuarios", usuarioRouter);
 app.use("/posts", postsRouter);
+app.use("/historia", historiaRouter);
+app.use("/casal", casalRouter);
 app.use("/dashboard", dashboardRouter);
 
 app.use(function (erro, req, res, next) {

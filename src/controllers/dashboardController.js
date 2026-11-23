@@ -1,7 +1,7 @@
-var dashboardModel = require("../models/dashboardModel");
+let dashboardModel = require("../models/dashboardModel");
 
 function obterMetricas(req, res) {
-    var kpis;
+    let kpis;
 
     dashboardModel.buscarKpis()
         .then(function (resultadoKpis) {
@@ -10,9 +10,9 @@ function obterMetricas(req, res) {
             return dashboardModel.buscarMetricasPorCategoria();
         })
         .then(function (resultadoCategorias) {
-            var categorias = [];
+            let categorias = [];
 
-            for (var i = 0; i < resultadoCategorias.length; i++) {
+            for (let i = 0; i < resultadoCategorias.length; i++) {
                 categorias.push({
                     categoria: resultadoCategorias[i].categoria,
                     totalPosts: Number(resultadoCategorias[i].totalPosts),
@@ -21,7 +21,7 @@ function obterMetricas(req, res) {
                 });
             }
 
-            var categoriaFavorita = null;
+            let categoriaFavorita = null;
 
             if (categorias.length > 0) {
                 categoriaFavorita = categorias[0].categoria;

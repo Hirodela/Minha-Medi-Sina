@@ -1,65 +1,8 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 
-var postsController = require("../controllers/postsController");
-var upload = require("../config/upload");
-
-
-router.get("/config/casal", function (req, res) {
-    postsController.buscarConfigCasal(req, res);
-});
-
-router.put("/config/sobre-ela", function (req, res) {
-    postsController.atualizarSobreEla(req, res);
-});
-
-router.post("/config/musica", upload.musica.single("musica"), function (req, res) {
-    postsController.atualizarMusicaCasal(req, res);
-});
-
-router.get("/sonhos", function (req, res) {
-    postsController.listarSonhos(req, res);
-});
-
-router.post("/sonhos", function (req, res) {
-    postsController.adicionarSonho(req, res);
-});
-
-router.put("/sonhos/:idSonho/alternar", function (req, res) {
-    postsController.alternarSonho(req, res);
-});
-
-router.delete("/sonhos/:idSonho", function (req, res) {
-    postsController.removerSonho(req, res);
-});
-
-router.get("/lugares", function (req, res) {
-    postsController.listarLugares(req, res);
-});
-
-router.post("/lugares", function (req, res) {
-    postsController.adicionarLugar(req, res);
-});
-
-router.put("/lugares/:idLugar/alternar", function (req, res) {
-    postsController.alternarLugar(req, res);
-});
-
-router.delete("/lugares/:idLugar", function (req, res) {
-    postsController.removerLugar(req, res);
-});
-
-router.get("/capitulos", function (req, res) {
-    postsController.listarCapitulos(req, res);
-});
-
-router.post("/capitulos", function (req, res) {
-    postsController.adicionarCapitulo(req, res);
-});
-
-router.delete("/capitulos/:idCapitulo", function (req, res) {
-    postsController.removerCapitulo(req, res);
-});
+let postsController = require("../controllers/postsController");
+let upload = require("../config/upload");
 
 router.delete("/comentarios/:idComentario", function (req, res) {
     postsController.deletarComentario(req, res);

@@ -1,8 +1,8 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 
-var usuarioController = require("../controllers/usuarioController");
-var upload = require("../config/upload");
+let usuarioController = require("../controllers/usuarioController");
+let upload = require("../config/upload");
 
 router.post("/cadastrar", function (req, res) {
     usuarioController.cadastrar(req, res);

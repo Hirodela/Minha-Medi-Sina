@@ -9,7 +9,7 @@ function definirMusica(endereco, nome){
 }
 
 function carregarMusica(){
-    fetch('/posts/config/casal')
+    fetch('/casal/config')
     .then(function(resposta){
         if(resposta.ok){
             resposta.json().then(function(config){
@@ -76,7 +76,7 @@ function enviarMusica(){
         audio_musica.pause();
         span_status_musica.innerHTML = `Enviando a música...`;
 
-        fetch('/posts/config/musica', {
+        fetch('/casal/musica', {
             method: 'POST',
             body: dados
         })

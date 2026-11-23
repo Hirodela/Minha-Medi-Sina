@@ -1,8 +1,8 @@
-var usuarioModel = require("../models/usuarioModel");
+let usuarioModel = require("../models/usuarioModel");
 
 function autenticar(req, res) {
-    var email = req.body.emailServer;
-    var senha = req.body.senhaServer;
+    let email = req.body.emailServer;
+    let senha = req.body.senhaServer;
 
     if (email == undefined || email == "") {
         res.status(400).json({ erro: "Seu e-mail está indefinido!" });
@@ -32,9 +32,9 @@ function autenticar(req, res) {
 }
 
 function cadastrar(req, res) {
-    var nome = req.body.nomeServer;
-    var email = req.body.emailServer;
-    var senha = req.body.senhaServer;
+    let nome = req.body.nomeServer;
+    let email = req.body.emailServer;
+    let senha = req.body.senhaServer;
 
     if (nome == undefined || nome.trim().length < 2) {
         res.status(400).json({ erro: "Informe seu nome (mínimo 2 caracteres)!" });
@@ -60,15 +60,15 @@ function cadastrar(req, res) {
 }
 
 function senhaForte(senha) {
-    var simbolos = "!@#$%^&*(),.?\":{}|<>";
+    let simbolos = "!@#$%^&*(),.?\":{}|<>";
 
-    var temMaiuscula = false;
-    var temMinuscula = false;
-    var temNumero = false;
-    var temSimbolo = false;
+    let temMaiuscula = false;
+    let temMinuscula = false;
+    let temNumero = false;
+    let temSimbolo = false;
 
-    for (var i = 0; i < senha.length; i++) {
-        var letra = senha[i];
+    for (let i = 0; i < senha.length; i++) {
+        let letra = senha[i];
 
         if (letra >= "A" && letra <= "Z") {
             temMaiuscula = true;
@@ -89,8 +89,8 @@ function senhaForte(senha) {
 }
 
 function atualizarPerfil(req, res) {
-    var idUsuario = req.params.idUsuario;
-    var nome = req.body.nomeServer;
+    let idUsuario = req.params.idUsuario;
+    let nome = req.body.nomeServer;
 
     if (nome == undefined || nome.trim().length < 2) {
         res.status(400).json({ erro: "Informe seu nome (mínimo 2 caracteres)!" });
@@ -115,14 +115,14 @@ function atualizarPerfil(req, res) {
 }
 
 function atualizarFotoPerfil(req, res) {
-    var idUsuario = req.params.idUsuario;
+    let idUsuario = req.params.idUsuario;
 
     if (req.file == undefined) {
         res.status(400).json({ erro: "Escolha uma imagem para a foto de perfil!" });
         return;
     }
 
-    var novaFoto = "/uploads/" + req.file.filename;
+    let novaFoto = "/uploads/" + req.file.filename;
 
     usuarioModel.buscarPorId(idUsuario)
         .then(function (resultado) {
@@ -143,7 +143,7 @@ function atualizarFotoPerfil(req, res) {
 }
 
 function removerFotoPerfil(req, res) {
-    var idUsuario = req.params.idUsuario;
+    let idUsuario = req.params.idUsuario;
 
     usuarioModel.buscarPorId(idUsuario)
         .then(function (resultado) {

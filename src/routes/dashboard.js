@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 
-var dashboardController = require("../controllers/dashboardController");
+let dashboardController = require("../controllers/dashboardController");
 
 router.get("/metricas", function (req, res) {
     dashboardController.obterMetricas(req, res);

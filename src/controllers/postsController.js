@@ -1,7 +1,7 @@
-var postsModel = require("../models/postsModel");
+let postsModel = require("../models/postsModel");
 
 function listarTodos(req, res) {
-    var idUsuarioLogado = req.query.idUsuario;
+    let idUsuarioLogado = req.query.idUsuario;
 
     if (idUsuarioLogado == undefined) {
         idUsuarioLogado = 0;
@@ -18,7 +18,7 @@ function listarTodos(req, res) {
 }
 
 function listarPorUsuario(req, res) {
-    var idUsuario = req.params.idUsuario;
+    let idUsuario = req.params.idUsuario;
 
     postsModel.listarPorUsuario(idUsuario)
         .then(function (resultado) {
@@ -31,8 +31,8 @@ function listarPorUsuario(req, res) {
 }
 
 function buscarPorId(req, res) {
-    var idPost = req.params.idPost;
-    var idUsuarioLogado = req.query.idUsuario;
+    let idPost = req.params.idPost;
+    let idUsuarioLogado = req.query.idUsuario;
 
     if (idUsuarioLogado == undefined) {
         idUsuarioLogado = 0;
@@ -53,19 +53,19 @@ function buscarPorId(req, res) {
 }
 
 function publicar(req, res) {
-    var idUsuario = req.body.idUsuarioServer;
-    var titulo = req.body.tituloServer;
-    var descricao = req.body.descricaoServer;
-    var dataLembranca = req.body.dataLembrancaServer;
-    var categoria = req.body.categoriaServer;
+    let idUsuario = req.body.idUsuarioServer;
+    let titulo = req.body.tituloServer;
+    let descricao = req.body.descricaoServer;
+    let dataLembranca = req.body.dataLembrancaServer;
+    let categoria = req.body.categoriaServer;
 
-    var foto = null;
+    let foto = null;
 
     if (req.file != undefined) {
         foto = "/uploads/" + req.file.filename;
     }
 
-    var mensagemErro = "";
+    let mensagemErro = "";
 
     if (idUsuario == undefined) {
         mensagemErro = "Você precisa entrar na sua conta para publicar!";
@@ -95,26 +95,26 @@ function publicar(req, res) {
 }
 
 function editar(req, res) {
-    var idPost = req.params.idPost;
-    var idUsuario = req.body.idUsuarioServer;
-    var titulo = req.body.tituloServer;
-    var descricao = req.body.descricaoServer;
-    var dataLembranca = req.body.dataLembrancaServer;
-    var categoria = req.body.categoriaServer;
+    let idPost = req.params.idPost;
+    let idUsuario = req.body.idUsuarioServer;
+    let titulo = req.body.tituloServer;
+    let descricao = req.body.descricaoServer;
+    let dataLembranca = req.body.dataLembrancaServer;
+    let categoria = req.body.categoriaServer;
 
-    var removerFoto = false;
+    let removerFoto = false;
 
     if (req.body.removerFotoServer == "true") {
         removerFoto = true;
     }
 
-    var novaFoto = null;
+    let novaFoto = null;
 
     if (req.file != undefined) {
         novaFoto = "/uploads/" + req.file.filename;
     }
 
-    var mensagemErro = "";
+    let mensagemErro = "";
 
     if (idUsuario == undefined) {
         mensagemErro = "Você precisa entrar na sua conta para publicar!";
@@ -145,7 +145,7 @@ function editar(req, res) {
                 return;
             }
 
-            var fotoFinal = resultado[0].foto;
+            let fotoFinal = resultado[0].foto;
 
             if (novaFoto != null) {
                 fotoFinal = novaFoto;
@@ -165,8 +165,8 @@ function editar(req, res) {
 }
 
 function deletar(req, res) {
-    var idPost = req.params.idPost;
-    var idUsuario = req.body.idUsuarioServer;
+    let idPost = req.params.idPost;
+    let idUsuario = req.body.idUsuarioServer;
 
     if (idUsuario == undefined) {
         res.status(400).json({ erro: "Dados insuficientes para excluir o post!" });
@@ -197,9 +197,9 @@ function deletar(req, res) {
 }
 
 function alternarCurtida(req, res) {
-    var idPost = req.params.idPost;
-    var idUsuario = req.body.idUsuarioServer;
-    var curtiu;
+    let idPost = req.params.idPost;
+    let idUsuario = req.body.idUsuarioServer;
+    let curtiu;
 
     if (idUsuario == undefined) {
         res.status(400).json({ erro: "Você precisa entrar na sua conta para curtir!" });
@@ -233,7 +233,7 @@ function alternarCurtida(req, res) {
 }
 
 function listarComentarios(req, res) {
-    var idPost = req.params.idPost;
+    let idPost = req.params.idPost;
 
     postsModel.listarComentarios(idPost)
         .then(function (resultado) {
@@ -246,9 +246,9 @@ function listarComentarios(req, res) {
 }
 
 function comentar(req, res) {
-    var idPost = req.params.idPost;
-    var idUsuario = req.body.idUsuarioServer;
-    var texto = req.body.textoServer;
+    let idPost = req.params.idPost;
+    let idUsuario = req.body.idUsuarioServer;
+    let texto = req.body.textoServer;
 
     if (idUsuario == undefined) {
         res.status(400).json({ erro: "Você precisa entrar na sua conta para comentar!" });
@@ -271,8 +271,8 @@ function comentar(req, res) {
 }
 
 function deletarComentario(req, res) {
-    var idComentario = req.params.idComentario;
-    var idUsuario = req.body.idUsuarioServer;
+    let idComentario = req.params.idComentario;
+    let idUsuario = req.body.idUsuarioServer;
 
     if (idUsuario == undefined) {
         res.status(400).json({ erro: "Dados insuficientes para excluir o comentário!" });
@@ -293,283 +293,6 @@ function deletarComentario(req, res) {
         });
 }
 
-function buscarConfigCasal(req, res) {
-    postsModel.buscarConfigCasal()
-        .then(function (resultado) {
-            if (resultado.length == 1) {
-                res.json(resultado[0]);
-            } else {
-                res.status(404).json({ erro: "As configurações do casal não foram cadastradas no banco!" });
-            }
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao buscar as configurações." });
-        });
-}
-
-function atualizarSobreEla(req, res) {
-    var idUsuario = req.body.idUsuarioServer;
-    var titulo = req.body.tituloServer;
-    var texto = req.body.textoServer;
-    var assinatura = req.body.assinaturaServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para editar!" });
-    } else if (titulo == undefined || titulo == "" || titulo.length > 160) {
-        res.status(400).json({ erro: "Informe um título de até 160 caracteres!" });
-    } else if (texto == undefined || texto == "") {
-        res.status(400).json({ erro: "Escreva o texto da declaração!" });
-    } else if (assinatura == undefined || assinatura == "" || assinatura.length > 160) {
-        res.status(400).json({ erro: "Informe uma assinatura de até 160 caracteres!" });
-    } else {
-        postsModel.atualizarSobreEla(titulo, texto, assinatura)
-            .then(function () {
-                res.json({
-                    sobreTitulo: titulo,
-                    sobreTexto: texto,
-                    sobreAssinatura: assinatura
-                });
-            })
-            .catch(function (erro) {
-                console.log(erro);
-                res.status(500).json({ erro: "Houve um erro ao salvar a declaração." });
-            });
-    }
-}
-
-function atualizarMusicaCasal(req, res) {
-    var idUsuario = req.body.idUsuarioServer;
-
-    if (req.file == undefined) {
-        res.status(400).json({ erro: "Escolha um arquivo de música!" });
-        return;
-    }
-
-    var musicaUrl = "/uploads/" + req.file.filename;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para trocar a música!" });
-        return;
-    }
-
-    var nomeOriginal = Buffer.from(req.file.originalname, "latin1").toString("utf8");
-
-    var posicaoPonto = nomeOriginal.lastIndexOf(".");
-    var musicaNome = nomeOriginal.substring(0, posicaoPonto);
-
-    musicaNome = musicaNome.substring(0, 120);
-
-    postsModel.atualizarMusicaCasal(musicaUrl, musicaNome)
-        .then(function () {
-            res.json({ musicaUrl: musicaUrl, musicaNome: musicaNome });
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao salvar a música." });
-        });
-}
-
-function listarSonhos(req, res) {
-    postsModel.listarSonhos()
-        .then(function (resultado) {
-            res.json(resultado);
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao listar os sonhos." });
-        });
-}
-
-function adicionarSonho(req, res) {
-    var idUsuario = req.body.idUsuarioServer;
-    var titulo = req.body.tituloServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para adicionar!" });
-    } else if (titulo == undefined || titulo == "" || titulo.length > 180) {
-        res.status(400).json({ erro: "Escreva um sonho de até 180 caracteres!" });
-    } else {
-        postsModel.adicionarSonho(idUsuario, titulo)
-            .then(function (resultado) {
-                res.status(201).json({ id: resultado.insertId });
-            })
-            .catch(function (erro) {
-                console.log(erro);
-                res.status(500).json({ erro: "Houve um erro ao adicionar o sonho." });
-            });
-    }
-}
-
-function alternarSonho(req, res) {
-    var idSonho = req.params.idSonho;
-    var idUsuario = req.body.idUsuarioServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para marcar um sonho!" });
-        return;
-    }
-
-    postsModel.alternarSonho(idSonho)
-        .then(function () {
-            res.json({ id: idSonho });
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao atualizar o sonho." });
-        });
-}
-
-function removerSonho(req, res) {
-    var idSonho = req.params.idSonho;
-    var idUsuario = req.body.idUsuarioServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para remover!" });
-        return;
-    }
-
-    postsModel.removerSonho(idSonho)
-        .then(function () {
-            res.json({ id: idSonho });
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao remover o sonho." });
-        });
-}
-
-function listarLugares(req, res) {
-    postsModel.listarLugares()
-        .then(function (resultado) {
-            res.json(resultado);
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao listar os lugares." });
-        });
-}
-
-function adicionarLugar(req, res) {
-    var idUsuario = req.body.idUsuarioServer;
-    var nome = req.body.nomeServer;
-    var tipo = req.body.tipoServer;
-    var nota = req.body.notaServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para adicionar!" });
-    } else if (nome == undefined || nome == "" || nome.length > 120) {
-        res.status(400).json({ erro: "Informe um destino de até 120 caracteres!" });
-    } else if (tipo == undefined || tipo == "" || tipo.length > 60) {
-        res.status(400).json({ erro: "Escolha o tipo de passeio!" });
-    } else if (nota == undefined || nota == "" || nota.length > 255) {
-        res.status(400).json({ erro: "Conte o que querem fazer lá (até 255 caracteres)!" });
-    } else {
-        postsModel.adicionarLugar(idUsuario, nome, tipo, nota)
-            .then(function (resultado) {
-                res.status(201).json({ id: resultado.insertId });
-            })
-            .catch(function (erro) {
-                console.log(erro);
-                res.status(500).json({ erro: "Houve um erro ao adicionar o lugar." });
-            });
-    }
-}
-
-function alternarLugar(req, res) {
-    var idLugar = req.params.idLugar;
-    var idUsuario = req.body.idUsuarioServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para marcar um lugar!" });
-        return;
-    }
-
-    postsModel.alternarLugar(idLugar)
-        .then(function () {
-            res.json({ id: idLugar });
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao atualizar o lugar." });
-        });
-}
-
-function removerLugar(req, res) {
-    var idLugar = req.params.idLugar;
-    var idUsuario = req.body.idUsuarioServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para remover!" });
-        return;
-    }
-
-    postsModel.removerLugar(idLugar)
-        .then(function () {
-            res.json({ id: idLugar });
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao remover o lugar." });
-        });
-}
-
-function listarCapitulos(req, res) {
-    postsModel.listarCapitulos()
-        .then(function (resultado) {
-            res.json(resultado);
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao listar os capítulos." });
-        });
-}
-
-function adicionarCapitulo(req, res) {
-    var idUsuario = req.body.idUsuarioServer;
-    var etiqueta = req.body.etiquetaServer;
-    var titulo = req.body.tituloServer;
-    var descricao = req.body.descricaoServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para adicionar!" });
-    } else if (etiqueta == undefined || etiqueta == "" || etiqueta.length > 50) {
-        res.status(400).json({ erro: "Informe uma etiqueta de até 50 caracteres!" });
-    } else if (titulo == undefined || titulo == "" || titulo.length > 120) {
-        res.status(400).json({ erro: "Informe um título de até 120 caracteres!" });
-    } else if (descricao == undefined || descricao == "") {
-        res.status(400).json({ erro: "Conte a história desse momento!" });
-    } else {
-        postsModel.adicionarCapitulo(idUsuario, etiqueta, titulo, descricao)
-            .then(function (resultado) {
-                res.status(201).json({ id: resultado.insertId });
-            })
-            .catch(function (erro) {
-                console.log(erro);
-                res.status(500).json({ erro: "Houve um erro ao adicionar o capítulo." });
-            });
-    }
-}
-
-function removerCapitulo(req, res) {
-    var idCapitulo = req.params.idCapitulo;
-    var idUsuario = req.body.idUsuarioServer;
-
-    if (idUsuario == undefined) {
-        res.status(400).json({ erro: "Você precisa entrar na sua conta para remover!" });
-        return;
-    }
-
-    postsModel.removerCapitulo(idCapitulo)
-        .then(function () {
-            res.json({ id: idCapitulo });
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            res.status(500).json({ erro: "Houve um erro ao remover o capítulo." });
-        });
-}
-
 module.exports = {
     listarTodos,
     listarPorUsuario,
@@ -580,19 +303,5 @@ module.exports = {
     alternarCurtida,
     listarComentarios,
     comentar,
-    deletarComentario,
-    buscarConfigCasal,
-    atualizarSobreEla,
-    atualizarMusicaCasal,
-    listarSonhos,
-    adicionarSonho,
-    alternarSonho,
-    removerSonho,
-    listarLugares,
-    adicionarLugar,
-    alternarLugar,
-    removerLugar,
-    listarCapitulos,
-    adicionarCapitulo,
-    removerCapitulo
+    deletarComentario
 };

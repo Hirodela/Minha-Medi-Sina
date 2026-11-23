@@ -1,48 +1,45 @@
-const multer = require('multer');
-const path = require('path');
-const crypto = require('crypto');
+let multer = require("multer");
+let path = require("path");
+let crypto = require("crypto");
 
-const diretorio = 'public/uploads/';
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/uploads/");
+    },
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, diretorio)
-  },
+    filename: function (req, file, cb) {
+        let extensao = path.extname(file.originalname).toLowerCase();
+        let novoNome = crypto.randomBytes(16).toString("hex");
 
-  filename: (req, file, cb) => {
-    const extensaoArquivo = path.extname(file.originalname).toLowerCase();
-
-    const novoNomeArquivo = crypto
-      .randomBytes(16)
-      .toString('hex');
-
-    cb(null, `${novoNomeArquivo}${extensaoArquivo}`)
-  }
+        cb(null, novoNome + extensao);
+    }
 });
 
 function filtrarExtensoes(extensoes, mensagem) {
-  return (req, file, cb) => {
-    const extensaoArquivo = path.extname(file.originalname).toLowerCase();
+    return function (req, file, cb) {
+        let extensao = path.extname(file.originalname).toLowerCase();
 
-    if (extensoes.includes(extensaoArquivo)) {
-      cb(null, true)
-    } else {
-      cb(new Error(mensagem))
-    }
-  }
+        if (extensoes.includes(extensao)) {
+            cb(null, true);
+        } else {
+            cb(new Error(mensagem));
+        }
+    };
 }
 
-const imagem = multer({
-  storage,
-  fileFilter: filtrarExtensoes(['.jpg', '.jpeg', '.png', '.webp'], 'Envie uma imagem JPG, PNG ou WEBP!'),
-  limits: { fileSize: 5 * 1024 * 1024 }
+let imagem = multer({
+    storage: storage,
+    fileFilter: filtrarExtensoes([".jpg", ".jpeg", ".png", ".webp"], "Envie uma imagem JPG, PNG ou WEBP!"),
+    limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-const musica = multer({
-  storage,
-  fileFilter: filtrarExtensoes(['.mp3', '.wav', '.ogg', '.m4a'], 'Envie uma música MP3, WAV, OGG ou M4A!'),
-  limits: { fileSize: 20 * 1024 * 1024 }
+let musica = multer({
+    storage: storage,
+    fileFilter: filtrarExtensoes([".mp3", ".wav", ".ogg", ".m4a"], "Envie uma música MP3, WAV, OGG ou M4A!"),
+    limits: { fileSize: 20 * 1024 * 1024 }
 });
 
-
-module.exports = { imagem, musica };
+module.exports = {
+    imagem,
+    musica
+};
