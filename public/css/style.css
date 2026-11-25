@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Poppins:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Baloo+2:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap");
 
 :root {
   --vinho: #7b2948;
@@ -74,7 +74,7 @@ html { scrollbar-color: var(--rosa-medio) var(--rosa-bebe); }
 h1,
 h2,
 h3 {
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: "Baloo 2", "Poppins", sans-serif;
   font-weight: 600;
   color: var(--vinho);
   line-height: 1.2;
@@ -284,7 +284,7 @@ header.cabecalho-site::after {
 
 .logo {
   display: inline-block;
-  font: italic 600 23px/1.15 "Playfair Display", serif;
+  font: italic 600 23px/1.15 "Baloo 2", "Poppins", sans-serif;
   color: var(--vinho);
   transition: transform 0.3s var(--transicao-suave);
 }
@@ -349,14 +349,11 @@ header.cabecalho-site nav a.ativo {
 }
 
 .apresentacao h1 {
-  background: linear-gradient(120deg, var(--vinho-escuro) 10%, var(--vinho-claro) 60%, var(--rosa-forte) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--vinho-claro);
   padding-bottom: 4px;
 }
 
-.apresentacao h1 em.destaque-manuscrito { -webkit-text-fill-color: var(--rosa-forte); }
+.apresentacao h1 em.destaque-manuscrito { color: var(--rosa-forte); }
 
 .apresentacao p {
   margin-top: 18px;
@@ -1060,7 +1057,7 @@ input[type="checkbox"] {
   background-position: center;
   border: 3px solid var(--branco);
   box-shadow: 0 0 0 2px var(--rosa), var(--sombra-pequena);
-  font-family: "Playfair Display", serif;
+  font-family: "Baloo 2", "Poppins", sans-serif;
   font-weight: 600;
   color: #fff;
   margin-left: 10px;
@@ -1102,7 +1099,7 @@ a.avatar:hover { color: #fff; }
 .indicador b {
   display: block;
   flex-shrink: 0;
-  font: 600 34px/1.2 "Playfair Display", serif;
+  font: 600 34px/1.2 "Baloo 2", "Poppins", sans-serif;
   color: var(--vinho);
   margin: 2px 0;
   white-space: nowrap;
@@ -1638,7 +1635,7 @@ main > .indicadores,
 
 .contador-item b {
   display: block;
-  font: 600 clamp(28px, 3.5vw, 42px)/1.1 "Playfair Display", serif;
+  font: 600 clamp(28px, 3.5vw, 42px)/1.1 "Baloo 2", "Poppins", sans-serif;
   color: var(--vinho);
   margin-bottom: 4px;
 }
@@ -2134,7 +2131,7 @@ main > .indicadores,
 
 .bilhete blockquote {
   margin-top: 14px;
-  font: italic 600 clamp(20px, 2.2vw, 25px)/1.35 "Playfair Display", Georgia, serif;
+  font: italic 600 clamp(20px, 2.2vw, 25px)/1.35 "Baloo 2", "Poppins", sans-serif;
   color: var(--vinho);
 }
 
