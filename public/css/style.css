@@ -136,17 +136,20 @@ em.destaque-manuscrito::after {
 .sobretitulo {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--vinho);
-  background: var(--rosa-claro);
-  border: 1px solid var(--borda);
-  padding: 4px 14px;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  gap: 10px;
+  font-family: "Dancing Script", cursive;
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--rosa-forte);
+  margin-bottom: 6px;
+}
+
+.sobretitulo::before {
+  content: "";
+  width: 26px;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0.6;
 }
 
 
@@ -501,27 +504,24 @@ header.cabecalho-site nav a.ativo {
 .convite-mural-itens {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px 0;
   margin: 0 0 28px;
   padding: 0;
   list-style: none;
 }
 
 .convite-mural-itens li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 16px;
-  background: var(--branco);
-  border: 1px solid var(--borda);
-  border-radius: 99px;
-  box-shadow: var(--sombra-pequena);
   color: var(--vinho);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 
-.convite-mural-itens span { color: var(--rosa-forte); }
+.convite-mural-itens li + li::before {
+  content: "♡";
+  margin: 0 12px;
+  color: var(--rosa-forte);
+  font-weight: 400;
+}
 
 .convite-mural-fotos {
   display: flex;
